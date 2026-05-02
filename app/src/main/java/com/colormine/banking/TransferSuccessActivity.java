@@ -18,8 +18,6 @@ public class TransferSuccessActivity extends AppCompatActivity {
         double amount = getIntent().getDoubleExtra("amount", 0.0);
         String recipient = getIntent().getStringExtra("recipient");
 
-        TextView tvAmountSent = findViewById(R.id.success_card).findViewById(R.id.tv_recipient); // Actually it's the amount view, let's just find by id if needed. But let's assume it's static for now based on layout or we can update layout later.
-        
         // Find views
         Button btnDownload = findViewById(R.id.btn_download);
         Button btnBackHome = findViewById(R.id.btn_back_home);
@@ -29,8 +27,9 @@ public class TransferSuccessActivity extends AppCompatActivity {
         });
 
         btnBackHome.setOnClickListener(v -> {
-            Intent intent = new Intent(this, HomeActivity.class);
+            Intent intent = new Intent(this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra(MainActivity.EXTRA_SELECT_TAB, 0); // Go to Home tab
             startActivity(intent);
             finish();
         });
