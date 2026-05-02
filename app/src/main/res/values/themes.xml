@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base application theme -->
+    <style name="Theme.ColorMineBank" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorSecondary</item>
+        <item name="android:windowBackground">@color/colorBackground</item>
+        <item name="android:statusBarColor">@color/colorBackground</item>
+        <item name="android:navigationBarColor">@color/colorSurface</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:fontFamily">@font/poppins_regular</item>
+    </style>
+
+    <!-- Splash theme — no action bar, purple gradient bg -->
+    <style name="Theme.ColorMineBank.Splash" parent="Theme.ColorMineBank">
+        <item name="android:windowBackground">@drawable/bg_splash</item>
+        <item name="android:statusBarColor">@color/colorPrimary</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+    <!-- Full screen for onboarding -->
+    <style name="Theme.ColorMineBank.NoActionBar" parent="Theme.ColorMineBank">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <!-- Primary gradient button style -->
+    <style name="Widget.ColorMineBank.Button.Primary" parent="Widget.MaterialComponents.Button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/btn_height</item>
+        <item name="android:textColor">@color/colorTextWhite</item>
+        <item name="android:textSize">@dimen/text_base</item>
+        <item name="android:fontFamily">@font/poppins_semibold</item>
+        <item name="android:paddingStart">@dimen/spacing_xl</item>
+        <item name="android:paddingEnd">@dimen/spacing_xl</item>
+        <item name="cornerRadius">@dimen/radius_xl</item>
+        <item name="backgroundTint">@null</item>
+        <item name="android:background">@drawable/bg_btn_primary</item>
+        <item name="android:elevation">8dp</item>
+        <item name="android:stateListAnimator">@null</item>
+    </style>
+
+    <!-- Outline / secondary button -->
+    <style name="Widget.ColorMineBank.Button.Secondary" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/btn_height</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">@dimen/text_base</item>
+        <item name="android:fontFamily">@font/poppins_semibold</item>
+        <item name="cornerRadius">@dimen/radius_xl</item>
+        <item name="strokeColor">@color/colorPrimary</item>
+    </style>
+
+    <!-- Danger button (logout, etc.) -->
+    <style name="Widget.ColorMineBank.Button.Danger" parent="Widget.MaterialComponents.Button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/btn_height</item>
+        <item name="android:textColor">@color/colorError</item>
+        <item name="android:textSize">@dimen/text_base</item>
+        <item name="android:fontFamily">@font/poppins_semibold</item>
+        <item name="cornerRadius">@dimen/radius_xl</item>
+        <item name="backgroundTint">@color/colorRed50</item>
+        <item name="android:elevation">0dp</item>
+        <item name="android:stateListAnimator">@null</item>
+    </style>
+
+    <!-- Card style -->
+    <style name="Widget.ColorMineBank.Card" parent="Widget.MaterialComponents.CardView">
+        <item name="cardCornerRadius">@dimen/radius_xxl</item>
+        <item name="cardElevation">@dimen/card_elevation</item>
+        <item name="cardBackgroundColor">@color/colorSurface</item>
+        <item name="contentPadding">@dimen/spacing_xxl</item>
+    </style>
+
+    <!-- Input field style -->
+    <style name="Widget.ColorMineBank.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxCornerRadiusTopStart">@dimen/radius_lg</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/radius_lg</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/radius_lg</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/radius_lg</item>
+        <item name="boxStrokeColor">@color/selector_input_border</item>
+        <item name="hintTextColor">@color/colorTextSecondary</item>
+        <item name="boxBackgroundColor">@color/colorGray50</item>
+        <item name="android:fontFamily">@font/poppins_regular</item>
+    </style>
+
+    <!-- Toolbar style -->
+    <style name="Widget.ColorMineBank.Toolbar" parent="Widget.MaterialComponents.Toolbar">
+        <item name="android:background">@color/colorBackground</item>
+        <item name="titleTextAppearance">@style/TextAppearance.ColorMineBank.Title</item>
+        <item name="android:elevation">0dp</item>
+    </style>
+
+    <!-- Text appearances using Poppins font -->
+    <style name="TextAppearance.ColorMineBank.Title" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="android:textColor">@color/colorTextPrimary</item>
+        <item name="android:textSize">@dimen/text_xl</item>
+        <item name="android:fontFamily">@font/poppins_semibold</item>
+    </style>
+
+    <style name="TextAppearance.ColorMineBank.Headline" parent="TextAppearance.MaterialComponents.Headline4">
+        <item name="android:textColor">@color/colorTextPrimary</item>
+        <item name="android:fontFamily">@font/poppins_bold</item>
+    </style>
+
+    <style name="TextAppearance.ColorMineBank.Body" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:textColor">@color/colorTextPrimary</item>
+        <item name="android:fontFamily">@font/poppins_regular</item>
+    </style>
+
+    <style name="TextAppearance.ColorMineBank.Caption" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:textColor">@color/colorTextSecondary</item>
+        <item name="android:fontFamily">@font/poppins_regular</item>
+    </style>
+
+    <!-- Tab layout style (for Login/Signup tabs) -->
+    <style name="Widget.ColorMineBank.TabLayout" parent="Widget.MaterialComponents.TabLayout">
+        <item name="tabBackground">@drawable/selector_tab</item>
+        <item name="tabRippleColor">@null</item>
+        <item name="tabSelectedTextColor">@color/colorTextWhite</item>
+        <item name="tabTextColor">@color/colorTextSecondary</item>
+        <item name="tabTextAppearance">@style/TextAppearance.ColorMineBank.Tab</item>
+        <item name="tabIndicatorHeight">0dp</item>
+    </style>
+
+    <style name="TextAppearance.ColorMineBank.Tab" parent="TextAppearance.MaterialComponents.Button">
+        <item name="android:fontFamily">@font/poppins_medium</item>
+        <item name="android:textSize">@dimen/text_base</item>
+    </style>
+</resources>

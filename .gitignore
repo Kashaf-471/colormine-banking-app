@@ -1,11 +1,28 @@
+# ===== Android Studio / IntelliJ =====
 *.iml
+.idea/
 .gradle/
 local.properties
-.idea/
-.DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
+
+# ===== Build output (IMPORTANT FIX) =====
+**/build/
+app/build/
+
+# ===== Generated files =====
+.externalNativeBuild/
+.cxx/
+captures/
+
+# ===== APK / AAB =====
 *.apk
 *.aab
+
+# ===== OS files =====
+.DS_Store
+Thumbs.db
+
+# ===== Google Services =====
+app/google-services.json
+
+# ===== Log / temp files =====
+*.log
