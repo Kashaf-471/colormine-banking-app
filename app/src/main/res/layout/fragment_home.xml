@@ -172,6 +172,7 @@
                         android:textColor="#DDD6FE"
                         android:textSize="10sp" />
                     <TextView
+                        android:id="@+id/card_expiry"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/poppins_medium"

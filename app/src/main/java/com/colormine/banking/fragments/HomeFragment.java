@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.colormine.banking.CardDetailActivity;
 import com.colormine.banking.LoginSignupActivity;
 import com.colormine.banking.MainActivity;
+import com.colormine.banking.NotificationsActivity;
 import com.colormine.banking.R;
 import com.colormine.banking.SendMoneyActivity;
 import com.colormine.banking.adapters.TransactionAdapter;
@@ -34,8 +35,7 @@ public class HomeFragment extends Fragment {
     private RecyclerView rvTransactions;
     private TransactionAdapter adapter;
     private List<Transaction> transactionList;
-    private TextView tvBalance;
-    private TextView tvUserName;
+    private TextView tvBalance, tvUserName, tvCardNumber, tvCardExpiry;
     private DatabaseReference mDatabase;
     private String userEmail;
 
@@ -56,6 +56,8 @@ public class HomeFragment extends Fragment {
 
         tvBalance = view.findViewById(R.id.card_balance_amount);
         tvUserName = view.findViewById(R.id.tv_user_name);
+        tvCardNumber = view.findViewById(R.id.card_number);
+        tvCardExpiry = view.findViewById(R.id.card_expiry); // This ID should be present or updated in XML
 
         initHeader(view);
         initCard(view);
@@ -78,6 +80,17 @@ public class HomeFragment extends Fragment {
                     String formattedBalance = String.format("$%,.2f", user.getBalance());
                     if (tvUserName != null) tvUserName.setText(user.getName());
                     if (tvBalance != null) tvBalance.setText(formattedBalance);
+                    if (tvCardNumber != null) tvCardNumber.setText(user.getCardNumber());
+                    
+                    // Note: If you don't have a specific ID for expiry in XML, we'll try to find it
+                    View expiryView = getView().findViewById(R.id.card_expiry);
+                    if (expiryView instanceof TextView) {
+                        ((TextView) expiryView).setText(user.getCardExpiry());
+                    }
+
+                    if (getActivity() instanceof MainActivity) {
+                        ((MainActivity) getActivity()).updateDrawerInfo(user.getName(), user.getEmail(), formattedBalance);
+                    }
                 }
             }
 
@@ -124,10 +137,11 @@ public class HomeFragment extends Fragment {
                 ((MainActivity) getActivity()).openDrawer();
             }
         });
-
-        view.findViewById(R.id.btn_notifications).setOnClickListener(v -> {
-            // Future: Open notifications activity/fragment
-        });
+        
+        View btnNotif = view.findViewById(R.id.btn_notifications);
+        if (btnNotif != null) {
+            btnNotif.setOnClickListener(v -> startActivity(new Intent(getActivity(), NotificationsActivity.class)));
+        }
     }
 
     private void initCard(View view) {

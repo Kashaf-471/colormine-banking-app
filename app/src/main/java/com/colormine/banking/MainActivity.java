@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnTa
     private ViewPager2 viewPager;
     private TabLayout bottomTabs;
     private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnTa
         setContentView(R.layout.activity_main);
 
         drawerLayout = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         viewPager = findViewById(R.id.main_viewpager);
         bottomTabs = findViewById(R.id.bottom_tabs);
 
@@ -75,6 +76,10 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnTa
                 startActivity(new Intent(this, SecurityActivity.class));
             } else if (id == R.id.nav_help) {
                 startActivity(new Intent(this, HelpActivity.class));
+            } else if (id == R.id.nav_logout) {
+                getSharedPreferences("UserSession", MODE_PRIVATE).edit().clear().apply();
+                startActivity(new Intent(this, LoginSignupActivity.class));
+                finish();
             }
             drawerLayout.closeDrawer(GravityCompat.START);
             return true;
@@ -96,15 +101,19 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnTa
         if (headerView != null) {
             headerView.findViewById(R.id.btn_close_drawer).setOnClickListener(v -> 
                 drawerLayout.closeDrawer(GravityCompat.START));
-            
-            // Set user info in drawer
+        }
+    }
+
+    public void updateDrawerInfo(String name, String email, String balance) {
+        View headerView = navigationView.getHeaderView(0);
+        if (headerView != null) {
             TextView tvName = headerView.findViewById(R.id.drawer_user_name);
             TextView tvEmail = headerView.findViewById(R.id.drawer_user_email);
             TextView tvBalance = headerView.findViewById(R.id.drawer_balance);
             
-            if (tvName != null) tvName.setText("Sarah Johnson");
-            if (tvEmail != null) tvEmail.setText("sarah@example.com");
-            if (tvBalance != null) tvBalance.setText("$8,450.50");
+            if (tvName != null) tvName.setText(name);
+            if (tvEmail != null) tvEmail.setText(email);
+            if (tvBalance != null) tvBalance.setText(balance);
         }
     }
 

@@ -82,6 +82,8 @@
             android:screenOrientation="portrait" android:exported="false"/>
         <activity android:name=".TransferSuccessActivity"
             android:screenOrientation="portrait" android:exported="false"/>
+        <activity android:name=".NotificationsActivity"
+            android:screenOrientation="portrait" android:exported="false"/>
 
         <!-- Account & Settings -->
         <activity android:name=".AccountActivity"
@@ -93,6 +95,14 @@
         <activity android:name=".HelpActivity"
             android:screenOrientation="portrait" android:exported="false"/>
         <activity android:name=".CameraActivity"
+            android:screenOrientation="portrait" android:exported="false"/>
+
+        <!-- Admin -->
+        <activity android:name=".AdminActivity"
+            android:screenOrientation="portrait" android:exported="false"/>
+        <activity android:name=".AdminTransactionsActivity"
+            android:screenOrientation="portrait" android:exported="false"/>
+        <activity android:name=".UserDetailsActivity"
             android:screenOrientation="portrait" android:exported="false"/>
 
         <!-- Background Service -->
