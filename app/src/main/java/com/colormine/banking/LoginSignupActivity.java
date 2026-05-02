@@ -12,7 +12,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import com.colormine.banking.database.DatabaseHelper;
+
+import com.colormine.banking.models.User;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class LoginSignupActivity extends AppCompatActivity {
 
@@ -27,7 +35,8 @@ public class LoginSignupActivity extends AppCompatActivity {
     // Signup Views
     private EditText etSignupName, etSignupEmail, etSignupPassword;
     
-    private DatabaseHelper dbHelper;
+    private FirebaseAuth mAuth;
+    private DatabaseReference mDatabase;
     private boolean isLoginMode = true;
 
     @Override
@@ -35,7 +44,10 @@ public class LoginSignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_signup);
 
-        dbHelper = new DatabaseHelper(this);
+        // Initialize Firebase
+        mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
         initViews();
         setupListeners();
     }
@@ -115,20 +127,55 @@ public class LoginSignupActivity extends AppCompatActivity {
             return;
         }
         
-        // Use SQLite for course requirement
-        if (dbHelper.checkUser(email, password)) {
-            // Save user session
-            SharedPreferences pref = getSharedPreferences("UserSession", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = pref.edit();
-            editor.putString("email", email);
-            editor.apply();
+        // Firebase Login
+        mAuth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this, task -> {
+                if (txSuccessful()) {
+                    FirebaseUser user = mAuth.getCurrentUser();
+                    if (user != null) {
+                        checkUserStatusAndNavigate(user.getEmail());
+                    }
+                } else {
+                    Toast.makeText(LoginSignupActivity.this, "Authentication failed: " + task.getException().getMessage(),
+                            Toast.LENGTH_SHORT).show();
+                }
+            });
+    }
 
-            Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this, HomeActivity.class));
-            finish();
-        } else {
-            Toast.makeText(this, "Invalid credentials. Try admin/admin", Toast.LENGTH_SHORT).show();
-        }
+    private boolean txSuccessful() {
+        // Helper to check if task was successful to avoid complex lambda nesting
+        return mAuth.getCurrentUser() != null;
+    }
+
+    private void checkUserStatusAndNavigate(String email) {
+        // Check if user is blocked in the Realtime Database
+        String sanitizedEmail = email.replace(".", ",");
+        mDatabase.child("users").child(sanitizedEmail).child("status")
+            .addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot snapshot) {
+                    String status = snapshot.getValue(String.class);
+                    if ("BLOCKED".equals(status)) {
+                        mAuth.signOut();
+                        Toast.makeText(LoginSignupActivity.this, "Your account has been suspended by Admin.", Toast.LENGTH_LONG).show();
+                    } else {
+                        // Save user session
+                        SharedPreferences pref = getSharedPreferences("UserSession", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = pref.edit();
+                        editor.putString("email", email);
+                        editor.apply();
+
+                        Toast.makeText(LoginSignupActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(LoginSignupActivity.this, HomeActivity.class));
+                        finish();
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    Toast.makeText(LoginSignupActivity.this, "Database error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
     }
 
     private void attemptSignup() {
@@ -141,11 +188,35 @@ public class LoginSignupActivity extends AppCompatActivity {
             return;
         }
         
-        if (dbHelper.registerUser(name, email, password)) {
-            Toast.makeText(this, "Registration Successful! Please Login", Toast.LENGTH_SHORT).show();
-            switchTab(true);
-        } else {
-            Toast.makeText(this, "Registration Failed or Email exists", Toast.LENGTH_SHORT).show();
-        }
+        mAuth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this, task -> {
+                if (task.isSuccessful()) {
+                    FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                    if (firebaseUser != null) {
+                        createNewUserInDatabase(name, email);
+                    }
+                } else {
+                    Toast.makeText(LoginSignupActivity.this, "Signup failed: " + task.getException().getMessage(),
+                            Toast.LENGTH_SHORT).show();
+                }
+            });
+    }
+
+    private void createNewUserInDatabase(String name, String email) {
+        // Default balance of 5000.00
+        User newUser = new User(0, name, email, "", 5000.00, "ACTIVE");
+        
+        // Firebase doesn't allow dots in keys, so we replace them
+        String sanitizedEmail = email.replace(".", ",");
+        
+        mDatabase.child("users").child(sanitizedEmail).setValue(newUser)
+            .addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Toast.makeText(LoginSignupActivity.this, "Registration Successful! Please Login", Toast.LENGTH_SHORT).show();
+                    switchTab(true);
+                } else {
+                    Toast.makeText(LoginSignupActivity.this, "Error saving user data", Toast.LENGTH_SHORT).show();
+                }
+            });
     }
 }
