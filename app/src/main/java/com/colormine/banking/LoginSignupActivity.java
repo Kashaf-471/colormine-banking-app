@@ -1,6 +1,8 @@
 package com.colormine.banking;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -104,9 +106,23 @@ public class LoginSignupActivity extends AppCompatActivity {
             Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        // Admin check
+        if (email.equals("admin") && password.equals("admin")) {
+            Toast.makeText(this, "Admin Login Successful", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, AdminActivity.class));
+            finish();
+            return;
+        }
         
         // Use SQLite for course requirement
-        if (dbHelper.checkUser(email, password) || (email.equals("admin") && password.equals("admin"))) {
+        if (dbHelper.checkUser(email, password)) {
+            // Save user session
+            SharedPreferences pref = getSharedPreferences("UserSession", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putString("email", email);
+            editor.apply();
+
             Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this, HomeActivity.class));
             finish();

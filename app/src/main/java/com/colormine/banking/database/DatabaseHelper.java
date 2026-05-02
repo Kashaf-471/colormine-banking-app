@@ -5,6 +5,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -97,5 +100,66 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return name;
         }
         return "User";
+    }
+
+    public double getUserBalance(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_USERS, new String[]{COLUMN_BALANCE}, COLUMN_EMAIL + "=?", new String[]{email}, null, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            double balance = cursor.getDouble(0);
+            cursor.close();
+            return balance;
+        }
+        return 0.0;
+    }
+
+    public boolean updateBalance(String email, double amount) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_BALANCE, amount);
+        return db.update(TABLE_USERS, values, COLUMN_EMAIL + "=?", new String[]{email}) > 0;
+    }
+
+    // Transaction Methods
+    public boolean addTransaction(String email, String type, double amount, String title, String category) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COL_USER_EMAIL, email);
+        values.put(COL_TYPE, type);
+        values.put(COL_AMOUNT, amount);
+        values.put(COL_TITLE, title);
+        values.put(COL_CATEGORY, category);
+        
+        String date = new SimpleDateFormat("MMM dd, yyyy HH:mm", Locale.getDefault()).format(new Date());
+        values.put(COL_DATE, date);
+
+        long result = db.insert(TABLE_TRANSACTIONS, null, values);
+        return result != -1;
+    }
+
+    // Admin Methods
+    public Cursor getAllUsers() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_USERS, null);
+    }
+
+    public boolean updateUser(int id, String name, String email, double balance) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NAME, name);
+        values.put(COLUMN_EMAIL, email);
+        values.put(COLUMN_BALANCE, balance);
+        return db.update(TABLE_USERS, values, COLUMN_ID + "=?", new String[]{String.valueOf(id)}) > 0;
+    }
+
+    public boolean deleteUser(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(TABLE_USERS, COLUMN_ID + "=?", new String[]{String.valueOf(id)}) > 0;
+    }
+
+    public Cursor getUserTransactions(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.query(TABLE_TRANSACTIONS, null, COL_USER_EMAIL + "=?", 
+                new String[]{email}, null, null, COL_DATE + " DESC");
     }
 }
