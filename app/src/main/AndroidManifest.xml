@@ -74,17 +74,13 @@
             android:screenOrientation="portrait" android:exported="false"/>
 
         <!-- Main App -->
-        <activity android:name=".HomeActivity"
+        <activity android:name=".MainActivity"
             android:screenOrientation="portrait" android:exported="false"/>
         <activity android:name=".CardDetailActivity"
-            android:screenOrientation="portrait" android:exported="false"/>
-        <activity android:name=".CardStatisticActivity"
             android:screenOrientation="portrait" android:exported="false"/>
         <activity android:name=".SendMoneyActivity"
             android:screenOrientation="portrait" android:exported="false"/>
         <activity android:name=".TransferSuccessActivity"
-            android:screenOrientation="portrait" android:exported="false"/>
-        <activity android:name=".TransactionHistoryActivity"
             android:screenOrientation="portrait" android:exported="false"/>
 
         <!-- Account & Settings -->

@@ -33,7 +33,13 @@ public class CardDetailActivity extends AppCompatActivity {
         LinearLayout actionLockCard = findViewById(R.id.action_lock_card);
         Button btnSendMoney = findViewById(R.id.btn_send_money);
 
-        actionViewStats.setOnClickListener(v -> startActivity(new Intent(this, CardStatisticActivity.class)));
+        actionViewStats.setOnClickListener(v -> {
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra(MainActivity.EXTRA_SELECT_TAB, 1); // Stats tab
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+            finish();
+        });
         
         actionCopyCard.setOnClickListener(v -> {
             Toast.makeText(this, "Card number copied to clipboard", Toast.LENGTH_SHORT).show();
