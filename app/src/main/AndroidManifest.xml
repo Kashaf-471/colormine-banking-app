@@ -87,11 +87,6 @@
         <activity android:name=".TransactionHistoryActivity"
             android:screenOrientation="portrait" android:exported="false"/>
 
-        <!-- Admin -->
-        <activity android:name=".AdminActivity"
-            android:screenOrientation="portrait" android:exported="false"
-            android:label="Admin Dashboard"/>
-
         <!-- Account & Settings -->
         <activity android:name=".AccountActivity"
             android:screenOrientation="portrait" android:exported="false"/>
