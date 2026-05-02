@@ -58,14 +58,9 @@ public class SendMoneyActivity extends AppCompatActivity {
         rvContacts.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         
         List<Contact> contacts = new ArrayList<>();
-        contacts.add(new Contact("1", "Sarah J.", "@sarahj", "👩"));
-        contacts.add(new Contact("2", "Mike T.", "@miket", "👨"));
-        contacts.add(new Contact("3", "Alex R.", "@alexr", "🧑"));
-        contacts.add(new Contact("4", "Emma W.", "@emmaw", "👱‍♀️"));
         
         ContactAdapter adapter = new ContactAdapter(contacts, contact -> {
             selectedContact = contact;
-            // Update UI to show selected contact
             selectedContactInfo.setVisibility(View.VISIBLE);
             tvSelectedAvatar.setText(contact.getAvatarInitial());
             tvSelectedName.setText(contact.getName());
@@ -95,20 +90,13 @@ public class SendMoneyActivity extends AppCompatActivity {
             
             try {
                 double amount = Double.parseDouble(amountStr);
-                if (amount <= 0) {
-                    Toast.makeText(this, "Amount must be greater than 0", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                
-                Intent intent = new Intent(this, TransferSuccessActivity.class);
-                intent.putExtra("amount", amount);
-                intent.putExtra("recipient", selectedContact.getName());
-                startActivity(intent);
-                finish();
-                
-            } catch (NumberFormatException e) {
-                Toast.makeText(this, "Invalid amount", Toast.LENGTH_SHORT).show();
-            }
-        });
+            return;
+        }
+
+        Intent intent = new Intent(this, TransferSuccessActivity.class);
+        intent.putExtra("amount", amount);
+        intent.putExtra("recipient", selectedContact.getName());
+        startActivity(intent);
+        finish();
     }
 }

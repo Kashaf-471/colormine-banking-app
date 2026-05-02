@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.colormine.banking.app-mergeDebugResources-60:/values-ldltr-v21/values-ldltr-v21.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\HP\\.gradle\\caches\\9.0-milestone-1\\transforms\\185aa17c0f3c8a9e37417e86b733027e\\transformed\\appcompat-1.7.0\\res\\values-ldltr-v21\\values-ldltr-v21.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "112",
+                        "endOffsets": "163"
+                    }
+                }
+            ]
+        }
+    ]
+}

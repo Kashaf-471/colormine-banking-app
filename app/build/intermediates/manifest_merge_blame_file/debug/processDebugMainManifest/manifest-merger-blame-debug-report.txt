@@ -1,0 +1,538 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.colormine.banking"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="24"
+9        android:targetSdkVersion="34" />
+10
+11    <!-- Network -->
+12    <uses-permission android:name="android.permission.INTERNET" />
+12-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:6:5-67
+12-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:6:22-64
+13    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+13-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:7:5-79
+13-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:7:22-76
+14    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+14-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:8:5-79
+14-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:8:22-76
+15
+16    <!-- SMS -->
+17    <uses-feature
+17-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:11:5-88
+18        android:name="android.hardware.telephony"
+18-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:11:19-60
+19        android:required="false" />
+19-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:11:61-85
+20
+21    <uses-permission android:name="android.permission.SEND_SMS" />
+21-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:12:5-67
+21-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:12:22-64
+22    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+22-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:13:5-70
+22-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:13:22-67
+23    <uses-permission android:name="android.permission.READ_SMS" />
+23-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:14:5-67
+23-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:14:22-64
+24
+25    <!-- Camera -->
+26    <uses-permission android:name="android.permission.CAMERA" />
+26-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:17:5-65
+26-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:17:22-62
+27
+28    <uses-feature
+28-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:18:5-85
+29        android:name="android.hardware.camera"
+29-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:18:19-57
+30        android:required="false" />
+30-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:18:58-82
+31
+32    <!-- Location (GPS) -->
+33    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+33-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:21:5-79
+33-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:21:22-76
+34    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+34-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:22:5-81
+34-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:22:22-78
+35
+36    <!-- WiFi -->
+37    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+37-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:25:5-76
+37-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:25:22-73
+38    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+38-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:26:5-76
+38-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:26:22-73
+39
+40    <!-- Bluetooth -->
+41    <uses-permission android:name="android.permission.BLUETOOTH" />
+41-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:29:5-68
+41-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:29:22-65
+42    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+42-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:30:5-74
+42-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:30:22-71
+43    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+43-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:31:5-73
+43-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:31:22-70
+44    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+44-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:32:5-76
+44-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:32:22-73
+45
+46    <!-- Contacts -->
+47    <uses-permission android:name="android.permission.READ_CONTACTS" />
+47-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:35:5-72
+47-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:35:22-69
+48
+49    <!-- Vibration -->
+50    <uses-permission android:name="android.permission.VIBRATE" />
+50-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:38:5-66
+50-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:38:22-63
+51
+52    <!-- Foreground Service -->
+53    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+53-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:41:5-77
+53-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:41:22-74
+54    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+54-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:42:5-77
+54-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:42:22-74
+55
+56    <permission
+56-->[androidx.core:core:1.13.1] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\efcdce4be58d625fe30a72e725ad74f6\transformed\core-1.13.1\AndroidManifest.xml:22:5-24:47
+57        android:name="com.colormine.banking.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+57-->[androidx.core:core:1.13.1] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\efcdce4be58d625fe30a72e725ad74f6\transformed\core-1.13.1\AndroidManifest.xml:23:9-81
+58        android:protectionLevel="signature" />
+58-->[androidx.core:core:1.13.1] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\efcdce4be58d625fe30a72e725ad74f6\transformed\core-1.13.1\AndroidManifest.xml:24:9-44
+59
+60    <uses-permission android:name="com.colormine.banking.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+60-->[androidx.core:core:1.13.1] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\efcdce4be58d625fe30a72e725ad74f6\transformed\core-1.13.1\AndroidManifest.xml:26:5-97
+60-->[androidx.core:core:1.13.1] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\efcdce4be58d625fe30a72e725ad74f6\transformed\core-1.13.1\AndroidManifest.xml:26:22-94
+61
+62    <application
+62-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:44:5-126:19
+63        android:allowBackup="true"
+63-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:45:9-35
+64        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+64-->[androidx.core:core:1.13.1] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\efcdce4be58d625fe30a72e725ad74f6\transformed\core-1.13.1\AndroidManifest.xml:28:18-86
+65        android:debuggable="true"
+66        android:extractNativeLibs="false"
+67        android:icon="@drawable/ic_launcher"
+67-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:46:9-45
+68        android:label="@string/app_name"
+68-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:47:9-41
+69        android:roundIcon="@drawable/ic_launcher"
+69-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:48:9-50
+70        android:supportsRtl="true"
+70-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:49:9-35
+71        android:testOnly="true"
+72        android:theme="@style/Theme.ColorMineBank"
+72-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:50:9-51
+73        android:usesCleartextTraffic="true" >
+73-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:51:9-44
+74
+75        <!-- Splash -->
+76        <activity
+76-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:55:9-64:20
+77            android:name="com.colormine.banking.SplashActivity"
+77-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:56:13-43
+78            android:exported="true"
+78-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:57:13-36
+79            android:screenOrientation="portrait"
+79-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:59:13-49
+80            android:theme="@style/Theme.ColorMineBank.Splash" >
+80-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:58:13-62
+81            <intent-filter>
+81-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:60:13-63:29
+82                <action android:name="android.intent.action.MAIN" />
+82-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:61:17-69
+82-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:61:25-66
+83
+84                <category android:name="android.intent.category.LAUNCHER" />
+84-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:62:17-77
+84-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:62:27-74
+85            </intent-filter>
+86        </activity>
+87
+88        <!-- Auth Flow -->
+89        <activity
+89-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:67:9-68:76
+90            android:name="com.colormine.banking.OnboardingActivity"
+90-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:67:19-53
+91            android:exported="false"
+91-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:68:50-74
+92            android:screenOrientation="portrait" />
+92-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:68:13-49
+93        <activity
+93-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:69:9-70:76
+94            android:name="com.colormine.banking.LoginSignupActivity"
+94-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:69:19-54
+95            android:exported="false"
+95-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:70:50-74
+96            android:screenOrientation="portrait" />
+96-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:70:13-49
+97        <activity
+97-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:71:9-72:76
+98            android:name="com.colormine.banking.ForgotPasswordActivity"
+98-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:71:19-57
+99            android:exported="false"
+99-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:72:50-74
+100            android:screenOrientation="portrait" />
+100-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:72:13-49
+101        <activity
+101-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:73:9-74:76
+102            android:name="com.colormine.banking.VerifyOtpActivity"
+102-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:73:19-52
+103            android:exported="false"
+103-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:74:50-74
+104            android:screenOrientation="portrait" />
+104-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:74:13-49
+105
+106        <!-- Main App -->
+107        <activity
+107-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:77:9-78:76
+108            android:name="com.colormine.banking.HomeActivity"
+108-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:77:19-47
+109            android:exported="false"
+109-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:78:50-74
+110            android:screenOrientation="portrait" />
+110-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:78:13-49
+111        <activity
+111-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:79:9-80:76
+112            android:name="com.colormine.banking.CardDetailActivity"
+112-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:79:19-53
+113            android:exported="false"
+113-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:80:50-74
+114            android:screenOrientation="portrait" />
+114-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:80:13-49
+115        <activity
+115-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:81:9-82:76
+116            android:name="com.colormine.banking.CardStatisticActivity"
+116-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:81:19-56
+117            android:exported="false"
+117-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:82:50-74
+118            android:screenOrientation="portrait" />
+118-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:82:13-49
+119        <activity
+119-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:83:9-84:76
+120            android:name="com.colormine.banking.SendMoneyActivity"
+120-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:83:19-52
+121            android:exported="false"
+121-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:84:50-74
+122            android:screenOrientation="portrait" />
+122-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:84:13-49
+123        <activity
+123-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:85:9-86:76
+124            android:name="com.colormine.banking.TransferSuccessActivity"
+124-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:85:19-58
+125            android:exported="false"
+125-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:86:50-74
+126            android:screenOrientation="portrait" />
+126-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:86:13-49
+127        <activity
+127-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:87:9-88:76
+128            android:name="com.colormine.banking.TransactionHistoryActivity"
+128-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:87:19-61
+129            android:exported="false"
+129-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:88:50-74
+130            android:screenOrientation="portrait" />
+130-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:88:13-49
+131
+132        <!-- Admin -->
+133        <activity
+133-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:91:9-93:46
+134            android:name="com.colormine.banking.AdminActivity"
+134-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:91:19-48
+135            android:exported="false"
+135-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:92:50-74
+136            android:label="Admin Dashboard"
+136-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:93:13-44
+137            android:screenOrientation="portrait" />
+137-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:92:13-49
+138
+139        <!-- Account & Settings -->
+140        <activity
+140-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:96:9-97:76
+141            android:name="com.colormine.banking.AccountActivity"
+141-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:96:19-50
+142            android:exported="false"
+142-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:97:50-74
+143            android:screenOrientation="portrait" />
+143-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:97:13-49
+144        <activity
+144-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:98:9-99:76
+145            android:name="com.colormine.banking.SecurityActivity"
+145-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:98:19-51
+146            android:exported="false"
+146-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:99:50-74
+147            android:screenOrientation="portrait" />
+147-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:99:13-49
+148        <activity
+148-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:100:9-101:76
+149            android:name="com.colormine.banking.SettingsActivity"
+149-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:100:19-51
+150            android:exported="false"
+150-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:101:50-74
+151            android:screenOrientation="portrait" />
+151-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:101:13-49
+152        <activity
+152-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:102:9-103:76
+153            android:name="com.colormine.banking.HelpActivity"
+153-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:102:19-47
+154            android:exported="false"
+154-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:103:50-74
+155            android:screenOrientation="portrait" />
+155-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:103:13-49
+156        <activity
+156-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:104:9-105:76
+157            android:name="com.colormine.banking.CameraActivity"
+157-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:104:19-49
+158            android:exported="false"
+158-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:105:50-74
+159            android:screenOrientation="portrait" />
+159-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:105:13-49
+160
+161        <!-- Background Service -->
+162        <service
+162-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:108:9-111:40
+163            android:name="com.colormine.banking.services.SyncService"
+163-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:109:13-49
+164            android:enabled="true"
+164-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:110:13-35
+165            android:exported="false" />
+165-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:111:13-37
+166
+167        <!-- Broadcast Receiver -->
+168        <receiver
+168-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:114:9-120:20
+169            android:name="com.colormine.banking.receivers.NetworkChangeReceiver"
+169-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:115:13-60
+170            android:exported="false" >
+170-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:116:13-37
+171            <intent-filter>
+171-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:117:13-119:29
+172                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+172-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:118:17-79
+172-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:118:25-76
+173            </intent-filter>
+174        </receiver>
+175        <receiver
+175-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:122:9-124:40
+176            android:name="com.colormine.banking.receivers.BluetoothReceiver"
+176-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:123:13-56
+177            android:exported="false" />
+177-->C:\Users\Fatima\Downloads\ColorMineBank\ColorMineBank\app\src\main\AndroidManifest.xml:124:13-37
+178
+179        <activity
+179-->[androidx.compose.ui:ui-tooling:1.4.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\d27eaa726e92572ef8168c8c66fe19bb\transformed\jetified-ui-tooling-1.4.0\AndroidManifest.xml:23:9-25:39
+180            android:name="androidx.compose.ui.tooling.PreviewActivity"
+180-->[androidx.compose.ui:ui-tooling:1.4.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\d27eaa726e92572ef8168c8c66fe19bb\transformed\jetified-ui-tooling-1.4.0\AndroidManifest.xml:24:13-71
+181            android:exported="true" />
+181-->[androidx.compose.ui:ui-tooling:1.4.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\d27eaa726e92572ef8168c8c66fe19bb\transformed\jetified-ui-tooling-1.4.0\AndroidManifest.xml:25:13-36
+182        <activity
+182-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\492ff7f1570170eba70fced604562387\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:29:9-46:20
+183            android:name="com.google.firebase.auth.internal.GenericIdpActivity"
+183-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\492ff7f1570170eba70fced604562387\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:30:13-80
+184            android:excludeFromRecents="true"
+184-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\492ff7f1570170eba70fced604562387\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:31:13-46
+185            android:exported="true"
+185-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\492ff7f1570170eba70fced604562387\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:32:13-36
+186            android:launchMode="singleTask"
+186-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\492ff7f1570170eba70fced604562387\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:33:13-44
+187            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+187-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\492ff7f1570170eba70fced604562387\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:34:13-72
+188            <intent-filter>
+188-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\492ff7f1570170eba70fced604562387\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:35:13-45:29
+189                <action android:name="android.intent.action.VIEW" />
+189-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\492ff7f1570170eba70fced604562387\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:36:17-69
+189-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\492ff7f1570170eba70fced604562387\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:36:25-66
+190
+191                <category android:name="android.intent.category.DEFAULT" />
+191-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\492ff7f1570170eba70fced604562387\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:38:17-76
+191-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\492ff7f1570170eba70fced604562387\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:38:27-73
+192                <category android:name="android.intent.category.BROWSABLE" />
+192-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\492ff7f1570170eba70fced604562387\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:39:17-78
+192-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\492ff7f1570170eba70fced604562387\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:39:27-75
+193
+194                <data
+194-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\492ff7f1570170eba70fced604562387\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:41:17-44:51
+195                    android:host="firebase.auth"
+195-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\492ff7f1570170eba70fced604562387\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:42:21-49
+196                    android:path="/"
+196-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\492ff7f1570170eba70fced604562387\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:43:21-37
+197                    android:scheme="genericidp" />
+197-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\492ff7f1570170eba70fced604562387\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:44:21-48
+198            </intent-filter>
+199        </activity>
+200        <activity
+200-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\492ff7f1570170eba70fced604562387\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:47:9-64:20
+201            android:name="com.google.firebase.auth.internal.RecaptchaActivity"
+201-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\492ff7f1570170eba70fced604562387\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:48:13-79
+202            android:excludeFromRecents="true"
+202-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\492ff7f1570170eba70fced604562387\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:49:13-46
+203            android:exported="true"
+203-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\492ff7f1570170eba70fced604562387\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:50:13-36
+204            android:launchMode="singleTask"
+204-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\492ff7f1570170eba70fced604562387\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:51:13-44
+205            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+205-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\492ff7f1570170eba70fced604562387\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:52:13-72
+206            <intent-filter>
+206-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\492ff7f1570170eba70fced604562387\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:53:13-63:29
+207                <action android:name="android.intent.action.VIEW" />
+207-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\492ff7f1570170eba70fced604562387\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:36:17-69
+207-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\492ff7f1570170eba70fced604562387\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:36:25-66
+208
+209                <category android:name="android.intent.category.DEFAULT" />
+209-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\492ff7f1570170eba70fced604562387\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:38:17-76
+209-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\492ff7f1570170eba70fced604562387\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:38:27-73
+210                <category android:name="android.intent.category.BROWSABLE" />
+210-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\492ff7f1570170eba70fced604562387\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:39:17-78
+210-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\492ff7f1570170eba70fced604562387\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:39:27-75
+211
+212                <data
+212-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\492ff7f1570170eba70fced604562387\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:41:17-44:51
+213                    android:host="firebase.auth"
+213-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\492ff7f1570170eba70fced604562387\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:42:21-49
+214                    android:path="/"
+214-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\492ff7f1570170eba70fced604562387\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:43:21-37
+215                    android:scheme="recaptcha" />
+215-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\492ff7f1570170eba70fced604562387\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:44:21-48
+216            </intent-filter>
+217        </activity>
+218
+219        <service
+219-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\492ff7f1570170eba70fced604562387\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:66:9-72:19
+220            android:name="com.google.firebase.components.ComponentDiscoveryService"
+220-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\492ff7f1570170eba70fced604562387\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:67:13-84
+221            android:directBootAware="true"
+221-->[com.google.firebase:firebase-common:20.4.2] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\e29e141cadfcf7f12c2ce367583b7321\transformed\jetified-firebase-common-20.4.2\AndroidManifest.xml:32:13-43
+222            android:exported="false" >
+222-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\492ff7f1570170eba70fced604562387\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:68:13-37
+223            <meta-data
+223-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\492ff7f1570170eba70fced604562387\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:69:13-71:85
+224                android:name="com.google.firebase.components:com.google.firebase.auth.FirebaseAuthRegistrar"
+224-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\492ff7f1570170eba70fced604562387\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:70:17-109
+225                android:value="com.google.firebase.components.ComponentRegistrar" />
+225-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\492ff7f1570170eba70fced604562387\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:71:17-82
+226            <meta-data
+226-->[com.google.firebase:firebase-database:20.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\0ce24b5944e8afffeb52f0c06d77a5b5\transformed\jetified-firebase-database-20.3.0\AndroidManifest.xml:29:13-31:85
+227                android:name="com.google.firebase.components:com.google.firebase.database.FirebaseDatabaseKtxRegistrar"
+227-->[com.google.firebase:firebase-database:20.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\0ce24b5944e8afffeb52f0c06d77a5b5\transformed\jetified-firebase-database-20.3.0\AndroidManifest.xml:30:17-120
+228                android:value="com.google.firebase.components.ComponentRegistrar" />
+228-->[com.google.firebase:firebase-database:20.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\0ce24b5944e8afffeb52f0c06d77a5b5\transformed\jetified-firebase-database-20.3.0\AndroidManifest.xml:31:17-82
+229            <meta-data
+229-->[com.google.firebase:firebase-database:20.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\0ce24b5944e8afffeb52f0c06d77a5b5\transformed\jetified-firebase-database-20.3.0\AndroidManifest.xml:32:13-34:85
+230                android:name="com.google.firebase.components:com.google.firebase.database.DatabaseRegistrar"
+230-->[com.google.firebase:firebase-database:20.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\0ce24b5944e8afffeb52f0c06d77a5b5\transformed\jetified-firebase-database-20.3.0\AndroidManifest.xml:33:17-109
+231                android:value="com.google.firebase.components.ComponentRegistrar" />
+231-->[com.google.firebase:firebase-database:20.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\0ce24b5944e8afffeb52f0c06d77a5b5\transformed\jetified-firebase-database-20.3.0\AndroidManifest.xml:34:17-82
+232            <meta-data
+232-->[com.google.firebase:firebase-common-ktx:20.4.2] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\2acaeadab964092dfdce61830e4bb428\transformed\jetified-firebase-common-ktx-20.4.2\AndroidManifest.xml:12:13-14:85
+233                android:name="com.google.firebase.components:com.google.firebase.ktx.FirebaseCommonLegacyRegistrar"
+233-->[com.google.firebase:firebase-common-ktx:20.4.2] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\2acaeadab964092dfdce61830e4bb428\transformed\jetified-firebase-common-ktx-20.4.2\AndroidManifest.xml:13:17-116
+234                android:value="com.google.firebase.components.ComponentRegistrar" />
+234-->[com.google.firebase:firebase-common-ktx:20.4.2] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\2acaeadab964092dfdce61830e4bb428\transformed\jetified-firebase-common-ktx-20.4.2\AndroidManifest.xml:14:17-82
+235            <meta-data
+235-->[com.google.firebase:firebase-common:20.4.2] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\e29e141cadfcf7f12c2ce367583b7321\transformed\jetified-firebase-common-20.4.2\AndroidManifest.xml:35:13-37:85
+236                android:name="com.google.firebase.components:com.google.firebase.FirebaseCommonKtxRegistrar"
+236-->[com.google.firebase:firebase-common:20.4.2] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\e29e141cadfcf7f12c2ce367583b7321\transformed\jetified-firebase-common-20.4.2\AndroidManifest.xml:36:17-109
+237                android:value="com.google.firebase.components.ComponentRegistrar" />
+237-->[com.google.firebase:firebase-common:20.4.2] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\e29e141cadfcf7f12c2ce367583b7321\transformed\jetified-firebase-common-20.4.2\AndroidManifest.xml:37:17-82
+238        </service>
+239
+240        <provider
+240-->[com.google.firebase:firebase-common:20.4.2] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\e29e141cadfcf7f12c2ce367583b7321\transformed\jetified-firebase-common-20.4.2\AndroidManifest.xml:23:9-28:39
+241            android:name="com.google.firebase.provider.FirebaseInitProvider"
+241-->[com.google.firebase:firebase-common:20.4.2] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\e29e141cadfcf7f12c2ce367583b7321\transformed\jetified-firebase-common-20.4.2\AndroidManifest.xml:24:13-77
+242            android:authorities="com.colormine.banking.firebaseinitprovider"
+242-->[com.google.firebase:firebase-common:20.4.2] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\e29e141cadfcf7f12c2ce367583b7321\transformed\jetified-firebase-common-20.4.2\AndroidManifest.xml:25:13-72
+243            android:directBootAware="true"
+243-->[com.google.firebase:firebase-common:20.4.2] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\e29e141cadfcf7f12c2ce367583b7321\transformed\jetified-firebase-common-20.4.2\AndroidManifest.xml:26:13-43
+244            android:exported="false"
+244-->[com.google.firebase:firebase-common:20.4.2] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\e29e141cadfcf7f12c2ce367583b7321\transformed\jetified-firebase-common-20.4.2\AndroidManifest.xml:27:13-37
+245            android:initOrder="100" />
+245-->[com.google.firebase:firebase-common:20.4.2] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\e29e141cadfcf7f12c2ce367583b7321\transformed\jetified-firebase-common-20.4.2\AndroidManifest.xml:28:13-36
+246
+247        <activity
+247-->[com.google.android.gms:play-services-base:18.1.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\3ee083c40b0a2006ada2ae53594f0300\transformed\jetified-play-services-base-18.1.0\AndroidManifest.xml:20:9-22:45
+248            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+248-->[com.google.android.gms:play-services-base:18.1.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\3ee083c40b0a2006ada2ae53594f0300\transformed\jetified-play-services-base-18.1.0\AndroidManifest.xml:20:19-85
+249            android:exported="false"
+249-->[com.google.android.gms:play-services-base:18.1.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\3ee083c40b0a2006ada2ae53594f0300\transformed\jetified-play-services-base-18.1.0\AndroidManifest.xml:22:19-43
+250            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+250-->[com.google.android.gms:play-services-base:18.1.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\3ee083c40b0a2006ada2ae53594f0300\transformed\jetified-play-services-base-18.1.0\AndroidManifest.xml:21:19-78
+251
+252        <provider
+252-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\9d1a309d1ea273628ac5b2db9103a797\transformed\jetified-lifecycle-process-2.6.2\AndroidManifest.xml:24:9-32:20
+253            android:name="androidx.startup.InitializationProvider"
+253-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\9d1a309d1ea273628ac5b2db9103a797\transformed\jetified-lifecycle-process-2.6.2\AndroidManifest.xml:25:13-67
+254            android:authorities="com.colormine.banking.androidx-startup"
+254-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\9d1a309d1ea273628ac5b2db9103a797\transformed\jetified-lifecycle-process-2.6.2\AndroidManifest.xml:26:13-68
+255            android:exported="false" >
+255-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\9d1a309d1ea273628ac5b2db9103a797\transformed\jetified-lifecycle-process-2.6.2\AndroidManifest.xml:27:13-37
+256            <meta-data
+256-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\9d1a309d1ea273628ac5b2db9103a797\transformed\jetified-lifecycle-process-2.6.2\AndroidManifest.xml:29:13-31:52
+257                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+257-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\9d1a309d1ea273628ac5b2db9103a797\transformed\jetified-lifecycle-process-2.6.2\AndroidManifest.xml:30:17-78
+258                android:value="androidx.startup" />
+258-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\9d1a309d1ea273628ac5b2db9103a797\transformed\jetified-lifecycle-process-2.6.2\AndroidManifest.xml:31:17-49
+259            <meta-data
+259-->[androidx.emoji2:emoji2:1.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\358741471fc4bbd57a16aed9010be37e\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:29:13-31:52
+260                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+260-->[androidx.emoji2:emoji2:1.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\358741471fc4bbd57a16aed9010be37e\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:30:17-75
+261                android:value="androidx.startup" />
+261-->[androidx.emoji2:emoji2:1.3.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\358741471fc4bbd57a16aed9010be37e\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:31:17-49
+262            <meta-data
+262-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\fc2911f367ef9ff215c08738574ac98e\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:29:13-31:52
+263                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+263-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\fc2911f367ef9ff215c08738574ac98e\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:30:17-85
+264                android:value="androidx.startup" />
+264-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\fc2911f367ef9ff215c08738574ac98e\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:31:17-49
+265        </provider>
+266
+267        <meta-data
+267-->[com.google.android.gms:play-services-basement:18.1.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\24a3a3ce9abc34043719015fcba75041\transformed\jetified-play-services-basement-18.1.0\AndroidManifest.xml:21:9-23:69
+268            android:name="com.google.android.gms.version"
+268-->[com.google.android.gms:play-services-basement:18.1.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\24a3a3ce9abc34043719015fcba75041\transformed\jetified-play-services-basement-18.1.0\AndroidManifest.xml:22:13-58
+269            android:value="@integer/google_play_services_version" />
+269-->[com.google.android.gms:play-services-basement:18.1.0] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\24a3a3ce9abc34043719015fcba75041\transformed\jetified-play-services-basement-18.1.0\AndroidManifest.xml:23:13-66
+270
+271        <receiver
+271-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\fc2911f367ef9ff215c08738574ac98e\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:34:9-52:20
+272            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+272-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\fc2911f367ef9ff215c08738574ac98e\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:35:13-76
+273            android:directBootAware="false"
+273-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\fc2911f367ef9ff215c08738574ac98e\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:36:13-44
+274            android:enabled="true"
+274-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\fc2911f367ef9ff215c08738574ac98e\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:37:13-35
+275            android:exported="true"
+275-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\fc2911f367ef9ff215c08738574ac98e\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:38:13-36
+276            android:permission="android.permission.DUMP" >
+276-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\fc2911f367ef9ff215c08738574ac98e\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:39:13-57
+277            <intent-filter>
+277-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\fc2911f367ef9ff215c08738574ac98e\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:40:13-42:29
+278                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+278-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\fc2911f367ef9ff215c08738574ac98e\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:41:17-91
+278-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\fc2911f367ef9ff215c08738574ac98e\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:41:25-88
+279            </intent-filter>
+280            <intent-filter>
+280-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\fc2911f367ef9ff215c08738574ac98e\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:43:13-45:29
+281                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+281-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\fc2911f367ef9ff215c08738574ac98e\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:44:17-85
+281-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\fc2911f367ef9ff215c08738574ac98e\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:44:25-82
+282            </intent-filter>
+283            <intent-filter>
+283-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\fc2911f367ef9ff215c08738574ac98e\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:46:13-48:29
+284                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+284-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\fc2911f367ef9ff215c08738574ac98e\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:47:17-88
+284-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\fc2911f367ef9ff215c08738574ac98e\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:47:25-85
+285            </intent-filter>
+286            <intent-filter>
+286-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\fc2911f367ef9ff215c08738574ac98e\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:49:13-51:29
+287                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+287-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\fc2911f367ef9ff215c08738574ac98e\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:50:17-95
+287-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Fatima\.gradle\caches\9.0-milestone-1\transforms\fc2911f367ef9ff215c08738574ac98e\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:50:25-92
+288            </intent-filter>
+289        </receiver>
+290    </application>
+291
+292</manifest>

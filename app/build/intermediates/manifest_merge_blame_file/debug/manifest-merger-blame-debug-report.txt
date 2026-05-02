@@ -1,0 +1,526 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.colormine.banking"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="24"
+9        android:targetSdkVersion="34" />
+10
+11    <!-- Network -->
+12    <uses-permission android:name="android.permission.INTERNET" />
+12-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:6:5-67
+12-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:6:22-64
+13    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+13-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:7:5-79
+13-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:7:22-76
+14    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+14-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:8:5-79
+14-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:8:22-76
+15
+16    <!-- SMS -->
+17    <uses-feature
+17-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:11:5-88
+18        android:name="android.hardware.telephony"
+18-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:11:19-60
+19        android:required="false" />
+19-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:11:61-85
+20
+21    <uses-permission android:name="android.permission.SEND_SMS" />
+21-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:12:5-67
+21-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:12:22-64
+22    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+22-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:13:5-70
+22-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:13:22-67
+23    <uses-permission android:name="android.permission.READ_SMS" />
+23-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:14:5-67
+23-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:14:22-64
+24
+25    <!-- Camera -->
+26    <uses-permission android:name="android.permission.CAMERA" />
+26-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:17:5-65
+26-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:17:22-62
+27
+28    <uses-feature
+28-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:18:5-85
+29        android:name="android.hardware.camera"
+29-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:18:19-57
+30        android:required="false" />
+30-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:18:58-82
+31
+32    <!-- Location (GPS) -->
+33    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+33-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:21:5-79
+33-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:21:22-76
+34    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+34-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:22:5-81
+34-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:22:22-78
+35
+36    <!-- WiFi -->
+37    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+37-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:25:5-76
+37-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:25:22-73
+38    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+38-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:26:5-76
+38-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:26:22-73
+39
+40    <!-- Bluetooth -->
+41    <uses-permission android:name="android.permission.BLUETOOTH" />
+41-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:29:5-68
+41-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:29:22-65
+42    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+42-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:30:5-74
+42-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:30:22-71
+43    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+43-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:31:5-73
+43-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:31:22-70
+44    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+44-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:32:5-76
+44-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:32:22-73
+45
+46    <!-- Contacts -->
+47    <uses-permission android:name="android.permission.READ_CONTACTS" />
+47-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:35:5-72
+47-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:35:22-69
+48
+49    <!-- Vibration -->
+50    <uses-permission android:name="android.permission.VIBRATE" />
+50-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:38:5-66
+50-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:38:22-63
+51
+52    <!-- Foreground Service -->
+53    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+53-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:41:5-77
+53-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:41:22-74
+54    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+54-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:42:5-77
+54-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:42:22-74
+55
+56    <permission
+56-->[androidx.core:core:1.13.1] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\8cf8575b010bad73482e9efe47a89862\transformed\core-1.13.1\AndroidManifest.xml:22:5-24:47
+57        android:name="com.colormine.banking.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+57-->[androidx.core:core:1.13.1] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\8cf8575b010bad73482e9efe47a89862\transformed\core-1.13.1\AndroidManifest.xml:23:9-81
+58        android:protectionLevel="signature" />
+58-->[androidx.core:core:1.13.1] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\8cf8575b010bad73482e9efe47a89862\transformed\core-1.13.1\AndroidManifest.xml:24:9-44
+59
+60    <uses-permission android:name="com.colormine.banking.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+60-->[androidx.core:core:1.13.1] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\8cf8575b010bad73482e9efe47a89862\transformed\core-1.13.1\AndroidManifest.xml:26:5-97
+60-->[androidx.core:core:1.13.1] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\8cf8575b010bad73482e9efe47a89862\transformed\core-1.13.1\AndroidManifest.xml:26:22-94
+61
+62    <application
+62-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:44:5-121:19
+63        android:allowBackup="true"
+63-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:45:9-35
+64        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+64-->[androidx.core:core:1.13.1] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\8cf8575b010bad73482e9efe47a89862\transformed\core-1.13.1\AndroidManifest.xml:28:18-86
+65        android:debuggable="true"
+66        android:extractNativeLibs="false"
+67        android:icon="@drawable/ic_launcher"
+67-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:46:9-45
+68        android:label="@string/app_name"
+68-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:47:9-41
+69        android:roundIcon="@drawable/ic_launcher"
+69-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:48:9-50
+70        android:supportsRtl="true"
+70-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:49:9-35
+71        android:testOnly="true"
+72        android:theme="@style/Theme.ColorMineBank"
+72-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:50:9-51
+73        android:usesCleartextTraffic="true" >
+73-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:51:9-44
+74
+75        <!-- Splash -->
+76        <activity
+76-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:55:9-64:20
+77            android:name="com.colormine.banking.SplashActivity"
+77-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:56:13-43
+78            android:exported="true"
+78-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:57:13-36
+79            android:screenOrientation="portrait"
+79-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:59:13-49
+80            android:theme="@style/Theme.ColorMineBank.Splash" >
+80-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:58:13-62
+81            <intent-filter>
+81-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:60:13-63:29
+82                <action android:name="android.intent.action.MAIN" />
+82-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:61:17-69
+82-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:61:25-66
+83
+84                <category android:name="android.intent.category.LAUNCHER" />
+84-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:62:17-77
+84-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:62:27-74
+85            </intent-filter>
+86        </activity>
+87
+88        <!-- Auth Flow -->
+89        <activity
+89-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:67:9-68:76
+90            android:name="com.colormine.banking.OnboardingActivity"
+90-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:67:19-53
+91            android:exported="false"
+91-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:68:50-74
+92            android:screenOrientation="portrait" />
+92-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:68:13-49
+93        <activity
+93-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:69:9-70:76
+94            android:name="com.colormine.banking.LoginSignupActivity"
+94-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:69:19-54
+95            android:exported="false"
+95-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:70:50-74
+96            android:screenOrientation="portrait" />
+96-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:70:13-49
+97        <activity
+97-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:71:9-72:76
+98            android:name="com.colormine.banking.ForgotPasswordActivity"
+98-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:71:19-57
+99            android:exported="false"
+99-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:72:50-74
+100            android:screenOrientation="portrait" />
+100-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:72:13-49
+101        <activity
+101-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:73:9-74:76
+102            android:name="com.colormine.banking.VerifyOtpActivity"
+102-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:73:19-52
+103            android:exported="false"
+103-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:74:50-74
+104            android:screenOrientation="portrait" />
+104-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:74:13-49
+105
+106        <!-- Main App -->
+107        <activity
+107-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:77:9-78:76
+108            android:name="com.colormine.banking.HomeActivity"
+108-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:77:19-47
+109            android:exported="false"
+109-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:78:50-74
+110            android:screenOrientation="portrait" />
+110-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:78:13-49
+111        <activity
+111-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:79:9-80:76
+112            android:name="com.colormine.banking.CardDetailActivity"
+112-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:79:19-53
+113            android:exported="false"
+113-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:80:50-74
+114            android:screenOrientation="portrait" />
+114-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:80:13-49
+115        <activity
+115-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:81:9-82:76
+116            android:name="com.colormine.banking.CardStatisticActivity"
+116-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:81:19-56
+117            android:exported="false"
+117-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:82:50-74
+118            android:screenOrientation="portrait" />
+118-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:82:13-49
+119        <activity
+119-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:83:9-84:76
+120            android:name="com.colormine.banking.SendMoneyActivity"
+120-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:83:19-52
+121            android:exported="false"
+121-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:84:50-74
+122            android:screenOrientation="portrait" />
+122-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:84:13-49
+123        <activity
+123-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:85:9-86:76
+124            android:name="com.colormine.banking.TransferSuccessActivity"
+124-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:85:19-58
+125            android:exported="false"
+125-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:86:50-74
+126            android:screenOrientation="portrait" />
+126-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:86:13-49
+127        <activity
+127-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:87:9-88:76
+128            android:name="com.colormine.banking.TransactionHistoryActivity"
+128-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:87:19-61
+129            android:exported="false"
+129-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:88:50-74
+130            android:screenOrientation="portrait" />
+130-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:88:13-49
+131
+132        <!-- Account & Settings -->
+133        <activity
+133-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:91:9-92:76
+134            android:name="com.colormine.banking.AccountActivity"
+134-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:91:19-50
+135            android:exported="false"
+135-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:92:50-74
+136            android:screenOrientation="portrait" />
+136-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:92:13-49
+137        <activity
+137-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:93:9-94:76
+138            android:name="com.colormine.banking.SecurityActivity"
+138-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:93:19-51
+139            android:exported="false"
+139-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:94:50-74
+140            android:screenOrientation="portrait" />
+140-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:94:13-49
+141        <activity
+141-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:95:9-96:76
+142            android:name="com.colormine.banking.SettingsActivity"
+142-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:95:19-51
+143            android:exported="false"
+143-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:96:50-74
+144            android:screenOrientation="portrait" />
+144-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:96:13-49
+145        <activity
+145-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:97:9-98:76
+146            android:name="com.colormine.banking.HelpActivity"
+146-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:97:19-47
+147            android:exported="false"
+147-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:98:50-74
+148            android:screenOrientation="portrait" />
+148-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:98:13-49
+149        <activity
+149-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:99:9-100:76
+150            android:name="com.colormine.banking.CameraActivity"
+150-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:99:19-49
+151            android:exported="false"
+151-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:100:50-74
+152            android:screenOrientation="portrait" />
+152-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:100:13-49
+153
+154        <!-- Background Service -->
+155        <service
+155-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:103:9-106:40
+156            android:name="com.colormine.banking.services.SyncService"
+156-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:104:13-49
+157            android:enabled="true"
+157-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:105:13-35
+158            android:exported="false" />
+158-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:106:13-37
+159
+160        <!-- Broadcast Receiver -->
+161        <receiver
+161-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:109:9-115:20
+162            android:name="com.colormine.banking.receivers.NetworkChangeReceiver"
+162-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:110:13-60
+163            android:exported="false" >
+163-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:111:13-37
+164            <intent-filter>
+164-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:112:13-114:29
+165                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+165-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:113:17-79
+165-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:113:25-76
+166            </intent-filter>
+167        </receiver>
+168        <receiver
+168-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:117:9-119:40
+169            android:name="com.colormine.banking.receivers.BluetoothReceiver"
+169-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:118:13-56
+170            android:exported="false" />
+170-->C:\Users\HP\Downloads\ColorMineBank\app\src\main\AndroidManifest.xml:119:13-37
+171
+172        <activity
+172-->[androidx.compose.ui:ui-tooling:1.4.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\e6670be1c87cc9764dffb2789b4a939e\transformed\jetified-ui-tooling-1.4.0\AndroidManifest.xml:23:9-25:39
+173            android:name="androidx.compose.ui.tooling.PreviewActivity"
+173-->[androidx.compose.ui:ui-tooling:1.4.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\e6670be1c87cc9764dffb2789b4a939e\transformed\jetified-ui-tooling-1.4.0\AndroidManifest.xml:24:13-71
+174            android:exported="true" />
+174-->[androidx.compose.ui:ui-tooling:1.4.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\e6670be1c87cc9764dffb2789b4a939e\transformed\jetified-ui-tooling-1.4.0\AndroidManifest.xml:25:13-36
+175        <activity
+175-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bfdbab3d0e853a71757cef8d80291782\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:29:9-46:20
+176            android:name="com.google.firebase.auth.internal.GenericIdpActivity"
+176-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bfdbab3d0e853a71757cef8d80291782\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:30:13-80
+177            android:excludeFromRecents="true"
+177-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bfdbab3d0e853a71757cef8d80291782\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:31:13-46
+178            android:exported="true"
+178-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bfdbab3d0e853a71757cef8d80291782\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:32:13-36
+179            android:launchMode="singleTask"
+179-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bfdbab3d0e853a71757cef8d80291782\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:33:13-44
+180            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+180-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bfdbab3d0e853a71757cef8d80291782\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:34:13-72
+181            <intent-filter>
+181-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bfdbab3d0e853a71757cef8d80291782\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:35:13-45:29
+182                <action android:name="android.intent.action.VIEW" />
+182-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bfdbab3d0e853a71757cef8d80291782\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:36:17-69
+182-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bfdbab3d0e853a71757cef8d80291782\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:36:25-66
+183
+184                <category android:name="android.intent.category.DEFAULT" />
+184-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bfdbab3d0e853a71757cef8d80291782\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:38:17-76
+184-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bfdbab3d0e853a71757cef8d80291782\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:38:27-73
+185                <category android:name="android.intent.category.BROWSABLE" />
+185-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bfdbab3d0e853a71757cef8d80291782\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:39:17-78
+185-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bfdbab3d0e853a71757cef8d80291782\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:39:27-75
+186
+187                <data
+187-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bfdbab3d0e853a71757cef8d80291782\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:41:17-44:51
+188                    android:host="firebase.auth"
+188-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bfdbab3d0e853a71757cef8d80291782\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:42:21-49
+189                    android:path="/"
+189-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bfdbab3d0e853a71757cef8d80291782\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:43:21-37
+190                    android:scheme="genericidp" />
+190-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bfdbab3d0e853a71757cef8d80291782\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:44:21-48
+191            </intent-filter>
+192        </activity>
+193        <activity
+193-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bfdbab3d0e853a71757cef8d80291782\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:47:9-64:20
+194            android:name="com.google.firebase.auth.internal.RecaptchaActivity"
+194-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bfdbab3d0e853a71757cef8d80291782\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:48:13-79
+195            android:excludeFromRecents="true"
+195-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bfdbab3d0e853a71757cef8d80291782\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:49:13-46
+196            android:exported="true"
+196-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bfdbab3d0e853a71757cef8d80291782\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:50:13-36
+197            android:launchMode="singleTask"
+197-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bfdbab3d0e853a71757cef8d80291782\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:51:13-44
+198            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+198-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bfdbab3d0e853a71757cef8d80291782\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:52:13-72
+199            <intent-filter>
+199-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bfdbab3d0e853a71757cef8d80291782\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:53:13-63:29
+200                <action android:name="android.intent.action.VIEW" />
+200-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bfdbab3d0e853a71757cef8d80291782\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:36:17-69
+200-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bfdbab3d0e853a71757cef8d80291782\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:36:25-66
+201
+202                <category android:name="android.intent.category.DEFAULT" />
+202-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bfdbab3d0e853a71757cef8d80291782\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:38:17-76
+202-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bfdbab3d0e853a71757cef8d80291782\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:38:27-73
+203                <category android:name="android.intent.category.BROWSABLE" />
+203-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bfdbab3d0e853a71757cef8d80291782\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:39:17-78
+203-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bfdbab3d0e853a71757cef8d80291782\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:39:27-75
+204
+205                <data
+205-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bfdbab3d0e853a71757cef8d80291782\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:41:17-44:51
+206                    android:host="firebase.auth"
+206-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bfdbab3d0e853a71757cef8d80291782\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:42:21-49
+207                    android:path="/"
+207-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bfdbab3d0e853a71757cef8d80291782\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:43:21-37
+208                    android:scheme="recaptcha" />
+208-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bfdbab3d0e853a71757cef8d80291782\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:44:21-48
+209            </intent-filter>
+210        </activity>
+211
+212        <service
+212-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bfdbab3d0e853a71757cef8d80291782\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:66:9-72:19
+213            android:name="com.google.firebase.components.ComponentDiscoveryService"
+213-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bfdbab3d0e853a71757cef8d80291782\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:67:13-84
+214            android:directBootAware="true"
+214-->[com.google.firebase:firebase-common:20.4.2] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bce88ee94ceccc273be33e0d59396672\transformed\jetified-firebase-common-20.4.2\AndroidManifest.xml:32:13-43
+215            android:exported="false" >
+215-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bfdbab3d0e853a71757cef8d80291782\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:68:13-37
+216            <meta-data
+216-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bfdbab3d0e853a71757cef8d80291782\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:69:13-71:85
+217                android:name="com.google.firebase.components:com.google.firebase.auth.FirebaseAuthRegistrar"
+217-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bfdbab3d0e853a71757cef8d80291782\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:70:17-109
+218                android:value="com.google.firebase.components.ComponentRegistrar" />
+218-->[com.google.firebase:firebase-auth:22.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bfdbab3d0e853a71757cef8d80291782\transformed\jetified-firebase-auth-22.3.0\AndroidManifest.xml:71:17-82
+219            <meta-data
+219-->[com.google.firebase:firebase-database:20.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\dcd91c88376801f196d03a37e283be94\transformed\jetified-firebase-database-20.3.0\AndroidManifest.xml:29:13-31:85
+220                android:name="com.google.firebase.components:com.google.firebase.database.FirebaseDatabaseKtxRegistrar"
+220-->[com.google.firebase:firebase-database:20.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\dcd91c88376801f196d03a37e283be94\transformed\jetified-firebase-database-20.3.0\AndroidManifest.xml:30:17-120
+221                android:value="com.google.firebase.components.ComponentRegistrar" />
+221-->[com.google.firebase:firebase-database:20.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\dcd91c88376801f196d03a37e283be94\transformed\jetified-firebase-database-20.3.0\AndroidManifest.xml:31:17-82
+222            <meta-data
+222-->[com.google.firebase:firebase-database:20.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\dcd91c88376801f196d03a37e283be94\transformed\jetified-firebase-database-20.3.0\AndroidManifest.xml:32:13-34:85
+223                android:name="com.google.firebase.components:com.google.firebase.database.DatabaseRegistrar"
+223-->[com.google.firebase:firebase-database:20.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\dcd91c88376801f196d03a37e283be94\transformed\jetified-firebase-database-20.3.0\AndroidManifest.xml:33:17-109
+224                android:value="com.google.firebase.components.ComponentRegistrar" />
+224-->[com.google.firebase:firebase-database:20.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\dcd91c88376801f196d03a37e283be94\transformed\jetified-firebase-database-20.3.0\AndroidManifest.xml:34:17-82
+225            <meta-data
+225-->[com.google.firebase:firebase-common-ktx:20.4.2] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\061abceeef4fd7281de22f419aa72ce8\transformed\jetified-firebase-common-ktx-20.4.2\AndroidManifest.xml:12:13-14:85
+226                android:name="com.google.firebase.components:com.google.firebase.ktx.FirebaseCommonLegacyRegistrar"
+226-->[com.google.firebase:firebase-common-ktx:20.4.2] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\061abceeef4fd7281de22f419aa72ce8\transformed\jetified-firebase-common-ktx-20.4.2\AndroidManifest.xml:13:17-116
+227                android:value="com.google.firebase.components.ComponentRegistrar" />
+227-->[com.google.firebase:firebase-common-ktx:20.4.2] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\061abceeef4fd7281de22f419aa72ce8\transformed\jetified-firebase-common-ktx-20.4.2\AndroidManifest.xml:14:17-82
+228            <meta-data
+228-->[com.google.firebase:firebase-common:20.4.2] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bce88ee94ceccc273be33e0d59396672\transformed\jetified-firebase-common-20.4.2\AndroidManifest.xml:35:13-37:85
+229                android:name="com.google.firebase.components:com.google.firebase.FirebaseCommonKtxRegistrar"
+229-->[com.google.firebase:firebase-common:20.4.2] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bce88ee94ceccc273be33e0d59396672\transformed\jetified-firebase-common-20.4.2\AndroidManifest.xml:36:17-109
+230                android:value="com.google.firebase.components.ComponentRegistrar" />
+230-->[com.google.firebase:firebase-common:20.4.2] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bce88ee94ceccc273be33e0d59396672\transformed\jetified-firebase-common-20.4.2\AndroidManifest.xml:37:17-82
+231        </service>
+232
+233        <provider
+233-->[com.google.firebase:firebase-common:20.4.2] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bce88ee94ceccc273be33e0d59396672\transformed\jetified-firebase-common-20.4.2\AndroidManifest.xml:23:9-28:39
+234            android:name="com.google.firebase.provider.FirebaseInitProvider"
+234-->[com.google.firebase:firebase-common:20.4.2] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bce88ee94ceccc273be33e0d59396672\transformed\jetified-firebase-common-20.4.2\AndroidManifest.xml:24:13-77
+235            android:authorities="com.colormine.banking.firebaseinitprovider"
+235-->[com.google.firebase:firebase-common:20.4.2] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bce88ee94ceccc273be33e0d59396672\transformed\jetified-firebase-common-20.4.2\AndroidManifest.xml:25:13-72
+236            android:directBootAware="true"
+236-->[com.google.firebase:firebase-common:20.4.2] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bce88ee94ceccc273be33e0d59396672\transformed\jetified-firebase-common-20.4.2\AndroidManifest.xml:26:13-43
+237            android:exported="false"
+237-->[com.google.firebase:firebase-common:20.4.2] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bce88ee94ceccc273be33e0d59396672\transformed\jetified-firebase-common-20.4.2\AndroidManifest.xml:27:13-37
+238            android:initOrder="100" />
+238-->[com.google.firebase:firebase-common:20.4.2] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\bce88ee94ceccc273be33e0d59396672\transformed\jetified-firebase-common-20.4.2\AndroidManifest.xml:28:13-36
+239
+240        <activity
+240-->[com.google.android.gms:play-services-base:18.1.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\6417c341c5f68ff14cce87a518c9eee5\transformed\jetified-play-services-base-18.1.0\AndroidManifest.xml:20:9-22:45
+241            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+241-->[com.google.android.gms:play-services-base:18.1.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\6417c341c5f68ff14cce87a518c9eee5\transformed\jetified-play-services-base-18.1.0\AndroidManifest.xml:20:19-85
+242            android:exported="false"
+242-->[com.google.android.gms:play-services-base:18.1.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\6417c341c5f68ff14cce87a518c9eee5\transformed\jetified-play-services-base-18.1.0\AndroidManifest.xml:22:19-43
+243            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+243-->[com.google.android.gms:play-services-base:18.1.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\6417c341c5f68ff14cce87a518c9eee5\transformed\jetified-play-services-base-18.1.0\AndroidManifest.xml:21:19-78
+244
+245        <provider
+245-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\48276fd26acfd531530c39c36c1fc429\transformed\jetified-lifecycle-process-2.6.2\AndroidManifest.xml:24:9-32:20
+246            android:name="androidx.startup.InitializationProvider"
+246-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\48276fd26acfd531530c39c36c1fc429\transformed\jetified-lifecycle-process-2.6.2\AndroidManifest.xml:25:13-67
+247            android:authorities="com.colormine.banking.androidx-startup"
+247-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\48276fd26acfd531530c39c36c1fc429\transformed\jetified-lifecycle-process-2.6.2\AndroidManifest.xml:26:13-68
+248            android:exported="false" >
+248-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\48276fd26acfd531530c39c36c1fc429\transformed\jetified-lifecycle-process-2.6.2\AndroidManifest.xml:27:13-37
+249            <meta-data
+249-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\48276fd26acfd531530c39c36c1fc429\transformed\jetified-lifecycle-process-2.6.2\AndroidManifest.xml:29:13-31:52
+250                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+250-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\48276fd26acfd531530c39c36c1fc429\transformed\jetified-lifecycle-process-2.6.2\AndroidManifest.xml:30:17-78
+251                android:value="androidx.startup" />
+251-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\48276fd26acfd531530c39c36c1fc429\transformed\jetified-lifecycle-process-2.6.2\AndroidManifest.xml:31:17-49
+252            <meta-data
+252-->[androidx.emoji2:emoji2:1.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\0702ba2ba6e7b5c58c5c7e3f998ba584\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:29:13-31:52
+253                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+253-->[androidx.emoji2:emoji2:1.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\0702ba2ba6e7b5c58c5c7e3f998ba584\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:30:17-75
+254                android:value="androidx.startup" />
+254-->[androidx.emoji2:emoji2:1.3.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\0702ba2ba6e7b5c58c5c7e3f998ba584\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:31:17-49
+255            <meta-data
+255-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\be66d1da63b80902c8c07bc3d1a81f56\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:29:13-31:52
+256                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+256-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\be66d1da63b80902c8c07bc3d1a81f56\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:30:17-85
+257                android:value="androidx.startup" />
+257-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\be66d1da63b80902c8c07bc3d1a81f56\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:31:17-49
+258        </provider>
+259
+260        <meta-data
+260-->[com.google.android.gms:play-services-basement:18.1.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\1d0969529708fe832c493270667eed00\transformed\jetified-play-services-basement-18.1.0\AndroidManifest.xml:21:9-23:69
+261            android:name="com.google.android.gms.version"
+261-->[com.google.android.gms:play-services-basement:18.1.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\1d0969529708fe832c493270667eed00\transformed\jetified-play-services-basement-18.1.0\AndroidManifest.xml:22:13-58
+262            android:value="@integer/google_play_services_version" />
+262-->[com.google.android.gms:play-services-basement:18.1.0] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\1d0969529708fe832c493270667eed00\transformed\jetified-play-services-basement-18.1.0\AndroidManifest.xml:23:13-66
+263
+264        <receiver
+264-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\be66d1da63b80902c8c07bc3d1a81f56\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:34:9-52:20
+265            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+265-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\be66d1da63b80902c8c07bc3d1a81f56\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:35:13-76
+266            android:directBootAware="false"
+266-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\be66d1da63b80902c8c07bc3d1a81f56\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:36:13-44
+267            android:enabled="true"
+267-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\be66d1da63b80902c8c07bc3d1a81f56\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:37:13-35
+268            android:exported="true"
+268-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\be66d1da63b80902c8c07bc3d1a81f56\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:38:13-36
+269            android:permission="android.permission.DUMP" >
+269-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\be66d1da63b80902c8c07bc3d1a81f56\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:39:13-57
+270            <intent-filter>
+270-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\be66d1da63b80902c8c07bc3d1a81f56\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:40:13-42:29
+271                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+271-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\be66d1da63b80902c8c07bc3d1a81f56\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:41:17-91
+271-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\be66d1da63b80902c8c07bc3d1a81f56\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:41:25-88
+272            </intent-filter>
+273            <intent-filter>
+273-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\be66d1da63b80902c8c07bc3d1a81f56\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:43:13-45:29
+274                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+274-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\be66d1da63b80902c8c07bc3d1a81f56\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:44:17-85
+274-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\be66d1da63b80902c8c07bc3d1a81f56\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:44:25-82
+275            </intent-filter>
+276            <intent-filter>
+276-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\be66d1da63b80902c8c07bc3d1a81f56\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:46:13-48:29
+277                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+277-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\be66d1da63b80902c8c07bc3d1a81f56\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:47:17-88
+277-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\be66d1da63b80902c8c07bc3d1a81f56\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:47:25-85
+278            </intent-filter>
+279            <intent-filter>
+279-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\be66d1da63b80902c8c07bc3d1a81f56\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:49:13-51:29
+280                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+280-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\be66d1da63b80902c8c07bc3d1a81f56\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:50:17-95
+280-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\HP\.gradle\caches\9.0-milestone-1\transforms\be66d1da63b80902c8c07bc3d1a81f56\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:50:25-92
+281            </intent-filter>
+282        </receiver>
+283    </application>
+284
+285</manifest>
