@@ -1,293 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_screen"
-    android:fillViewport="true">
+    android:background="@drawable/bg_screen">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+    <!-- Logo icon -->
+    <LinearLayout
+        android:id="@+id/login_logo_container"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:background="@drawable/bg_card_gradient"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="40dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="💰"
+            android:textSize="32sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/login_title"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="@dimen/screen_padding">
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="@string/welcome_title"
+        android:textColor="@color/colorTextPrimary"
+        android:textSize="26sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/login_logo_container" />
 
-        <!-- Logo icon -->
+    <TextView
+        android:id="@+id/login_subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/poppins_regular"
+        android:text="@string/welcome_subtitle"
+        android:textColor="@color/colorTextSecondary"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/login_title" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="32dp"
+        app:cardCornerRadius="@dimen/radius_xxl"
+        app:cardElevation="8dp"
+        app:cardBackgroundColor="@color/colorSurface"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/login_subtitle"
+        android:layout_marginBottom="-30dp">
+
         <LinearLayout
-            android:id="@+id/login_logo_container"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:background="@drawable/bg_card_gradient"
-            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="40dp">
+            android:paddingTop="24dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="💰"
-                android:textSize="32sp" />
-        </LinearLayout>
-
-        <!-- Welcome title -->
-        <TextView
-            android:id="@+id/login_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/poppins_bold"
-            android:text="@string/welcome_title"
-            android:textColor="@color/colorTextPrimary"
-            android:textSize="26sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/login_logo_container" />
-
-        <!-- Welcome subtitle -->
-        <TextView
-            android:id="@+id/login_subtitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="24dp"
-            android:fontFamily="@font/poppins_regular"
-            android:text="@string/welcome_subtitle"
-            android:textColor="@color/colorTextSecondary"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/login_title" />
-
-        <!-- White card container -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/login_card"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            app:cardCornerRadius="@dimen/radius_xxl"
-            app:cardElevation="8dp"
-            app:cardBackgroundColor="@color/colorSurface"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/login_subtitle">
-
-            <LinearLayout
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/auth_tabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="@dimen/spacing_xxl">
+                android:layout_marginHorizontal="24dp"
+                android:background="@drawable/bg_gray_100"
+                app:tabBackground="@drawable/selector_tab"
+                app:tabIndicatorHeight="0dp"
+                app:tabRippleColor="@null"
+                app:tabSelectedTextColor="@color/colorTextWhite"
+                app:tabTextColor="@color/colorTextSecondary"
+                app:tabTextAppearance="@style/TextAppearance.ColorMineBank.Tab"
+                app:tabMaxWidth="0dp"
+                app:tabGravity="fill"
+                app:tabMode="fixed"/>
 
-                <!-- Login / Sign Up tab row -->
-                <LinearLayout
-                    android:id="@+id/tab_row"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="24dp">
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/auth_viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
-                    <Button
-                        android:id="@+id/tab_login"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:layout_marginEnd="8dp"
-                        android:background="@drawable/selector_tab"
-                        android:fontFamily="@font/poppins_medium"
-                        android:text="@string/tab_login"
-                        android:textColor="@color/colorTextWhite"
-                        android:textSize="14sp"
-                        android:stateListAnimator="@null" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
-                    <Button
-                        android:id="@+id/tab_signup"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/selector_tab"
-                        android:fontFamily="@font/poppins_medium"
-                        android:text="@string/tab_signup"
-                        android:textColor="@color/colorTextSecondary"
-                        android:textSize="14sp"
-                        android:stateListAnimator="@null" />
-                </LinearLayout>
-
-                <!-- Login fields container -->
-                <LinearLayout
-                    android:id="@+id/login_fields"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="visible">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins_regular"
-                        android:text="@string/label_email"
-                        android:textColor="@color/colorTextSecondary"
-                        android:textSize="12sp"
-                        android:layout_marginBottom="6dp"/>
-
-                    <EditText
-                        android:id="@+id/et_login_email"
-                        android:layout_width="match_parent"
-                        android:layout_height="52dp"
-                        android:background="@drawable/bg_input"
-                        android:fontFamily="@font/poppins_regular"
-                        android:hint="@string/hint_email"
-                        android:inputType="textEmailAddress"
-                        android:paddingStart="16dp"
-                        android:paddingEnd="16dp"
-                        android:textColor="@color/colorTextPrimary"
-                        android:textColorHint="@color/colorTextHint"
-                        android:textSize="14sp"
-                        android:layout_marginBottom="12dp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins_regular"
-                        android:text="@string/label_password"
-                        android:textColor="@color/colorTextSecondary"
-                        android:textSize="12sp"
-                        android:layout_marginBottom="6dp"/>
-
-                    <EditText
-                        android:id="@+id/et_login_password"
-                        android:layout_width="match_parent"
-                        android:layout_height="52dp"
-                        android:background="@drawable/bg_input"
-                        android:fontFamily="@font/poppins_regular"
-                        android:hint="@string/hint_password"
-                        android:inputType="textPassword"
-                        android:paddingStart="16dp"
-                        android:paddingEnd="16dp"
-                        android:textColor="@color/colorTextPrimary"
-                        android:textColorHint="@color/colorTextHint"
-                        android:textSize="14sp"
-                        android:layout_marginBottom="8dp"/>
-
-                    <TextView
-                        android:id="@+id/link_forgot_password"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="20dp"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:fontFamily="@font/poppins_regular"
-                        android:text="@string/link_forgot_password"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="13sp" />
-
-                    <Button
-                        android:id="@+id/btn_login"
-                        android:layout_width="match_parent"
-                        android:layout_height="56dp"
-                        android:background="@drawable/bg_btn_primary"
-                        android:fontFamily="@font/poppins_semibold"
-                        android:text="@string/btn_login"
-                        android:textColor="@color/colorTextWhite"
-                        android:textSize="16sp"
-                        android:stateListAnimator="@null" />
-                </LinearLayout>
-
-                <!-- Sign Up fields container -->
-                <LinearLayout
-                    android:id="@+id/signup_fields"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins_regular"
-                        android:text="@string/label_full_name"
-                        android:textColor="@color/colorTextSecondary"
-                        android:textSize="12sp"
-                        android:layout_marginBottom="6dp"/>
-
-                    <EditText
-                        android:id="@+id/et_signup_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="52dp"
-                        android:background="@drawable/bg_input"
-                        android:fontFamily="@font/poppins_regular"
-                        android:hint="@string/hint_name"
-                        android:inputType="textPersonName"
-                        android:paddingStart="16dp"
-                        android:paddingEnd="16dp"
-                        android:textColor="@color/colorTextPrimary"
-                        android:textColorHint="@color/colorTextHint"
-                        android:textSize="14sp"
-                        android:layout_marginBottom="12dp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins_regular"
-                        android:text="@string/label_email"
-                        android:textColor="@color/colorTextSecondary"
-                        android:textSize="12sp"
-                        android:layout_marginBottom="6dp"/>
-
-                    <EditText
-                        android:id="@+id/et_signup_email"
-                        android:layout_width="match_parent"
-                        android:layout_height="52dp"
-                        android:background="@drawable/bg_input"
-                        android:fontFamily="@font/poppins_regular"
-                        android:hint="@string/hint_email"
-                        android:inputType="textEmailAddress"
-                        android:paddingStart="16dp"
-                        android:paddingEnd="16dp"
-                        android:textColor="@color/colorTextPrimary"
-                        android:textColorHint="@color/colorTextHint"
-                        android:textSize="14sp"
-                        android:layout_marginBottom="12dp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins_regular"
-                        android:text="@string/label_password"
-                        android:textColor="@color/colorTextSecondary"
-                        android:textSize="12sp"
-                        android:layout_marginBottom="6dp"/>
-
-                    <EditText
-                        android:id="@+id/et_signup_password"
-                        android:layout_width="match_parent"
-                        android:layout_height="52dp"
-                        android:background="@drawable/bg_input"
-                        android:fontFamily="@font/poppins_regular"
-                        android:hint="@string/hint_create_password"
-                        android:inputType="textPassword"
-                        android:paddingStart="16dp"
-                        android:paddingEnd="16dp"
-                        android:textColor="@color/colorTextPrimary"
-                        android:textColorHint="@color/colorTextHint"
-                        android:textSize="14sp"
-                        android:layout_marginBottom="20dp"/>
-
-                    <Button
-                        android:id="@+id/btn_signup"
-                        android:layout_width="match_parent"
-                        android:layout_height="56dp"
-                        android:background="@drawable/bg_btn_primary"
-                        android:fontFamily="@font/poppins_semibold"
-                        android:text="@string/btn_signup"
-                        android:textColor="@color/colorTextWhite"
-                        android:textSize="16sp"
-                        android:stateListAnimator="@null" />
-                </LinearLayout>
-
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
