@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Purple-50 to pink-50 stats area (account screen) -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <gradient
+        android:startColor="#F5F3FF"
+        android:endColor="#FDF2F8"
+        android:angle="135"
+        android:type="linear" />
+    <corners android:radius="16dp" />
+</shape>

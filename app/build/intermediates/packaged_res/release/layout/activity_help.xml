@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_screen"
+    android:padding="@dimen/screen_padding">
+
+    <!-- Header -->
+    <RelativeLayout android:id="@+id/header" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="24dp"
+        app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent">
+        <ImageButton android:id="@+id/btn_back" android:layout_width="44dp" android:layout_height="44dp" android:background="@drawable/bg_icon_btn_white" android:src="@drawable/ic_arrow_left" android:padding="10dp" android:contentDescription="Back" android:layout_centerVertical="true"/>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true" android:fontFamily="@font/poppins_semibold" android:text="Help &amp; Support" android:textColor="@color/colorTextPrimary" android:textSize="18sp"/>
+    </RelativeLayout>
+
+    <ScrollView android:layout_width="match_parent" android:layout_height="0dp" android:fillViewport="true" android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/header" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+            
+            <!-- Contact Card -->
+            <androidx.cardview.widget.CardView android:layout_width="match_parent" android:layout_height="wrap_content" app:cardCornerRadius="24dp" app:cardElevation="8dp" app:cardBackgroundColor="@color/colorSurface" android:layout_marginBottom="16dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="24dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="@font/poppins_semibold" android:text="Contact Us" android:textColor="@color/colorTextPrimary" android:textSize="16sp" android:layout_marginBottom="16dp"/>
+                    
+                    <RelativeLayout android:id="@+id/btn_call_support" android:layout_width="match_parent" android:layout_height="56dp" android:clickable="true" android:focusable="true" android:background="@drawable/bg_action_row" android:padding="12dp" android:layout_marginBottom="8dp">
+                        <LinearLayout android:layout_width="32dp" android:layout_height="32dp" android:layout_centerVertical="true" android:background="@drawable/bg_icon_purple" android:gravity="center" android:layout_marginEnd="12dp" android:id="@+id/icon_phone">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="📞" android:textSize="14sp"/>
+                        </LinearLayout>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_toEndOf="@id/icon_phone" android:fontFamily="@font/poppins_medium" android:text="Call Support (+1 800 123 4567)" android:textColor="@color/colorPrimary" android:textSize="13sp"/>
+                    </RelativeLayout>
+                    
+                    <RelativeLayout android:id="@+id/btn_sms_support" android:layout_width="match_parent" android:layout_height="56dp" android:clickable="true" android:focusable="true" android:background="@drawable/bg_action_row" android:padding="12dp">
+                        <LinearLayout android:layout_width="32dp" android:layout_height="32dp" android:layout_centerVertical="true" android:background="@drawable/bg_icon_purple" android:gravity="center" android:layout_marginEnd="12dp" android:id="@+id/icon_sms">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="💬" android:textSize="14sp"/>
+                        </LinearLayout>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_toEndOf="@id/icon_sms" android:fontFamily="@font/poppins_medium" android:text="Send SMS for Help" android:textColor="@color/colorPrimary" android:textSize="13sp"/>
+                    </RelativeLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Map Location Card (GPS Requirement) -->
+            <androidx.cardview.widget.CardView android:layout_width="match_parent" android:layout_height="wrap_content" app:cardCornerRadius="24dp" app:cardElevation="8dp" app:cardBackgroundColor="@color/colorSurface" android:layout_marginBottom="16dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="24dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="@font/poppins_semibold" android:text="Find Nearest Branch" android:textColor="@color/colorTextPrimary" android:textSize="16sp" android:layout_marginBottom="12dp"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="@font/poppins_regular" android:text="Allow location access to find ColorMine Bank branches near you." android:textColor="@color/colorTextSecondary" android:textSize="13sp" android:layout_marginBottom="16dp"/>
+                    
+                    <RelativeLayout android:id="@+id/btn_get_location" android:layout_width="match_parent" android:layout_height="56dp" android:clickable="true" android:focusable="true" android:background="@drawable/bg_action_row" android:padding="12dp">
+                        <LinearLayout android:layout_width="32dp" android:layout_height="32dp" android:layout_centerVertical="true" android:background="@drawable/bg_icon_green" android:gravity="center" android:layout_marginEnd="12dp" android:id="@+id/icon_location">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="📍" android:textSize="14sp"/>
+                        </LinearLayout>
+                        <TextView android:id="@+id/tv_location_status" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_toEndOf="@id/icon_location" android:fontFamily="@font/poppins_medium" android:text="Get Current Location" android:textColor="@color/colorSuccess" android:textSize="13sp"/>
+                    </RelativeLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
