@@ -42,4 +42,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/header" />
 
+    <TextView
+        android:id="@+id/tv_empty_transactions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No transactions recorded yet."
+        android:fontFamily="@font/poppins_regular"
+        android:textColor="@color/colorTextSecondary"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@id/rv_all_transactions"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
