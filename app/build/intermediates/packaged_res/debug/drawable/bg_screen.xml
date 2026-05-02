@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Screen background: pink-50 → purple-50 -->
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <gradient
-        android:startColor="#FDF2F8"
-        android:endColor="#F5F3FF"
-        android:angle="135"
-        android:type="linear" />
-</shape>
