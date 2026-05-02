@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary Purple gradient colors - exact from TSX design -->
+    <color name="colorPrimary">#8B5CF6</color>
+    <color name="colorPrimaryDark">#7C3AED</color>
+    <color name="colorSecondary">#EC4899</color>
+
+    <!-- Backgrounds -->
+    <color name="colorBackground">#FDF2F8</color>
+    <color name="colorSurface">#FFFFFF</color>
+
+    <!-- Status colors -->
+    <color name="colorSuccess">#10B981</color>
+    <color name="colorError">#EF4444</color>
+    <color name="colorWarning">#F59E0B</color>
+
+    <!-- Text colors -->
+    <color name="colorTextPrimary">#1F2937</color>
+    <color name="colorTextSecondary">#6B7280</color>
+    <color name="colorTextHint">#9CA3AF</color>
+    <color name="colorTextWhite">#FFFFFF</color>
+    <color name="colorTextPurpleLight">#EDE9FE</color>
+
+    <!-- Component specific colors -->
+    <color name="colorPurple100">#EDE9FE</color>
+    <color name="colorPurple200">#DDD6FE</color>
+    <color name="colorPink50">#FDF2F8</color>
+    <color name="colorPurple50">#F5F3FF</color>
+    <color name="colorGray50">#F9FAFB</color>
+    <color name="colorGray100">#F3F4F6</color>
+    <color name="colorGray200">#E5E7EB</color>
+    <color name="colorGray400">#9CA3AF</color>
+    <color name="colorGray600">#6B7280</color>
+    <color name="colorGray800">#1F2937</color>
+
+    <color name="colorGreen100">#D1FAE5</color>
+    <color name="colorGreen600">#059669</color>
+    <color name="colorRed50">#FFF1F2</color>
+    <color name="colorRed100">#FEE2E2</color>
+    <color name="colorRed600">#DC2626</color>
+    <color name="colorBlue100">#DBEAFE</color>
+    <color name="colorBlue600">#2563EB</color>
+    <color name="colorYellow100">#FEF3C7</color>
+    <color name="colorYellow600">#D97706</color>
+    <color name="colorPink100">#FCE7F3</color>
+    <color name="colorPink600">#DB2777</color>
+
+    <!-- Overlay -->
+    <color name="colorOverlay">#80000000</color>
+    <color name="colorWhiteTransparent20">#33FFFFFF</color>
+    <color name="colorWhiteTransparent10">#1AFFFFFF</color>
+
+    <!-- Divider -->
+    <color name="colorDivider">#F3F4F6</color>
+
+    <!-- Notification dot -->
+    <color name="colorNotificationDot">#EF4444</color>
+    <color name="colorOnlineGreen">#22C55E</color>
+</resources>

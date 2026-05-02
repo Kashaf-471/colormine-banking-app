@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ColorMine</string>
+    <string name="tagline">Your Smart Banking Partner</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_title_1">Easy Payments</string>
+    <string name="onboarding_desc_1">Send and receive money instantly with just a few taps</string>
+    <string name="onboarding_title_2">Track Expenses</string>
+    <string name="onboarding_desc_2">Monitor your spending with detailed analytics and insights</string>
+    <string name="onboarding_title_3">Secure &amp; Safe</string>
+    <string name="onboarding_desc_3">Bank-level security to keep your money protected</string>
+    <string name="btn_skip">Skip</string>
+    <string name="btn_next">Next</string>
+    <string name="btn_get_started">Get Started</string>
+
+    <!-- Auth -->
+    <string name="welcome_title">Welcome to ColorMine</string>
+    <string name="welcome_subtitle">Your smart banking solution</string>
+    <string name="tab_login">Login</string>
+    <string name="tab_signup">Sign Up</string>
+    <string name="hint_email">Enter your email</string>
+    <string name="hint_password">Enter your password</string>
+    <string name="hint_name">Enter your name</string>
+    <string name="hint_create_password">Create a password</string>
+    <string name="label_email">Email</string>
+    <string name="label_password">Password</string>
+    <string name="label_full_name">Full Name</string>
+    <string name="btn_login">Login</string>
+    <string name="btn_signup">Sign Up</string>
+    <string name="link_forgot_password">Forgot Password?</string>
+
+    <!-- Forgot Password -->
+    <string name="forgot_password_title">Forgot Password?</string>
+    <string name="forgot_password_subtitle">Enter your email to reset your password</string>
+    <string name="label_email_address">Email Address</string>
+    <string name="btn_send_reset_code">Send Reset Code</string>
+    <string name="link_back_to_login">Back to Login</string>
+
+    <!-- Verify OTP -->
+    <string name="verify_otp_title">Verify OTP</string>
+    <string name="verify_otp_subtitle">Enter the 6-digit code sent to your email</string>
+    <string name="btn_verify">Verify</string>
+    <string name="resend_code">Didn\'t receive code?</string>
+    <string name="btn_resend">Resend</string>
+
+    <!-- Home -->
+    <string name="welcome_back">Welcome back,</string>
+    <string name="user_name">John Doe</string>
+    <string name="total_balance">Total Balance</string>
+    <string name="card_number_masked">**** **** **** 3456</string>
+    <string name="valid_thru">Valid Thru</string>
+    <string name="card_expiry">12/26</string>
+    <string name="balance_amount">$9,850.45</string>
+    <string name="visa_label">VISA</string>
+    <string name="quick_action_send">Send</string>
+    <string name="quick_action_request">Request</string>
+    <string name="quick_action_cards">Cards</string>
+    <string name="quick_action_stats">Stats</string>
+    <string name="recent_transactions">Transactions</string>
+    <string name="view_all">View All</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_stats">Stats</string>
+    <string name="nav_history">History</string>
+    <string name="nav_account">Account</string>
+
+    <!-- Card Detail -->
+    <string name="card_detail_title">Card Detail</string>
+    <string name="card_number_full">1234 5432 3421 3456</string>
+    <string name="cardholder_name">JOHN DOE</string>
+    <string name="expiry_date">Expiry Date</string>
+    <string name="cvv_label">CVV</string>
+    <string name="cvv_masked">***</string>
+    <string name="cvv_real">123</string>
+    <string name="card_actions_title">Card Actions</string>
+    <string name="action_view_statistics">View Statistics</string>
+    <string name="action_copy_card">Copy Card Number</string>
+    <string name="action_show_cvv">Show CVV</string>
+    <string name="action_hide_cvv">Hide CVV</string>
+    <string name="action_lock_card">Lock Card</string>
+    <string name="action_unlock_card">Unlock Card</string>
+    <string name="btn_send_money">Send Money</string>
+
+    <!-- Send Money -->
+    <string name="send_money_title">Send Money</string>
+    <string name="hint_search_recipient">Search recipient</string>
+    <string name="label_recent_contacts">Recent Contacts</string>
+    <string name="label_transfer_amount">Transfer Amount</string>
+    <string name="dollar_symbol">$</string>
+    <string name="hint_amount">0.00</string>
+    <string name="btn_continue">Continue</string>
+
+    <!-- Transfer Success -->
+    <string name="transfer_success_title">Transfer Successful!</string>
+    <string name="transfer_success_subtitle">Your money has been sent successfully</string>
+    <string name="btn_back_home">Back to Home</string>
+    <string name="btn_download_receipt">Download Receipt</string>
+    <string name="btn_share">Share</string>
+
+    <!-- Transaction History -->
+    <string name="transaction_history_title">Transaction History</string>
+    <string name="filter_all">All</string>
+    <string name="filter_income">Income</string>
+    <string name="filter_expenses">Expenses</string>
+
+    <!-- Account -->
+    <string name="account_title">Account</string>
+    <string name="user_email">johndoe@email.com</string>
+    <string name="stats_cards">Cards</string>
+    <string name="stats_transactions">Transactions</string>
+    <string name="stats_years">Years</string>
+    <string name="account_settings_title">Account Settings</string>
+    <string name="option_personal_info">Personal Information</string>
+    <string name="option_my_cards">My Cards</string>
+    <string name="option_notifications">Notifications</string>
+    <string name="option_security">Security Settings</string>
+    <string name="option_settings">App Settings</string>
+    <string name="option_help">Help &amp; Support</string>
+    <string name="btn_logout">Logout</string>
+
+    <!-- Security -->
+    <string name="security_title">Security</string>
+    <string name="security_status_title">Security Status</string>
+    <string name="security_status_subtitle">Your account is secure</string>
+    <string name="security_score_label">Security Score</string>
+    <string name="security_score_value">85%</string>
+    <string name="security_settings_title">Security Settings</string>
+    <string name="biometric_login">Biometric Login</string>
+    <string name="biometric_subtitle">Use fingerprint or face ID</string>
+    <string name="two_factor_auth">Two-Factor Authentication</string>
+    <string name="two_factor_subtitle">Extra security layer</string>
+    <string name="login_alerts">Login Alerts</string>
+    <string name="login_alerts_subtitle">Get notified of new logins</string>
+    <string name="more_options_title">More Options</string>
+    <string name="change_password">Change Password</string>
+
+    <!-- Settings -->
+    <string name="settings_title">App Settings</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="language">Language</string>
+    <string name="push_notifications">Push Notifications</string>
+    <string name="sounds">Sounds</string>
+    <string name="vibration">Vibration</string>
+    <string name="wifi_control">Wi-Fi Control</string>
+    <string name="bluetooth_control">Bluetooth</string>
+    <string name="download_data">Download Data</string>
+    <string name="clear_cache">Clear Cache</string>
+
+    <!-- Help & Support -->
+    <string name="help_title">Help &amp; Support</string>
+    <string name="hint_search_faq">Search FAQs…</string>
+    <string name="contact_us_title">Contact Us</string>
+    <string name="live_chat">Live Chat</string>
+    <string name="email_support">Email Support</string>
+    <string name="call_us">Call Us</string>
+    <string name="documentation">Documentation</string>
+    <string name="faq_title">FAQs</string>
+    <string name="btn_submit_ticket">Submit a Ticket</string>
+
+    <!-- Drawer -->
+    <string name="menu_label">Menu</string>
+    <string name="status_active">Active</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="menu_my_account">My Account</string>
+    <string name="menu_settings">Settings</string>
+    <string name="menu_security">Security</string>
+    <string name="menu_help">Help &amp; Support</string>
+
+    <!-- Notifications -->
+    <string name="notifications_title">Notifications</string>
+    <string name="tab_all">All</string>
+    <string name="tab_unread">Unread</string>
+
+    <!-- Change Password -->
+    <string name="change_password_title">Change Password</string>
+    <string name="hint_current_password">Current password</string>
+    <string name="hint_new_password">New password</string>
+    <string name="hint_confirm_password">Confirm new password</string>
+    <string name="btn_update_password">Update Password</string>
+
+    <!-- Personal Info -->
+    <string name="personal_info_title">Personal Information</string>
+    <string name="label_phone">Phone Number</string>
+    <string name="label_dob">Date of Birth</string>
+    <string name="label_address">Address</string>
+    <string name="btn_save_changes">Save Changes</string>
+    <string name="btn_get_location">Get My Location</string>
+    <string name="btn_take_photo">Take Profile Photo</string>
+
+    <!-- Call Us -->
+    <string name="call_us_title">Call Us</string>
+
+    <!-- Documentation -->
+    <string name="documentation_title">Documentation</string>
+
+    <!-- Toast messages -->
+    <string name="toast_login_success">Login successful!</string>
+    <string name="toast_signup_success">Account created successfully!</string>
+    <string name="toast_fill_fields">Please fill in all fields</string>
+    <string name="toast_invalid_email">Please enter a valid email</string>
+    <string name="toast_password_short">Password must be at least 6 characters</string>
+    <string name="toast_code_sent">Reset code sent to your email!</string>
+    <string name="toast_otp_verified">OTP verified successfully!</string>
+    <string name="toast_enter_otp">Please enter the complete 6-digit code</string>
+    <string name="toast_card_copied">Card number copied to clipboard!</string>
+    <string name="toast_card_locked">Card locked successfully</string>
+    <string name="toast_card_unlocked">Card unlocked successfully</string>
+    <string name="toast_transfer_processing">Processing transfer…</string>
+    <string name="toast_select_contact">Please select a recipient and enter an amount</string>
+    <string name="toast_cache_cleared">Cache cleared successfully!</string>
+    <string name="toast_settings_saved">Settings saved!</string>
+    <string name="toast_password_updated">Password updated successfully!</string>
+    <string name="camera_activity_title">Camera</string>
+    <string name="btn_capture_photo">Capture Photo</string>
+</resources>
