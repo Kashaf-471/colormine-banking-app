@@ -4,12 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -22,7 +16,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class LoginSignupActivity extends AppCompatActivity {
+public class LoginSignupActivity extends AppCompatActivity implements SignupFragment.OnSignupSuccessListener {
 
     private Button tabLogin, tabSignup;
     private LinearLayout loginFields, signupFields;
@@ -70,44 +64,12 @@ public class LoginSignupActivity extends AppCompatActivity {
         etSignupPassword = findViewById(R.id.et_signup_password);
     }
 
-    private void setupListeners() {
-        tabLogin.setOnClickListener(v -> switchTab(true));
-        tabSignup.setOnClickListener(v -> switchTab(false));
-        
-        btnLogin.setOnClickListener(v -> attemptLogin());
-        btnSignup.setOnClickListener(v -> attemptSignup());
-        
-        linkForgotPassword.setOnClickListener(v -> {
-            startActivity(new Intent(LoginSignupActivity.this, ForgotPasswordActivity.class));
-        });
-    }
+        AuthPagerAdapter adapter = new AuthPagerAdapter(this, this);
+        viewPager.setAdapter(adapter);
 
-    private void switchTab(boolean toLogin) {
-        isLoginMode = toLogin;
-        
-        if (toLogin) {
-            tabLogin.setBackgroundResource(R.drawable.selector_tab);
-            tabLogin.setSelected(true);
-            tabLogin.setTextColor(ContextCompat.getColor(this, R.color.colorTextWhite));
-            
-            tabSignup.setBackgroundResource(R.drawable.selector_tab);
-            tabSignup.setSelected(false);
-            tabSignup.setTextColor(ContextCompat.getColor(this, R.color.colorTextSecondary));
-            
-            loginFields.setVisibility(View.VISIBLE);
-            signupFields.setVisibility(View.GONE);
-        } else {
-            tabSignup.setBackgroundResource(R.drawable.selector_tab);
-            tabSignup.setSelected(true);
-            tabSignup.setTextColor(ContextCompat.getColor(this, R.color.colorTextWhite));
-            
-            tabLogin.setBackgroundResource(R.drawable.selector_tab);
-            tabLogin.setSelected(false);
-            tabLogin.setTextColor(ContextCompat.getColor(this, R.color.colorTextSecondary));
-            
-            loginFields.setVisibility(View.GONE);
-            signupFields.setVisibility(View.VISIBLE);
-        }
+        new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
+            tab.setText(position == 0 ? R.string.tab_login : R.string.tab_signup);
+        }).attach();
     }
 
     private void attemptLogin() {
