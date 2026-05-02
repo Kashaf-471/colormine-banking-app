@@ -12,7 +12,7 @@ import java.util.Locale;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "ColorMineBank.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2; // Incremented version for new column
 
     // Users Table
     public static final String TABLE_USERS = "users";
@@ -21,12 +21,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_EMAIL = "email";
     public static final String COLUMN_PASSWORD = "password";
     public static final String COLUMN_BALANCE = "balance";
+    public static final String COLUMN_IS_ADMIN = "is_admin"; // New column for real admin login
 
     // Transactions Table
     public static final String TABLE_TRANSACTIONS = "transactions";
     public static final String COL_TXN_ID = "txn_id";
     public static final String COL_USER_EMAIL = "user_email";
-    public static final String COL_TYPE = "type"; // "INCOME" or "EXPENSE"
+    public static final String COL_TYPE = "type";
     public static final String COL_AMOUNT = "amount";
     public static final String COL_TITLE = "title";
     public static final String COL_DATE = "date";
@@ -43,7 +44,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COLUMN_NAME + " TEXT, " +
                 COLUMN_EMAIL + " TEXT UNIQUE, " +
                 COLUMN_PASSWORD + " TEXT, " +
-                COLUMN_BALANCE + " REAL DEFAULT 5000.00)";
+                COLUMN_BALANCE + " REAL DEFAULT 5000.00, " +
+                COLUMN_IS_ADMIN + " INTEGER DEFAULT 0)";
         db.execSQL(createUsersTable);
 
         String createTxnTable = "CREATE TABLE " + TABLE_TRANSACTIONS + " (" +
@@ -56,15 +58,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COL_CATEGORY + " TEXT)";
         db.execSQL(createTxnTable);
         
-        // Insert dummy data for demo purposes
-        db.execSQL("INSERT INTO " + TABLE_USERS + " (name, email, password, balance) VALUES ('Sarah Johnson', 'sarah@example.com', 'password123', 8450.50)");
+        // Default Admin Account
+        db.execSQL("INSERT INTO " + TABLE_USERS + " (name, email, password, balance, is_admin) " +
+                "VALUES ('System Admin', 'admin@colormine.com', 'admin123', 0.0, 1)");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TRANSACTIONS);
-        onCreate(db);
+        if (oldVersion < 2) {
+            db.execSQL("ALTER TABLE " + TABLE_USERS + " ADD COLUMN " + COLUMN_IS_ADMIN + " INTEGER DEFAULT 0");
+            db.execSQL("INSERT INTO " + TABLE_USERS + " (name, email, password, balance, is_admin) " +
+                    "VALUES ('System Admin', 'admin@colormine.com', 'admin123', 0.0, 1)");
+        }
     }
 
     // User Methods
@@ -79,16 +84,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
-    public boolean checkUser(String email, String password) {
+    public int checkUserType(String email, String password) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String[] columns = {COLUMN_ID};
-        String selection = COLUMN_EMAIL + " = ? AND " + COLUMN_PASSWORD + " = ?";
-        String[] selectionArgs = {email, password};
+        Cursor cursor = db.query(TABLE_USERS, new String[]{COLUMN_IS_ADMIN}, 
+                COLUMN_EMAIL + " = ? AND " + COLUMN_PASSWORD + " = ?", 
+                new String[]{email, password}, null, null, null);
         
-        Cursor cursor = db.query(TABLE_USERS, columns, selection, selectionArgs, null, null, null);
-        int count = cursor.getCount();
-        cursor.close();
-        return count > 0;
+        int type = -1; // Not found
+        if (cursor != null && cursor.moveToFirst()) {
+            type = cursor.getInt(0); // 1 for admin, 0 for user
+            cursor.close();
+        }
+        return type;
     }
 
     public String getUserName(String email) {
@@ -140,7 +147,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Admin Methods
     public Cursor getAllUsers() {
         SQLiteDatabase db = this.getReadableDatabase();
-        return db.rawQuery("SELECT * FROM " + TABLE_USERS, null);
+        return db.rawQuery("SELECT * FROM " + TABLE_USERS + " WHERE " + COLUMN_IS_ADMIN + " = 0", null);
+    }
+
+    public Cursor searchUsers(String query) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sql = "SELECT * FROM " + TABLE_USERS + " WHERE " + COLUMN_IS_ADMIN + " = 0 AND (" +
+                COLUMN_NAME + " LIKE ? OR " + COLUMN_EMAIL + " LIKE ?)";
+        return db.rawQuery(sql, new String[]{"%" + query + "%", "%" + query + "%"});
     }
 
     public boolean updateUser(int id, String name, String email, double balance) {
@@ -161,5 +175,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.query(TABLE_TRANSACTIONS, null, COL_USER_EMAIL + "=?", 
                 new String[]{email}, null, null, COL_DATE + " DESC");
+    }
+
+    public Cursor getAllTransactions() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.query(TABLE_TRANSACTIONS, null, null, null, null, null, COL_DATE + " DESC");
     }
 }
