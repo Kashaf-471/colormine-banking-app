@@ -36,8 +36,7 @@ public class SendMoneyActivity extends AppCompatActivity {
     private ImageButton btnBack;
     private RecyclerView rvContacts;
     private EditText etAmount;
-    private Button btn100, btn500, btn1000, btnContinue;
-    
+    private Button btnContinue;
     private LinearLayout selectedContactInfo;
     private TextView tvSelectedAvatar, tvSelectedName, tvSelectedUsername;
     private Contact selectedContact = null;
@@ -58,12 +57,7 @@ public class SendMoneyActivity extends AppCompatActivity {
         btnBack = findViewById(R.id.btn_back);
         rvContacts = findViewById(R.id.rv_contacts);
         etAmount = findViewById(R.id.et_amount);
-        
-        btn100 = findViewById(R.id.btn_100);
-        btn500 = findViewById(R.id.btn_500);
-        btn1000 = findViewById(R.id.btn_1000);
         btnContinue = findViewById(R.id.btn_continue);
-        
         selectedContactInfo = findViewById(R.id.selected_contact_info);
         tvSelectedAvatar = findViewById(R.id.tv_selected_avatar);
         tvSelectedName = findViewById(R.id.tv_selected_name);
@@ -72,8 +66,6 @@ public class SendMoneyActivity extends AppCompatActivity {
 
     private void setupContactsRecyclerView() {
         rvContacts.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        
-        // In a real app, you'd fetch other users from Firebase here
         List<Contact> contacts = new ArrayList<>();
         mDatabase.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -84,7 +76,7 @@ public class SendMoneyActivity extends AppCompatActivity {
 
                 for (DataSnapshot userSnap : snapshot.getChildren()) {
                     User user = userSnap.getValue(User.class);
-                    if (user != null && !user.getEmail().equals(currentUserEmail)) {
+                    if (user != null && user.getEmail() != null && !user.getEmail().equals(currentUserEmail)) {
                         contacts.add(new Contact(String.valueOf(user.getId()), user.getName(), user.getEmail(), user.getName().substring(0,1)));
                     }
                 }
@@ -107,31 +99,27 @@ public class SendMoneyActivity extends AppCompatActivity {
     private void setupListeners() {
         btnBack.setOnClickListener(v -> finish());
         
-        btn100.setOnClickListener(v -> etAmount.setText("100"));
-        btn500.setOnClickListener(v -> etAmount.setText("500"));
-        btn1000.setOnClickListener(v -> etAmount.setText("1000"));
+        findViewById(R.id.btn_100).setOnClickListener(v -> etAmount.setText("100"));
+        findViewById(R.id.btn_500).setOnClickListener(v -> etAmount.setText("500"));
+        findViewById(R.id.btn_1000).setOnClickListener(v -> etAmount.setText("1000"));
         
         btnContinue.setOnClickListener(v -> {
             if (selectedContact == null) {
-                Toast.makeText(this, "Please select a recipient", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Select a recipient", Toast.LENGTH_SHORT).show();
                 return;
             }
             
             String amountStr = etAmount.getText().toString();
             if (amountStr.isEmpty()) {
-                Toast.makeText(this, "Please enter an amount", Toast.LENGTH_SHORT).show();
+                etAmount.setError("Required");
                 return;
             }
             
             try {
                 double amount = Double.parseDouble(amountStr);
-                if (amount <= 0) {
-                    Toast.makeText(this, "Amount must be greater than 0", Toast.LENGTH_SHORT).show();
-                    return;
-                }
                 performFirebaseTransaction(amount);
             } catch (NumberFormatException e) {
-                Toast.makeText(this, "Invalid amount", Toast.LENGTH_SHORT).show();
+                etAmount.setError("Invalid amount");
             }
         });
     }
@@ -142,48 +130,60 @@ public class SendMoneyActivity extends AppCompatActivity {
         String sanitizedSender = senderEmail.replace(".", ",");
         String sanitizedRecipient = selectedContact.getUsername().replace(".", ",");
 
+        btnContinue.setEnabled(false);
+        btnContinue.setText("Processing...");
+
         mDatabase.child("users").child(sanitizedSender).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User sender = snapshot.getValue(User.class);
-                if (sender == null) return;
-
-                if (sender.getBalance() < amount) {
+                if (sender == null || sender.getBalance() < amount) {
                     Toast.makeText(SendMoneyActivity.this, "Insufficient balance!", Toast.LENGTH_SHORT).show();
+                    resetButton();
                     return;
                 }
 
-                // 1. Update Sender
-                double newSenderBalance = sender.getBalance() - amount;
-                mDatabase.child("users").child(sanitizedSender).child("balance").setValue(newSenderBalance);
+                // 1. Update Sender Balance
+                mDatabase.child("users").child(sanitizedSender).child("balance").setValue(sender.getBalance() - amount);
                 recordTransaction(senderEmail, "EXPENSE", amount, "Sent to " + selectedContact.getName(), "Transfer");
+                recordNotification(senderEmail, "Transfer Sent", "You sent $" + amount + " to " + selectedContact.getName());
 
-                // 2. Update Recipient
-                mDatabase.child("users").child(sanitizedRecipient).child("balance").get().addOnSuccessListener(dataSnapshot -> {
-                    Double recipientBalance = dataSnapshot.getValue(Double.class);
-                    if (recipientBalance != null) {
-                        mDatabase.child("users").child(sanitizedRecipient).child("balance").setValue(recipientBalance + amount);
-                        recordTransaction(selectedContact.getUsername(), "INCOME", amount, "Received from " + senderEmail, "Transfer");
+                // 2. Update Recipient Balance
+                mDatabase.child("users").child(sanitizedRecipient).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snap) {
+                        User recipient = snap.getValue(User.class);
+                        if (recipient != null) {
+                            mDatabase.child("users").child(sanitizedRecipient).child("balance").setValue(recipient.getBalance() + amount);
+                            recordTransaction(selectedContact.getUsername(), "INCOME", amount, "Received from " + sender.getName(), "Transfer");
+                            recordNotification(selectedContact.getUsername(), "Payment Received", "You received $" + amount + " from " + sender.getName());
+                        }
                     }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {}
                 });
 
                 // 3. Success
-                Intent intent = new Intent(SendMoneyActivity.this, TransferSuccessActivity.class);
-                intent.putExtra("amount", amount);
-                intent.putExtra("recipient", selectedContact.getName());
-                startActivity(intent);
+                startActivity(new Intent(SendMoneyActivity.this, TransferSuccessActivity.class)
+                    .putExtra("amount", amount).putExtra("recipient", selectedContact.getName()));
                 finish();
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
+            public void onCancelled(@NonNull DatabaseError error) {
+                resetButton();
+            }
         });
+    }
+
+    private void resetButton() {
+        btnContinue.setEnabled(true);
+        btnContinue.setText("Continue");
     }
 
     private void recordTransaction(String email, String type, double amount, String title, String category) {
         String date = new SimpleDateFormat("MMM dd, yyyy HH:mm", Locale.getDefault()).format(new Date());
         String txnId = mDatabase.child("transactions").push().getKey();
-
         Map<String, Object> txn = new HashMap<>();
         txn.put("user_email", email);
         txn.put("type", type);
@@ -191,9 +191,16 @@ public class SendMoneyActivity extends AppCompatActivity {
         txn.put("title", title);
         txn.put("date", date);
         txn.put("category", category);
+        if (txnId != null) mDatabase.child("transactions").child(txnId).setValue(txn);
+    }
 
-        if (txnId != null) {
-            mDatabase.child("transactions").child(txnId).setValue(txn);
-        }
+    private void recordNotification(String email, String title, String message) {
+        String sanitizedEmail = email.replace(".", ",");
+        String id = mDatabase.child("notifications").child(sanitizedEmail).push().getKey();
+        Map<String, Object> notif = new HashMap<>();
+        notif.put("title", title);
+        notif.put("message", message);
+        notif.put("timestamp", System.currentTimeMillis());
+        if (id != null) mDatabase.child("notifications").child(sanitizedEmail).child(id).setValue(notif);
     }
 }
