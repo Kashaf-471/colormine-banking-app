@@ -1,6 +1,8 @@
 package com.colormine.banking.fragments;
 
 import android.animation.ValueAnimator;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,11 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,30 +32,70 @@ public class StatsFragment extends Fragment {
 
     private TextView tvTotalSpending, tvIncome, tvExpense;
     private LineChart lineChart;
+    private DatabaseReference mDatabase;
+    private String userEmail;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_stats, container, false);
         
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        SharedPreferences pref = requireActivity().getSharedPreferences("UserSession", Context.MODE_PRIVATE);
+        userEmail = pref.getString("email", "");
+
         tvTotalSpending = view.findViewById(R.id.tv_total_spending);
         tvIncome = view.findViewById(R.id.tv_income);
         tvExpense = view.findViewById(R.id.tv_expense);
         lineChart = view.findViewById(R.id.line_chart);
 
-        // Animate spending and stats
-        animateValue(0, 3450, tvTotalSpending, true);
-        animateValue(0, 4200, tvIncome, true);
-        animateValue(0, 1450, tvExpense, true);
-        
-        setupChart();
+        loadStatsFromFirebase();
         
         return view;
     }
 
+    private void loadStatsFromFirebase() {
+        if (userEmail.isEmpty()) return;
+
+        mDatabase.child("transactions").orderByChild("user_email").equalTo(userEmail)
+            .addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    double totalIncome = 0;
+                    double totalExpense = 0;
+                    List<Entry> chartEntries = new ArrayList<>();
+                    int index = 0;
+
+                    for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                        Double amount = postSnapshot.child("amount").getValue(Double.class);
+                        String type = postSnapshot.child("type").getValue(String.class);
+
+                        if (amount != null) {
+                            if ("INCOME".equals(type)) {
+                                totalIncome += amount;
+                            } else {
+                                totalExpense += amount;
+                            }
+                            // Simplified: use index as X-axis (representing sequence of transactions)
+                            chartEntries.add(new Entry(index++, amount.floatValue()));
+                        }
+                    }
+
+                    animateValue(0, (float) (totalIncome - totalExpense), tvTotalSpending, true);
+                    animateValue(0, (float) totalIncome, tvIncome, true);
+                    animateValue(0, (float) totalExpense, tvExpense, true);
+                    
+                    setupChart(chartEntries);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {}
+            });
+    }
+
     private void animateValue(float start, float end, TextView textView, boolean isCurrency) {
         ValueAnimator animator = ValueAnimator.ofFloat(start, end);
-        animator.setDuration(1500);
+        animator.setDuration(1000);
         animator.addUpdateListener(animation -> {
             float value = (float) animation.getAnimatedValue();
             if (isCurrency) {
@@ -64,18 +111,10 @@ public class StatsFragment extends Fragment {
         animator.start();
     }
 
-    private void setupChart() {
-        if (lineChart == null) return;
+    private void setupChart(List<Entry> entries) {
+        if (lineChart == null || entries.isEmpty()) return;
         
-        List<Entry> entries = new ArrayList<>();
-        entries.add(new Entry(0, 1500f));
-        entries.add(new Entry(1, 2200f));
-        entries.add(new Entry(2, 1800f));
-        entries.add(new Entry(3, 3100f));
-        entries.add(new Entry(4, 2800f));
-        entries.add(new Entry(5, 3600f));
-
-        LineDataSet dataSet = new LineDataSet(entries, "Spending");
+        LineDataSet dataSet = new LineDataSet(entries, "Transactions");
         dataSet.setColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary));
         dataSet.setLineWidth(4f);
         dataSet.setDrawCircles(true);
@@ -101,7 +140,6 @@ public class StatsFragment extends Fragment {
         XAxis xAxis = lineChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
-        xAxis.setGranularity(1f);
         xAxis.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorTextSecondary));
         
         lineChart.getAxisLeft().setDrawGridLines(true);
@@ -110,7 +148,7 @@ public class StatsFragment extends Fragment {
 
         lineChart.setTouchEnabled(true);
         lineChart.setPinchZoom(true);
-        lineChart.animateY(1500);
+        lineChart.animateY(1000);
         lineChart.invalidate();
     }
 }
