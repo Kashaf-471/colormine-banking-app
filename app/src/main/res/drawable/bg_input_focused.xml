@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Input field when focused: gray-50 with purple-600 border -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="#F9FAFB" />
+    <stroke android:width="2dp" android:color="#8B5CF6" />
+    <corners android:radius="12dp" />
+</shape>
