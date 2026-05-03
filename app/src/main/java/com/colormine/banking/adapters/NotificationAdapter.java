@@ -38,6 +38,17 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         holder.tvTime.setText(relativeTime);
 
         holder.unreadDot.setVisibility(notification.isRead() ? View.GONE : View.VISIBLE);
+
+        if ("request".equals(notification.getType())) {
+            holder.itemView.setOnClickListener(v -> {
+                android.content.Intent intent = new android.content.Intent(v.getContext(), com.colormine.banking.SendMoneyActivity.class);
+                intent.putExtra("request_recipient_email", notification.getSenderEmail());
+                intent.putExtra("request_amount", notification.getAmount());
+                v.getContext().startActivity(intent);
+            });
+        } else {
+            holder.itemView.setOnClickListener(null);
+        }
     }
 
     @Override
