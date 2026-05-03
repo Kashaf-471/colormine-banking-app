@@ -56,11 +56,7 @@ public class CardDetailActivity extends AppCompatActivity {
         Button btnSendMoney = findViewById(R.id.btn_send_money);
 
         actionViewStats.setOnClickListener(v -> {
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.putExtra(MainActivity.EXTRA_SELECT_TAB, 1); // Stats tab
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
-            finish();
+            startActivity(new Intent(this, CardStatisticActivity.class));
         });
         
         actionCopyCard.setOnClickListener(v -> {
