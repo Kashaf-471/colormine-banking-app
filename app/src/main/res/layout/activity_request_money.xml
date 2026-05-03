@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_screen"
+    android:fillViewport="true">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="@dimen/screen_padding">
+
+        <!-- Header -->
+        <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="24dp">
+            <ImageButton android:id="@+id/btn_back" android:layout_width="44dp" android:layout_height="44dp" android:background="@drawable/bg_icon_btn_white" android:src="@drawable/ic_arrow_left" android:padding="10dp" android:contentDescription="Back" android:layout_centerVertical="true"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true" android:fontFamily="@font/poppins_semibold" android:text="@string/request_money_title" android:textColor="@color/colorTextPrimary" android:textSize="18sp"/>
+            <RelativeLayout android:id="@+id/btn_notifications" android:layout_width="44dp" android:layout_height="44dp" android:layout_alignParentEnd="true" android:layout_centerVertical="true" android:background="@drawable/bg_icon_btn_white" android:clickable="true" android:focusable="true">
+                <ImageView android:layout_width="22dp" android:layout_height="22dp" android:layout_centerInParent="true" android:src="@drawable/ic_bell" app:tint="@color/colorTextPrimary"/>
+                <View android:layout_width="8dp" android:layout_height="8dp" android:layout_alignParentEnd="true" android:layout_alignParentTop="true" android:layout_marginTop="8dp" android:layout_marginEnd="8dp" android:background="@drawable/bg_dot_red"/>
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <!-- Search + Contacts card -->
+        <androidx.cardview.widget.CardView android:layout_width="match_parent" android:layout_height="wrap_content" app:cardCornerRadius="24dp" app:cardElevation="8dp" app:cardBackgroundColor="@color/colorSurface" android:layout_marginBottom="16dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="24dp">
+                <!-- Search bar -->
+                <LinearLayout android:layout_width="match_parent" android:layout_height="48dp" android:background="@drawable/bg_action_row" android:gravity="center_vertical" android:orientation="horizontal" android:padding="12dp" android:layout_marginBottom="20dp">
+                    <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_search" app:tint="@color/colorTextHint" android:layout_marginEnd="8dp"/>
+                    <EditText android:id="@+id/et_search" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:background="@android:color/transparent" android:fontFamily="@font/poppins_regular" android:hint="@string/hint_search_recipient" android:textColorHint="@color/colorTextHint" android:textColor="@color/colorTextPrimary" android:textSize="14sp" android:inputType="text"/>
+                </LinearLayout>
+                <!-- Recent contacts label -->
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="@font/poppins_medium" android:text="@string/label_recent_contacts" android:textColor="@color/colorTextSecondary" android:textSize="13sp" android:layout_marginBottom="12dp"/>
+                <!-- Contacts RecyclerView (horizontal grid) -->
+                <androidx.recyclerview.widget.RecyclerView android:id="@+id/rv_contacts" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                <!-- Selected contact info (hidden by default) -->
+                <LinearLayout android:id="@+id/selected_contact_info" android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal" android:layout_marginTop="16dp" android:paddingTop="16dp" android:visibility="gone">
+                    <LinearLayout android:layout_width="48dp" android:layout_height="48dp" android:background="@drawable/bg_avatar" android:gravity="center" android:layout_marginEnd="12dp">
+                        <TextView android:id="@+id/tv_selected_avatar" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="24sp"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
+                        <TextView android:id="@+id/tv_selected_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="@font/poppins_medium" android:textColor="@color/colorTextPrimary" android:textSize="14sp"/>
+                        <TextView android:id="@+id/tv_selected_username" android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="@font/poppins_regular" android:textColor="@color/colorTextSecondary" android:textSize="12sp"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Amount card -->
+        <androidx.cardview.widget.CardView android:layout_width="match_parent" android:layout_height="wrap_content" app:cardCornerRadius="24dp" app:cardElevation="8dp" app:cardBackgroundColor="@color/colorSurface" android:layout_marginBottom="16dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="24dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="@font/poppins_regular" android:text="@string/label_request_amount" android:textColor="@color/colorTextSecondary" android:textSize="13sp" android:layout_marginBottom="8dp"/>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal" android:layout_marginBottom="16dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="@font/poppins_bold" android:text="@string/dollar_symbol" android:textColor="@color/colorTextPrimary" android:textSize="36sp" android:layout_marginEnd="4dp"/>
+                    <EditText android:id="@+id/et_amount" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@android:color/transparent" android:fontFamily="@font/poppins_bold" android:hint="@string/hint_amount" android:inputType="numberDecimal" android:textColor="@color/colorTextPrimary" android:textColorHint="@color/colorTextHint" android:textSize="36sp"/>
+                </LinearLayout>
+                <!-- Quick amounts -->
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                    <Button android:id="@+id/btn_100" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:layout_marginEnd="8dp" android:background="@drawable/bg_icon_purple" android:fontFamily="@font/poppins_medium" android:text="$100" android:textColor="@color/colorPrimary" android:textSize="13sp" android:stateListAnimator="@null"/>
+                    <Button android:id="@+id/btn_500" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:layout_marginEnd="8dp" android:background="@drawable/bg_icon_purple" android:fontFamily="@font/poppins_medium" android:text="$500" android:textColor="@color/colorPrimary" android:textSize="13sp" android:stateListAnimator="@null"/>
+                    <Button android:id="@+id/btn_1000" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:background="@drawable/bg_icon_purple" android:fontFamily="@font/poppins_medium" android:text="$1000" android:textColor="@color/colorPrimary" android:textSize="13sp" android:stateListAnimator="@null"/>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Continue button -->
+        <Button android:id="@+id/btn_continue" android:layout_width="match_parent" android:layout_height="56dp" android:background="@drawable/bg_btn_primary" android:fontFamily="@font/poppins_semibold" android:text="@string/btn_send_request" android:textColor="@color/colorTextWhite" android:textSize="16sp" android:stateListAnimator="@null"/>
+    </LinearLayout>
+</ScrollView>
