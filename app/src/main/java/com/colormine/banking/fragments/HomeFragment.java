@@ -75,6 +75,7 @@ public class HomeFragment extends Fragment {
         mDatabase.child("users").child(sanitizedEmail).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (!isAdded()) return;
                 User user = snapshot.getValue(User.class);
                 if (user != null) {
                     String formattedBalance = String.format("$%,.2f", user.getBalance());
@@ -105,6 +106,7 @@ public class HomeFragment extends Fragment {
             .addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (!isAdded()) return;
                     transactionList.clear();
                     for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                         String id = postSnapshot.getKey();
@@ -140,22 +142,22 @@ public class HomeFragment extends Fragment {
         
         View btnNotif = view.findViewById(R.id.btn_notifications);
         if (btnNotif != null) {
-            btnNotif.setOnClickListener(v -> startActivity(new Intent(getActivity(), NotificationsActivity.class)));
+            btnNotif.setOnClickListener(v -> startActivity(new Intent(requireContext(), NotificationsActivity.class)));
         }
     }
 
     private void initCard(View view) {
         view.findViewById(R.id.home_card).setOnClickListener(v -> {
-            startActivity(new Intent(getActivity(), CardDetailActivity.class));
+            startActivity(new Intent(requireContext(), CardDetailActivity.class));
         });
     }
 
     private void initQuickActions(View view) {
         view.findViewById(R.id.action_send).setOnClickListener(v ->
-            startActivity(new Intent(getActivity(), SendMoneyActivity.class)));
+            startActivity(new Intent(requireContext(), SendMoneyActivity.class)));
 
         view.findViewById(R.id.action_cards).setOnClickListener(v ->
-            startActivity(new Intent(getActivity(), CardDetailActivity.class)));
+            startActivity(new Intent(requireContext(), CardDetailActivity.class)));
 
         view.findViewById(R.id.action_stats).setOnClickListener(v -> {
             if (getActivity() instanceof OnTabSwitchListener) {

@@ -52,34 +52,51 @@ public class AccountFragment extends Fragment {
         loadProfileData();
         loadStats();
 
-        // Set up click listeners
-        view.findViewById(R.id.option_personal_info).setOnClickListener(v -> {
-            // Logic for personal info
-        });
+        View btnNotif = view.findViewById(R.id.btn_notifications);
+        if (btnNotif != null) {
+            btnNotif.setOnClickListener(v -> startActivity(new Intent(requireContext(), NotificationsActivity.class)));
+        }
 
-        view.findViewById(R.id.option_my_cards).setOnClickListener(v -> 
-            startActivity(new Intent(getActivity(), CardDetailActivity.class)));
+        View optPersonalInfo = view.findViewById(R.id.option_personal_info);
+        if (optPersonalInfo != null) {
+            optPersonalInfo.setOnClickListener(v -> { /* Logic for personal info */ });
+        }
 
-        view.findViewById(R.id.option_notifications).setOnClickListener(v -> 
-            startActivity(new Intent(getActivity(), NotificationsActivity.class)));
+        View optMyCards = view.findViewById(R.id.option_my_cards);
+        if (optMyCards != null) {
+            optMyCards.setOnClickListener(v -> startActivity(new Intent(requireContext(), CardDetailActivity.class)));
+        }
 
-        view.findViewById(R.id.option_security).setOnClickListener(v -> 
-            startActivity(new Intent(getActivity(), SecurityActivity.class)));
+        View optNotif = view.findViewById(R.id.option_notifications);
+        if (optNotif != null) {
+            optNotif.setOnClickListener(v -> startActivity(new Intent(requireContext(), NotificationsActivity.class)));
+        }
 
-        view.findViewById(R.id.option_settings).setOnClickListener(v -> 
-            startActivity(new Intent(getActivity(), SettingsActivity.class)));
+        View optSecurity = view.findViewById(R.id.option_security);
+        if (optSecurity != null) {
+            optSecurity.setOnClickListener(v -> startActivity(new Intent(requireContext(), SecurityActivity.class)));
+        }
 
-        view.findViewById(R.id.option_help).setOnClickListener(v -> 
-            startActivity(new Intent(getActivity(), HelpActivity.class)));
+        View optSettings = view.findViewById(R.id.option_settings);
+        if (optSettings != null) {
+            optSettings.setOnClickListener(v -> startActivity(new Intent(requireContext(), SettingsActivity.class)));
+        }
+
+        View optHelp = view.findViewById(R.id.option_help);
+        if (optHelp != null) {
+            optHelp.setOnClickListener(v -> startActivity(new Intent(requireContext(), HelpActivity.class)));
+        }
 
         Button btnLogout = view.findViewById(R.id.btn_logout);
-        btnLogout.setOnClickListener(v -> {
-            requireActivity().getSharedPreferences("UserSession", Context.MODE_PRIVATE).edit().clear().apply();
-            Intent intent = new Intent(getActivity(), LoginSignupActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            requireActivity().finish();
-        });
+        if (btnLogout != null) {
+            btnLogout.setOnClickListener(v -> {
+                requireActivity().getSharedPreferences("UserSession", Context.MODE_PRIVATE).edit().clear().apply();
+                Intent intent = new Intent(requireContext(), LoginSignupActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                requireActivity().finish();
+            });
+        }
 
         return view;
     }
@@ -89,6 +106,7 @@ public class AccountFragment extends Fragment {
         mDatabase.child("users").child(sanitizedEmail).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (!isAdded()) return;
                 User user = snapshot.getValue(User.class);
                 if (user != null) {
                     if (tvUserName != null) tvUserName.setText(user.getName());
@@ -109,6 +127,7 @@ public class AccountFragment extends Fragment {
             .addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (!isAdded()) return;
                     long count = snapshot.getChildrenCount();
                     animateValue(0, (int) count, tvStatTransactions, "");
                 }
