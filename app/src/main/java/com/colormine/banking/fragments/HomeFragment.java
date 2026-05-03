@@ -18,6 +18,7 @@ import com.colormine.banking.LoginSignupActivity;
 import com.colormine.banking.MainActivity;
 import com.colormine.banking.NotificationsActivity;
 import com.colormine.banking.R;
+import com.colormine.banking.RequestMoneyActivity;
 import com.colormine.banking.SendMoneyActivity;
 import com.colormine.banking.adapters.TransactionAdapter;
 import com.colormine.banking.models.Transaction;
@@ -155,6 +156,9 @@ public class HomeFragment extends Fragment {
     private void initQuickActions(View view) {
         view.findViewById(R.id.action_send).setOnClickListener(v ->
             startActivity(new Intent(requireContext(), SendMoneyActivity.class)));
+
+        view.findViewById(R.id.action_request).setOnClickListener(v ->
+            startActivity(new Intent(requireContext(), RequestMoneyActivity.class)));
 
         view.findViewById(R.id.action_cards).setOnClickListener(v ->
             startActivity(new Intent(requireContext(), CardDetailActivity.class)));

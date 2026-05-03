@@ -129,13 +129,15 @@ public class AdminActivity extends AppCompatActivity implements UserAdapter.OnUs
 
     private void filterUsers(String query) {
         filteredUsersList.clear();
-        if (query.isEmpty()) {
+        if (query == null || query.isEmpty()) {
             filteredUsersList.addAll(allUsersList);
         } else {
             String lowerCaseQuery = query.toLowerCase();
             for (User user : allUsersList) {
-                if (user.getName().toLowerCase().contains(lowerCaseQuery) || 
-                    user.getEmail().toLowerCase().contains(lowerCaseQuery)) {
+                String name = user.getName() != null ? user.getName().toLowerCase() : "";
+                String email = user.getEmail() != null ? user.getEmail().toLowerCase() : "";
+                
+                if (name.contains(lowerCaseQuery) || email.contains(lowerCaseQuery)) {
                     filteredUsersList.add(user);
                 }
             }
@@ -156,10 +158,12 @@ public class AdminActivity extends AppCompatActivity implements UserAdapter.OnUs
                 .setTitle("Delete User")
                 .setMessage("Are you sure you want to delete " + user.getName() + "? This cannot be undone.")
                 .setPositiveButton("Delete", (dialog, which) -> {
-                    String sanitizedEmail = user.getEmail().replace(".", ",");
-                    mDatabase.child("users").child(sanitizedEmail).removeValue()
-                        .addOnSuccessListener(aVoid -> Toast.makeText(AdminActivity.this, "User deleted from Firebase", Toast.LENGTH_SHORT).show())
-                        .addOnFailureListener(e -> Toast.makeText(AdminActivity.this, "Failed to delete: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                    if (user.getEmail() != null) {
+                        String sanitizedEmail = user.getEmail().replace(".", ",");
+                        mDatabase.child("users").child(sanitizedEmail).removeValue()
+                            .addOnSuccessListener(aVoid -> Toast.makeText(AdminActivity.this, "User deleted from Firebase", Toast.LENGTH_SHORT).show())
+                            .addOnFailureListener(e -> Toast.makeText(AdminActivity.this, "Failed to delete: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                    }
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
