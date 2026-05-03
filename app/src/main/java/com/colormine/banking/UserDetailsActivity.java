@@ -2,6 +2,8 @@ package com.colormine.banking;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -17,7 +19,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class UserDetailsActivity extends AppCompatActivity {
 
@@ -28,6 +32,9 @@ public class UserDetailsActivity extends AppCompatActivity {
     private List<Transaction> transactionList;
     private DatabaseReference mDatabase;
     private String userEmail;
+    
+    private EditText etNotifTitle, etNotifMessage;
+    private Button btnSendNotif;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +53,12 @@ public class UserDetailsActivity extends AppCompatActivity {
         
         if (userEmail != null) {
             loadUserTransactionsFromFirebase(userEmail);
-            // Also listen for real-time updates for this user
             observeUserAccount(userEmail);
         }
 
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
+        
+        btnSendNotif.setOnClickListener(v -> sendNotificationToUser());
     }
 
     private void initViews() {
@@ -62,9 +70,52 @@ public class UserDetailsActivity extends AppCompatActivity {
         tvEmpty = findViewById(R.id.tv_empty_transactions);
         statusIndicator = findViewById(R.id.status_indicator);
         rvTransactions = findViewById(R.id.rv_user_transactions);
+        
+        etNotifTitle = findViewById(R.id.et_notif_title);
+        etNotifMessage = findViewById(R.id.et_notif_message);
+        btnSendNotif = findViewById(R.id.btn_send_notif);
 
         transactionList = new ArrayList<>();
         rvTransactions.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    private void sendNotificationToUser() {
+        String title = etNotifTitle.getText().toString().trim();
+        String message = etNotifMessage.getText().toString().trim();
+
+        if (title.isEmpty() || message.isEmpty()) {
+            Toast.makeText(this, "Please enter both title and message", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (userEmail == null) return;
+
+        String sanitizedEmail = userEmail.replace(".", ",");
+        String id = mDatabase.child("notifications").child(sanitizedEmail).push().getKey();
+        
+        Map<String, Object> notif = new HashMap<>();
+        notif.put("title", title);
+        notif.put("message", message);
+        notif.put("timestamp", System.currentTimeMillis());
+
+        if (id != null) {
+            btnSendNotif.setEnabled(false);
+            btnSendNotif.setText("Sending...");
+            
+            mDatabase.child("notifications").child(sanitizedEmail).child(id).setValue(notif)
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(UserDetailsActivity.this, "Notification sent to " + userEmail, Toast.LENGTH_SHORT).show();
+                    etNotifTitle.setText("");
+                    etNotifMessage.setText("");
+                    btnSendNotif.setEnabled(true);
+                    btnSendNotif.setText("Send Notification");
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(UserDetailsActivity.this, "Failed to send: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    btnSendNotif.setEnabled(true);
+                    btnSendNotif.setText("Send Notification");
+                });
+        }
     }
 
     private void observeUserAccount(String email) {

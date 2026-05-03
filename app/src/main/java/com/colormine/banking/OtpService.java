@@ -1,5 +1,7 @@
 package com.colormine.banking;
 
+import static java.lang.String.*;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
@@ -45,7 +47,7 @@ public class OtpService {
     }
 
     public static void generateAndSend(Context ctx, String recipientEmail, OtpCallback cb) {
-        String otp = String.format("%06d", new Random().nextInt(1_000_000));
+        String otp = format("%06d",new Random().nextInt(1000000));
         persist(ctx, otp, recipientEmail);
 
         Handler mainHandler = new Handler(Looper.getMainLooper());

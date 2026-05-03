@@ -15,6 +15,8 @@ public class User {
     private String cardNumber;
     private String cardExpiry;
     private String cardCvv;
+    private String phoneNumber;
+    private String address;
     private long registrationDate;
     private Map<String, Boolean> settings;
 
@@ -40,6 +42,8 @@ public class User {
         this.settings.put("twoFactor", false);
         this.settings.put("notifications", true);
         this.settings.put("darkMode", false);
+        this.phoneNumber = "";
+        this.address = "";
     }
 
     // Getters and Setters
@@ -56,6 +60,8 @@ public class User {
     public String getCardNumber() { return cardNumber; }
     public String getCardExpiry() { return cardExpiry; }
     public String getCardCvv() { return cardCvv; }
+    public String getPhoneNumber() { return phoneNumber; }
+    public String getAddress() { return address; }
     public long getRegistrationDate() { return registrationDate; }
     public Map<String, Boolean> getSettings() { return settings; }
 
@@ -70,6 +76,8 @@ public class User {
     public void setCardNumber(String cardNumber) { this.cardNumber = cardNumber; }
     public void setCardExpiry(String cardExpiry) { this.cardExpiry = cardExpiry; }
     public void setCardCvv(String cardCvv) { this.cardCvv = cardCvv; }
+    public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
+    public void setAddress(String address) { this.address = address; }
     public void setRegistrationDate(long registrationDate) { this.registrationDate = registrationDate; }
     public void setSettings(Map<String, Boolean> settings) { this.settings = settings; }
 }
