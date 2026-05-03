@@ -145,6 +145,15 @@
     <string name="bluetooth_control">Bluetooth</string>
     <string name="download_data">Download Data</string>
     <string name="clear_cache">Clear Cache</string>
+    <string name="app_language">App Language</string>
+    <string name="app_language_subtitle">English</string>
+    <string name="auto_lock">Auto-Lock Timeout</string>
+    <string name="auto_lock_subtitle">1 minute</string>
+    <string name="transaction_pin">Transaction PIN</string>
+    <string name="transaction_pin_not_set">Tap to set a 4-digit PIN</string>
+    <string name="transaction_pin_set">PIN set — tap to change</string>
+    <string name="active_sessions">Active Sessions</string>
+    <string name="active_sessions_subtitle">View logged-in devices</string>
 
     <!-- Help & Support -->
     <string name="help_title">Help &amp; Support</string>

@@ -7,6 +7,9 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
 
+    <!-- Calling -->
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
     <!-- SMS -->
     <uses-feature android:name="android.hardware.telephony" android:required="false" />
     <uses-permission android:name="android.permission.SEND_SMS" />
@@ -37,11 +40,15 @@
     <!-- Vibration -->
     <uses-permission android:name="android.permission.VIBRATE" />
 
+    <!-- Biometric -->
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+
     <!-- Foreground Service -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
+        android:name=".ColorMineApp"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -72,11 +79,15 @@
             android:screenOrientation="portrait" android:exported="false"/>
         <activity android:name=".VerifyOtpActivity"
             android:screenOrientation="portrait" android:exported="false"/>
+        <activity android:name=".ResetPasswordActivity"
+            android:screenOrientation="portrait" android:exported="false"/>
 
         <!-- Main App -->
         <activity android:name=".MainActivity"
             android:screenOrientation="portrait" android:exported="false"/>
         <activity android:name=".CardDetailActivity"
+            android:screenOrientation="portrait" android:exported="false"/>
+        <activity android:name=".CardStatisticActivity"
             android:screenOrientation="portrait" android:exported="false"/>
         <activity android:name=".SendMoneyActivity"
             android:screenOrientation="portrait" android:exported="false"/>
@@ -95,14 +106,6 @@
         <activity android:name=".HelpActivity"
             android:screenOrientation="portrait" android:exported="false"/>
         <activity android:name=".CameraActivity"
-            android:screenOrientation="portrait" android:exported="false"/>
-
-        <!-- Admin -->
-        <activity android:name=".AdminActivity"
-            android:screenOrientation="portrait" android:exported="false"/>
-        <activity android:name=".AdminTransactionsActivity"
-            android:screenOrientation="portrait" android:exported="false"/>
-        <activity android:name=".UserDetailsActivity"
             android:screenOrientation="portrait" android:exported="false"/>
 
         <!-- Background Service -->
