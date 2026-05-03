@@ -81,6 +81,13 @@
     <string name="action_unlock_card">Unlock Card</string>
     <string name="btn_send_money">Send Money</string>
 
+    <!-- Request Money -->
+    <string name="request_money_title">Request Money</string>
+    <string name="btn_send_request">Send Request</string>
+    <string name="request_success_title">Request Sent!</string>
+    <string name="request_success_subtitle">Your request has been sent successfully</string>
+    <string name="label_request_amount">Request Amount</string>
+
     <!-- Send Money -->
     <string name="send_money_title">Send Money</string>
     <string name="hint_search_recipient">Search recipient</string>

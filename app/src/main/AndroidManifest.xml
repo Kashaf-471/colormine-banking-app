@@ -93,7 +93,15 @@
             android:screenOrientation="portrait" android:exported="false"/>
         <activity android:name=".TransferSuccessActivity"
             android:screenOrientation="portrait" android:exported="false"/>
+        <activity android:name=".RequestMoneyActivity"
+            android:screenOrientation="portrait" android:exported="false"/>
+        <activity android:name=".RequestSuccessActivity"
+            android:screenOrientation="portrait" android:exported="false"/>
         <activity android:name=".NotificationsActivity"
+            android:screenOrientation="portrait" android:exported="false"/>
+        <activity android:name=".AdminActivity"
+            android:screenOrientation="portrait" android:exported="false"/>
+        <activity android:name=".AdminTransactionsActivity"
             android:screenOrientation="portrait" android:exported="false"/>
 
         <!-- Account & Settings -->
