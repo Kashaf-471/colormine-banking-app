@@ -76,10 +76,18 @@ public class SendMoneyActivity extends AppCompatActivity {
                 SharedPreferences pref = getSharedPreferences("UserSession", Context.MODE_PRIVATE);
                 String currentUserEmail = pref.getString("email", "");
 
+                String requestRecipientEmail = getIntent().getStringExtra("request_recipient_email");
+                double requestAmount = getIntent().getDoubleExtra("request_amount", -1);
+
                 for (DataSnapshot userSnap : snapshot.getChildren()) {
                     User user = userSnap.getValue(User.class);
                     if (user != null && user.getEmail() != null && !user.getEmail().equals(currentUserEmail)) {
-                        contacts.add(new Contact(String.valueOf(user.getId()), user.getName(), user.getEmail(), user.getName().substring(0,1)));
+                        Contact contact = new Contact(String.valueOf(user.getId()), user.getName(), user.getEmail(), user.getName().substring(0,1));
+                        contacts.add(contact);
+
+                        if (requestRecipientEmail != null && requestRecipientEmail.equals(user.getEmail())) {
+                            selectedContact = contact;
+                        }
                     }
                 }
                 
@@ -91,6 +99,17 @@ public class SendMoneyActivity extends AppCompatActivity {
                     tvSelectedUsername.setText(contact.getUsername());
                 });
                 rvContacts.setAdapter(adapter);
+
+                if (selectedContact != null) {
+                    selectedContactInfo.setVisibility(View.VISIBLE);
+                    tvSelectedAvatar.setText(selectedContact.getAvatarInitial());
+                    tvSelectedName.setText(selectedContact.getName());
+                    tvSelectedUsername.setText(selectedContact.getUsername());
+                }
+
+                if (requestAmount > 0) {
+                    etAmount.setText(String.format(Locale.getDefault(), "%.2f", requestAmount));
+                }
             }
 
             @Override
