@@ -39,16 +39,84 @@
                     <Switch android:id="@+id/switch_vibration" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:layout_centerVertical="true" android:checked="true" android:track="@drawable/selector_switch_track"/>
                 </RelativeLayout>
 
-                <!-- Wi-Fi Control -->
-                <RelativeLayout android:id="@+id/option_wifi" android:layout_width="match_parent" android:layout_height="56dp" android:clickable="true" android:focusable="true" android:layout_marginBottom="4dp">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:fontFamily="@font/poppins_medium" android:text="@string/wifi_control" android:textColor="@color/colorTextPrimary" android:textSize="14sp"/>
-                    <Switch android:id="@+id/switch_wifi" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:layout_centerVertical="true" android:track="@drawable/selector_switch_track"/>
+                <!-- App Language -->
+                <RelativeLayout
+                    android:id="@+id/option_language"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_marginBottom="4dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="@string/app_language"
+                        android:textColor="@color/colorTextPrimary"
+                        android:textSize="14sp"/>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/tv_language_value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_regular"
+                            android:text="@string/app_language_subtitle"
+                            android:textColor="@color/colorTextSecondary"
+                            android:textSize="13sp"/>
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:layout_marginStart="4dp"
+                            android:src="@drawable/ic_chevron_right"
+                            app:tint="@color/colorTextHint"/>
+                    </LinearLayout>
                 </RelativeLayout>
 
-                <!-- Bluetooth Control -->
-                <RelativeLayout android:id="@+id/option_bluetooth" android:layout_width="match_parent" android:layout_height="56dp" android:clickable="true" android:focusable="true" android:layout_marginBottom="4dp">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:fontFamily="@font/poppins_medium" android:text="@string/bluetooth_control" android:textColor="@color/colorTextPrimary" android:textSize="14sp"/>
-                    <Switch android:id="@+id/switch_bluetooth" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:layout_centerVertical="true" android:track="@drawable/selector_switch_track"/>
+                <!-- Auto-Lock Timeout -->
+                <RelativeLayout
+                    android:id="@+id/option_auto_lock"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_marginBottom="4dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="@string/auto_lock"
+                        android:textColor="@color/colorTextPrimary"
+                        android:textSize="14sp"/>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/tv_auto_lock_value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_regular"
+                            android:text="@string/auto_lock_subtitle"
+                            android:textColor="@color/colorTextSecondary"
+                            android:textSize="13sp"/>
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:layout_marginStart="4dp"
+                            android:src="@drawable/ic_chevron_right"
+                            app:tint="@color/colorTextHint"/>
+                    </LinearLayout>
                 </RelativeLayout>
 
                 <!-- Clear Cache -->
