@@ -1,34 +1,32 @@
 package com.colormine.banking;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+import com.colormine.banking.database.DatabaseHelper;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
 
-    private ImageButton btnBack;
     private EditText etEmail;
-    private Button btnSendCode, btnBackToLogin;
-    private FirebaseAuth mAuth;
+    private Button btnSendCode;
+    private DatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
 
-        mAuth = FirebaseAuth.getInstance();
+        dbHelper = new DatabaseHelper(this);
         
-        btnBack = findViewById(R.id.btn_back);
+        ImageButton btnBack = findViewById(R.id.btn_back);
         etEmail = findViewById(R.id.et_fp_email);
         btnSendCode = findViewById(R.id.btn_send_code);
-        btnBackToLogin = findViewById(R.id.btn_back_to_login);
+        Button btnBackToLogin = findViewById(R.id.btn_back_to_login);
 
         btnBack.setOnClickListener(v -> finish());
         btnBackToLogin.setOnClickListener(v -> finish());
@@ -38,44 +36,48 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             
             if (email.isEmpty()) {
                 etEmail.setError("Please enter your registered email");
-                etEmail.requestFocus();
                 return;
             }
 
             if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                 etEmail.setError("Please enter a valid email address");
-                etEmail.requestFocus();
                 return;
             }
 
-            sendResetEmail(email);
-        });
-    }
+            // Check if user exists in local DB
+            if (dbHelper.getUserName(email).equals("User") && !email.equals("sarah@example.com")) {
+                Toast.makeText(this, "Email not found in our records", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-    private void sendResetEmail(String email) {
-        btnSendCode.setEnabled(false);
-        btnSendCode.setText("Sending...");
+            btnSendCode.setEnabled(false);
+            btnSendCode.setText("Sending...");
 
-        mAuth.sendPasswordResetEmail(email)
-            .addOnCompleteListener(task -> {
-                btnSendCode.setEnabled(true);
-                btnSendCode.setText("Send Reset Code");
+            OtpService.generateAndSend(this, email, new OtpService.OtpCallback() {
+                @Override
+                public void onSuccess() {
+                    btnSendCode.setEnabled(true);
+                    btnSendCode.setText("Send Code");
+                    Intent intent = new Intent(ForgotPasswordActivity.this, VerifyOtpActivity.class);
+                    intent.putExtra("email", email);
+                    intent.putExtra(VerifyOtpActivity.EXTRA_PURPOSE, VerifyOtpActivity.PURPOSE_PASSWORD_RESET);
+                    startActivity(intent);
+                }
 
-                if (task.isSuccessful()) {
-                    Toast.makeText(ForgotPasswordActivity.this, 
-                            "A password reset link has been sent to " + email, Toast.LENGTH_LONG).show();
-                    finish();
-                } else {
-                    String message;
-                    try {
-                        throw task.getException();
-                    } catch (FirebaseAuthInvalidUserException e) {
-                        message = "No account found with this email. Please sign up instead.";
-                    } catch (Exception e) {
-                        message = "Network error or invalid request. Try again later.";
-                    }
-                    Toast.makeText(ForgotPasswordActivity.this, message, Toast.LENGTH_LONG).show();
+                @Override
+                public void onFallback(String fallbackOtp, String error) {
+                    btnSendCode.setEnabled(true);
+                    btnSendCode.setText("Send Code");
+                    
+                    com.google.android.material.snackbar.Snackbar.make(btnSendCode, "📧 SMTP not configured. Test OTP: " + fallbackOtp, com.google.android.material.snackbar.Snackbar.LENGTH_INDEFINITE)
+                            .setAction("Next", v2 -> {
+                                Intent intent = new Intent(ForgotPasswordActivity.this, VerifyOtpActivity.class);
+                                intent.putExtra("email", email);
+                                intent.putExtra(VerifyOtpActivity.EXTRA_PURPOSE, VerifyOtpActivity.PURPOSE_PASSWORD_RESET);
+                                startActivity(intent);
+                            }).show();
                 }
             });
+        });
     }
 }
