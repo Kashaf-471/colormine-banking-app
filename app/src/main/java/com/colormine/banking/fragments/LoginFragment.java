@@ -131,7 +131,10 @@ public class LoginFragment extends Fragment {
                         Toast.makeText(getContext(), "Account Suspended: Please contact support.", Toast.LENGTH_LONG).show();
                     } else {
                         SharedPreferences pref = requireActivity().getSharedPreferences("UserSession", Context.MODE_PRIVATE);
-                        pref.edit().putString("email", email).apply();
+                        pref.edit()
+                            .putString("email", email)
+                            .putLong("loginTime", System.currentTimeMillis())
+                            .apply();
                         
                         if (user.getIsAdmin() == 1) {
                             Toast.makeText(getContext(), "Admin Access Granted", Toast.LENGTH_SHORT).show();
