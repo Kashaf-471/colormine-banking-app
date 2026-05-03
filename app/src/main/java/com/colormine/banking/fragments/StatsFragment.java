@@ -61,7 +61,8 @@ public class StatsFragment extends Fragment {
             .addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    double totalIncome = 0;
+                if (!isAdded()) return;
+                double totalIncome = 0;
                     double totalExpense = 0;
                     List<Entry> chartEntries = new ArrayList<>();
                     int index = 0;

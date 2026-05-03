@@ -60,6 +60,7 @@ public class HistoryFragment extends Fragment {
             .addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (!isAdded()) return;
                     allTransactions.clear();
                     for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                         String id = postSnapshot.getKey();
