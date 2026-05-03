@@ -1,64 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Notification list item -->
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
-    android:background="@drawable/bg_white_card"
-    android:gravity="center_vertical"
-    android:orientation="horizontal"
-    android:padding="16dp">
+    android:layout_marginBottom="12dp"
+    app:cardBackgroundColor="@color/colorSurface"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="2dp">
 
-    <!-- Icon -->
     <LinearLayout
-        android:id="@+id/notif_icon_bg"
-        android:layout_width="44dp"
-        android:layout_height="44dp"
-        android:layout_marginEnd="12dp"
-        android:background="@drawable/bg_icon_purple"
-        android:gravity="center">
-
-        <ImageView
-            android:id="@+id/notif_icon"
-            android:layout_width="22dp"
-            android:layout_height="22dp"
-            android:src="@drawable/ic_bell"
-            app:tint="@color/colorPrimary" />
-    </LinearLayout>
-
-    <!-- Text info -->
-    <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical">
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center_vertical">
 
         <TextView
-            android:id="@+id/tv_notif_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_medium"
-            android:textColor="@color/colorTextPrimary"
-            android:textSize="13sp" />
+            android:id="@+id/tv_notif_icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_icon_purple"
+            android:gravity="center"
+            android:text="🔔"
+            android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/tv_notif_time"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:fontFamily="@font/poppins_regular"
-            android:textColor="@color/colorTextSecondary"
-            android:textSize="11sp" />
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_notif_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="Notification Title"
+                    android:textColor="@color/colorTextPrimary"
+                    android:textSize="14sp"
+                    android:layout_alignParentStart="true"/>
+
+                <View
+                    android:id="@+id/notif_unread_dot"
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_toEndOf="@id/tv_notif_title"
+                    android:background="@drawable/bg_dot_red" />
+
+                <TextView
+                    android:id="@+id/tv_notif_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:fontFamily="@font/poppins_regular"
+                    android:text="2h ago"
+                    android:textColor="@color/colorTextSecondary"
+                    android:textSize="11sp" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_notif_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:fontFamily="@font/poppins_regular"
+                android:text="Notification details go here..."
+                android:textColor="@color/colorTextSecondary"
+                android:textSize="12sp" />
+        </LinearLayout>
     </LinearLayout>
-
-    <!-- Unread dot -->
-    <View
-        android:id="@+id/notif_unread_dot"
-        android:layout_width="8dp"
-        android:layout_height="8dp"
-        android:layout_marginStart="8dp"
-        android:background="@drawable/bg_dot_red"
-        android:visibility="gone" />
-</LinearLayout>
+</androidx.cardview.widget.CardView>
