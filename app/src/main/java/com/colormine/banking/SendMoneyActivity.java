@@ -41,6 +41,8 @@ public class SendMoneyActivity extends AppCompatActivity {
     private TextView tvSelectedAvatar, tvSelectedName, tvSelectedUsername;
     private Contact selectedContact = null;
     private DatabaseReference mDatabase;
+    private androidx.activity.result.ActivityResultLauncher<Intent> otpLauncher;
+    private double pendingAmount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +105,19 @@ public class SendMoneyActivity extends AppCompatActivity {
         findViewById(R.id.btn_500).setOnClickListener(v -> etAmount.setText("500"));
         findViewById(R.id.btn_1000).setOnClickListener(v -> etAmount.setText("1000"));
         
+        otpLauncher = registerForActivityResult(
+            new androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK) {
+                    performFirebaseTransaction(pendingAmount);
+                } else {
+                    btnContinue.setEnabled(true);
+                    btnContinue.setText("Continue");
+                    Toast.makeText(this, "Transaction cancelled", Toast.LENGTH_SHORT).show();
+                }
+            }
+        );
+
         btnContinue.setOnClickListener(v -> {
             if (selectedContact == null) {
                 Toast.makeText(this, "Select a recipient", Toast.LENGTH_SHORT).show();
@@ -116,8 +131,42 @@ public class SendMoneyActivity extends AppCompatActivity {
             }
             
             try {
-                double amount = Double.parseDouble(amountStr);
-                performFirebaseTransaction(amount);
+                pendingAmount = Double.parseDouble(amountStr);
+                
+                SharedPreferences pref = getSharedPreferences("UserSession", Context.MODE_PRIVATE);
+                String currentUserEmail = pref.getString("email", "");
+                
+                if (currentUserEmail.isEmpty()) {
+                    Toast.makeText(this, "Session expired", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                btnContinue.setEnabled(false);
+                btnContinue.setText("Sending OTP...");
+
+                OtpService.generateAndSend(this, currentUserEmail, new OtpService.OtpCallback() {
+                    @Override
+                    public void onSuccess() {
+                        btnContinue.setText("Verify to Send");
+                        Intent intent = new Intent(SendMoneyActivity.this, VerifyOtpActivity.class);
+                        intent.putExtra("email", currentUserEmail);
+                        intent.putExtra(VerifyOtpActivity.EXTRA_PURPOSE, VerifyOtpActivity.PURPOSE_SEND_MONEY);
+                        otpLauncher.launch(intent);
+                    }
+
+                    @Override
+                    public void onFallback(String fallbackOtp, String error) {
+                        btnContinue.setText("Verify to Send");
+                        com.google.android.material.snackbar.Snackbar.make(btnContinue, "📧 SMTP missing. Test OTP: " + fallbackOtp, com.google.android.material.snackbar.Snackbar.LENGTH_INDEFINITE)
+                            .setAction("Next", v2 -> {
+                                Intent intent = new Intent(SendMoneyActivity.this, VerifyOtpActivity.class);
+                                intent.putExtra("email", currentUserEmail);
+                                intent.putExtra(VerifyOtpActivity.EXTRA_PURPOSE, VerifyOtpActivity.PURPOSE_SEND_MONEY);
+                                otpLauncher.launch(intent);
+                            }).show();
+                    }
+                });
+
             } catch (NumberFormatException e) {
                 etAmount.setError("Invalid amount");
             }
