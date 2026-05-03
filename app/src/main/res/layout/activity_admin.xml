@@ -5,37 +5,93 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_screen">
 
-    <!-- Header -->
-    <RelativeLayout
-        android:id="@+id/header"
+    <!-- Header / Admin Profile -->
+    <LinearLayout
+        android:id="@+id/admin_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:padding="24dp"
+        android:background="@drawable/bg_card_gradient"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_bold"
-            android:text="Admin Console"
-            android:textColor="@color/colorTextPrimary"
-            android:textSize="24sp" />
+            android:layout_marginBottom="16dp">
 
-        <ImageButton
-            android:id="@+id/btn_logout"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_alignParentEnd="true"
-            android:background="@drawable/bg_icon_btn_white"
-            android:src="@drawable/ic_close"
-            app:tint="@android:color/holo_red_dark" />
-    </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_bold"
+                android:text="Admin Dashboard"
+                android:textColor="@color/colorTextWhite"
+                android:textSize="20sp" />
+
+            <ImageButton
+                android:id="@+id/btn_logout"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/bg_white_transparent_20"
+                android:src="@drawable/ic_close"
+                android:padding="10dp"
+                app:tint="@color/colorTextWhite" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_admin_profile"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/ic_user"
+                app:civ_border_color="@color/colorWhiteTransparent20"
+                app:civ_border_width="2dp" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="16dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_admin_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="Admin Name"
+                    android:textColor="@color/colorTextWhite"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_admin_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_regular"
+                    android:text="admin@colormine.com"
+                    android:textColor="@color/colorPurple100"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:background="@drawable/bg_online_dot" />
+        </LinearLayout>
+    </LinearLayout>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/header">
+        app:layout_constraintTop_toBottomOf="@id/admin_header">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -48,16 +104,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:weightSum="2">
+                android:weightSum="3">
 
-                <com.google.android.material.card.MaterialCardView
+                <androidx.cardview.widget.CardView
                     android:id="@+id/card_all_transactions"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_weight="1"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="0dp"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="4dp"
                     android:clickable="true"
                     android:focusable="true">
 
@@ -65,44 +121,80 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="16dp"
+                        android:padding="12dp"
                         android:background="@color/colorSurface">
 
                         <ImageView
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
                             android:src="@drawable/ic_history"
                             app:tint="@color/colorPrimary"/>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="System\nTxns"
-                            android:fontFamily="@font/poppins_semibold"
-                            android:layout_marginTop="8dp"/>
+                            android:text="Global\nTxns"
+                            android:fontFamily="@font/poppins_medium"
+                            android:textColor="@color/colorTextPrimary"
+                            android:textSize="11sp"
+                            android:layout_marginTop="6dp"/>
                     </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
+                </androidx.cardview.widget.CardView>
 
-                <com.google.android.material.card.MaterialCardView
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_broadcast"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
                     android:layout_weight="1"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="0dp">
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="4dp"
+                    android:clickable="true"
+                    android:focusable="true">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="16dp"
+                        android:padding="12dp"
                         android:background="@color/colorSurface">
 
                         <ImageView
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
-                            android:src="@drawable/ic_credit_card"
-                            app:tint="@color/colorSecondary"/>
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_bell"
+                            app:tint="@color/colorWarning"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Send\nBroad"
+                            android:fontFamily="@font/poppins_medium"
+                            android:textColor="@color/colorTextPrimary"
+                            android:textSize="11sp"
+                            android:layout_marginTop="6dp"/>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="4dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="12dp"
+                        android:background="@color/colorSurface">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_wallet"
+                            app:tint="@color/colorSuccess"/>
 
                         <TextView
                             android:id="@+id/tv_total_balance"
@@ -110,26 +202,30 @@
                             android:layout_height="wrap_content"
                             android:text="$0.00"
                             android:fontFamily="@font/poppins_bold"
-                            android:layout_marginTop="8dp"/>
+                            android:textColor="@color/colorTextPrimary"
+                            android:textSize="12sp"
+                            android:layout_marginTop="6dp"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Total Capital"
-                            android:textSize="12sp"/>
+                            android:text="Total Cap"
+                            android:fontFamily="@font/poppins_regular"
+                            android:textColor="@color/colorTextSecondary"
+                            android:textSize="10sp"/>
                     </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
+                </androidx.cardview.widget.CardView>
             </LinearLayout>
 
-            <!-- Search Section -->
+            <!-- Search -->
             <EditText
                 android:id="@+id/et_search_user"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="52dp"
                 android:layout_marginTop="24dp"
                 android:background="@drawable/bg_input"
                 android:drawableStart="@drawable/ic_search"
                 android:drawablePadding="12dp"
-                android:hint="Search users by name or email"
+                android:hint="Search users..."
                 android:paddingHorizontal="16dp"
                 android:textSize="14sp"
                 android:fontFamily="@font/poppins_regular"
@@ -140,17 +236,19 @@
                 android:layout_height="wrap_content"
                 android:text="User Management"
                 android:fontFamily="@font/poppins_semibold"
-                android:textSize="18sp"
+                android:textSize="16sp"
+                android:textColor="@color/colorTextPrimary"
                 android:layout_marginTop="24dp"
-                android:layout_marginBottom="16dp"/>
+                android:layout_marginBottom="12dp"/>
 
             <ListView
                 android:id="@+id/list_users"
                 android:layout_width="match_parent"
-                android:layout_height="500dp"
+                android:layout_height="600dp"
                 android:divider="@android:color/transparent"
-                android:dividerHeight="8dp"
-                android:nestedScrollingEnabled="true" />
+                android:dividerHeight="12dp"
+                android:nestedScrollingEnabled="true"
+                android:scrollbars="none"/>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

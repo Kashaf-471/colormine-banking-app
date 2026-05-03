@@ -28,7 +28,7 @@
                 <TextView android:id="@+id/tv_amount" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:fontFamily="@font/poppins_bold" android:text="$250.00" android:textColor="@color/colorPrimary" android:textSize="18sp"/>
             </RelativeLayout>
             <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp">
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="@font/poppins_regular" android:text="From" android:textColor="@color/colorTextSecondary" android:textSize="13sp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="@font/poppins_regular" android:text="Requested From" android:textColor="@color/colorTextSecondary" android:textSize="13sp"/>
                 <TextView android:id="@+id/tv_recipient" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:fontFamily="@font/poppins_medium" android:text="Sarah Johnson" android:textColor="@color/colorTextPrimary" android:textSize="13sp"/>
             </RelativeLayout>
             <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">

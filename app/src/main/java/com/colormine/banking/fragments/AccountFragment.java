@@ -17,6 +17,7 @@ import com.colormine.banking.CardDetailActivity;
 import com.colormine.banking.HelpActivity;
 import com.colormine.banking.LoginSignupActivity;
 import com.colormine.banking.NotificationsActivity;
+import com.colormine.banking.PersonalInfoActivity;
 import com.colormine.banking.R;
 import com.colormine.banking.SecurityActivity;
 import com.colormine.banking.SettingsActivity;
@@ -59,7 +60,7 @@ public class AccountFragment extends Fragment {
 
         View optPersonalInfo = view.findViewById(R.id.option_personal_info);
         if (optPersonalInfo != null) {
-            optPersonalInfo.setOnClickListener(v -> { /* Logic for personal info */ });
+            optPersonalInfo.setOnClickListener(v -> startActivity(new Intent(requireContext(), PersonalInfoActivity.class)));
         }
 
         View optMyCards = view.findViewById(R.id.option_my_cards);

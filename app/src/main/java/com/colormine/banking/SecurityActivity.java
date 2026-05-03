@@ -17,12 +17,17 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.biometric.BiometricManager;
 import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.Executor;
+
+import static androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG;
+import static androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_WEAK;
+import static androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL;
 
 public class SecurityActivity extends AppCompatActivity {
 
@@ -46,7 +51,6 @@ public class SecurityActivity extends AppCompatActivity {
         ImageButton btnBack = findViewById(R.id.btn_back);
         btnBack.setOnClickListener(v -> finish());
 
-        // Bell button navigates to NotificationsActivity
         View btnNotif = findViewById(R.id.btn_notifications);
         if (btnNotif != null) {
             btnNotif.setOnClickListener(v -> startActivity(new Intent(this, NotificationsActivity.class)));
@@ -75,19 +79,19 @@ public class SecurityActivity extends AppCompatActivity {
         updateSecurityScore();
     }
 
-    // ── Biometric ────────────────────────────────────────────────────────────
-
     private void setupBiometric() {
         biometricPrompt = new BiometricPrompt(SecurityActivity.this, executor,
             new BiometricPrompt.AuthenticationCallback() {
                 @Override
                 public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
                     super.onAuthenticationError(errorCode, errString);
-                    switchBiometric.setChecked(false);
-                    saveBool("biometric", false);
-                    updateSecurityScore();
-                    Toast.makeText(getApplicationContext(),
-                        "Authentication error: " + errString, Toast.LENGTH_SHORT).show();
+                    // Don't uncheck if it was a user cancel
+                    if (errorCode != BiometricPrompt.ERROR_USER_CANCELED && errorCode != BiometricPrompt.ERROR_NEGATIVE_BUTTON) {
+                        switchBiometric.setChecked(false);
+                        saveBool("biometric", false);
+                        updateSecurityScore();
+                        Toast.makeText(getApplicationContext(), "Authentication error: " + errString, Toast.LENGTH_SHORT).show();
+                    }
                 }
 
                 @Override
@@ -95,18 +99,13 @@ public class SecurityActivity extends AppCompatActivity {
                     super.onAuthenticationSucceeded(result);
                     saveBool("biometric", true);
                     updateSecurityScore();
-                    Toast.makeText(getApplicationContext(),
-                        "Biometric login enabled!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Biometric login enabled!", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onAuthenticationFailed() {
                     super.onAuthenticationFailed();
-                    switchBiometric.setChecked(false);
-                    saveBool("biometric", false);
-                    updateSecurityScore();
-                    Toast.makeText(getApplicationContext(),
-                        "Authentication failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Authentication failed", Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -114,15 +113,26 @@ public class SecurityActivity extends AppCompatActivity {
             .setTitle("Enable Biometric Login")
             .setSubtitle("Authenticate to activate fingerprint / face login")
             .setNegativeButtonText("Cancel")
+            .setAllowedAuthenticators(BIOMETRIC_STRONG | BIOMETRIC_WEAK)
             .build();
     }
 
-    // ── Listeners ────────────────────────────────────────────────────────────
-
     private void setupListeners() {
-        switchBiometric.setOnCheckedChangeListener((btn, isChecked) -> {
+        switchBiometric.setOnClickListener(v -> {
+            boolean isChecked = switchBiometric.isChecked();
             if (isChecked) {
-                biometricPrompt.authenticate(promptInfo);
+                BiometricManager biometricManager = BiometricManager.from(this);
+                int canAuth = biometricManager.canAuthenticate(BIOMETRIC_STRONG | BIOMETRIC_WEAK);
+                if (canAuth == BiometricManager.BIOMETRIC_SUCCESS) {
+                    biometricPrompt.authenticate(promptInfo);
+                } else {
+                    String msg = "Biometric not available";
+                    if (canAuth == BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED) {
+                        msg = "No biometric enrolled. Please set it up in your device settings.";
+                    }
+                    Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+                    switchBiometric.setChecked(false);
+                }
             } else {
                 saveBool("biometric", false);
                 updateSecurityScore();
@@ -133,27 +143,16 @@ public class SecurityActivity extends AppCompatActivity {
         switchAlerts.setOnCheckedChangeListener((btn, isChecked) -> {
             saveBool("alerts", isChecked);
             updateSecurityScore();
-            Toast.makeText(this,
-                "Login alerts " + (isChecked ? "enabled" : "disabled"),
-                Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Login alerts " + (isChecked ? "enabled" : "disabled"), Toast.LENGTH_SHORT).show();
         });
 
-        // Transaction PIN dialog
         findViewById(R.id.option_pin).setOnClickListener(v -> showSetPinDialog());
-
-        // Change Password → ForgotPasswordActivity
-        findViewById(R.id.option_change_password).setOnClickListener(v ->
-            startActivity(new Intent(this, ForgotPasswordActivity.class)));
-
-        // Active Sessions dialog
+        findViewById(R.id.option_change_password).setOnClickListener(v -> startActivity(new Intent(this, ForgotPasswordActivity.class)));
         findViewById(R.id.option_sessions).setOnClickListener(v -> showActiveSessionsDialog());
     }
 
-    // ── Transaction PIN ──────────────────────────────────────────────────────
-
     private void showSetPinDialog() {
         boolean pinExists = !sharedPreferences.getString("transactionPin", "").isEmpty();
-
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.setPadding(64, 32, 64, 0);
@@ -173,11 +172,9 @@ public class SecurityActivity extends AppCompatActivity {
                     sharedPreferences.edit().putString("transactionPin", pin).apply();
                     tvPinStatus.setText(getString(R.string.transaction_pin_set));
                     updateSecurityScore();
-                    Toast.makeText(this,
-                        "Transaction PIN saved successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Transaction PIN saved successfully", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(this,
-                        "PIN must be exactly 4 digits", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "PIN must be exactly 4 digits", Toast.LENGTH_SHORT).show();
                 }
             })
             .setNegativeButton("Cancel", null);
@@ -190,75 +187,41 @@ public class SecurityActivity extends AppCompatActivity {
                 Toast.makeText(this, "Transaction PIN removed", Toast.LENGTH_SHORT).show();
             });
         }
-
         builder.show();
     }
-
-    // ── Active Sessions ──────────────────────────────────────────────────────
 
     private void showActiveSessionsDialog() {
         String deviceModel  = Build.MANUFACTURER + " " + Build.MODEL;
         String androidVer   = "Android " + Build.VERSION.RELEASE;
-
         SharedPreferences sessionPref = getSharedPreferences("UserSession", Context.MODE_PRIVATE);
         long loginTime = sessionPref.getLong("loginTime", System.currentTimeMillis());
-        // Record login time if not yet set
-        if (!sessionPref.contains("loginTime")) {
-            sessionPref.edit().putLong("loginTime", System.currentTimeMillis()).apply();
-            loginTime = System.currentTimeMillis();
-        }
-        String timeStr = new SimpleDateFormat("MMM dd, yyyy  hh:mm a", Locale.getDefault())
-            .format(new Date(loginTime));
+        String timeStr = new SimpleDateFormat("MMM dd, yyyy  hh:mm a", Locale.getDefault()).format(new Date(loginTime));
 
-        String message =
-            "📱  Current Device\n" +
-            deviceModel + "\n" +
-            androidVer  + "\n\n" +
-            "🕐  Session Started\n" +
-            timeStr + "\n\n" +
-            "✅  This is your only active session.\n\n" +
-            "If you notice any suspicious activity, change your password immediately.";
+        String message = "📱  Current Device\n" + deviceModel + "\n" + androidVer  + "\n\n" +
+                         "🕐  Session Started\n" + timeStr + "\n\n" +
+                         "✅  This is your only active session.\n\n" +
+                         "If you notice any suspicious activity, change your password immediately.";
 
         new AlertDialog.Builder(this)
             .setTitle("Active Sessions")
             .setMessage(message)
             .setPositiveButton("OK", null)
-            .setNegativeButton("Sign Out All", (dialog, which) -> {
-                Toast.makeText(this,
-                    "All other sessions signed out", Toast.LENGTH_SHORT).show();
-            })
             .show();
     }
 
-    // ── Security Score ───────────────────────────────────────────────────────
-
-    /**
-     * Score breakdown:
-     *   Biometric enabled   → +40 pts
-     *   Transaction PIN set → +30 pts
-     *   Login Alerts on     → +15 pts
-     *   Base (always)       → +15 pts
-     *   Max = 100
-     */
     private void updateSecurityScore() {
         int score = 15; // base
-        if (sharedPreferences.getBoolean("biometric", false))                     score += 40;
-        if (!sharedPreferences.getString("transactionPin", "").isEmpty())         score += 30;
-        if (sharedPreferences.getBoolean("alerts", true))                         score += 15;
+        if (sharedPreferences.getBoolean("biometric", false)) score += 40;
+        if (!sharedPreferences.getString("transactionPin", "").isEmpty()) score += 30;
+        if (sharedPreferences.getBoolean("alerts", true)) score += 15;
 
         tvSecurityScore.setText(score + "%");
         securityProgress.setProgress(score);
 
-        if (score >= 85) {
-            tvSecuritySubtitle.setText("Your account is well protected");
-        } else if (score >= 55) {
-            tvSecuritySubtitle.setText("Good — enable more options to improve");
-        } else {
-            tvSecuritySubtitle.setText("Enable features below to secure your account");
-        }
+        if (score >= 85) tvSecuritySubtitle.setText("Your account is well protected");
+        else if (score >= 55) tvSecuritySubtitle.setText("Good — enable more options to improve");
+        else tvSecuritySubtitle.setText("Enable features below to secure your account");
     }
-
-    // ── Helpers ──────────────────────────────────────────────────────────────
 
     private void saveBool(String key, boolean value) {
         sharedPreferences.edit().putBoolean(key, value).apply();

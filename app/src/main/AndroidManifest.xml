@@ -103,9 +103,15 @@
             android:screenOrientation="portrait" android:exported="false"/>
         <activity android:name=".AdminTransactionsActivity"
             android:screenOrientation="portrait" android:exported="false"/>
+        <activity android:name=".UserDetailsActivity"
+            android:screenOrientation="portrait" android:exported="false"/>
 
         <!-- Account & Settings -->
         <activity android:name=".AccountActivity"
+            android:screenOrientation="portrait" android:exported="false"/>
+        <activity android:name=".PersonalInfoActivity"
+            android:screenOrientation="portrait" android:exported="false"/>
+        <activity android:name=".EditProfileActivity"
             android:screenOrientation="portrait" android:exported="false"/>
         <activity android:name=".SecurityActivity"
             android:screenOrientation="portrait" android:exported="false"/>

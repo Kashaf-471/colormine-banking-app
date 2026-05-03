@@ -154,14 +154,14 @@ public class VerifyOtpActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFallback(String fallbackOtp, String error) {
+            public void onFallback(String error) {
                 if (loadingBar != null) loadingBar.setVisibility(View.GONE);
-                // Show OTP on screen — useful when SMTP not yet configured
+                // Requirement: No in-app OTP display. Strictly email.
                 Snackbar.make(
                     btnVerify,
-                    "📧 Email unavailable. Test OTP: " + fallbackOtp,
-                    Snackbar.LENGTH_INDEFINITE
-                ).setAction("OK", v -> {}).show();
+                    "📧 Email delivery failed. Check your internet connection.",
+                    Snackbar.LENGTH_LONG
+                ).show();
                 startResendCountdown();
                 clearInputs();
             }

@@ -122,7 +122,7 @@ public class SendMoneyActivity extends AppCompatActivity {
         
         findViewById(R.id.btn_100).setOnClickListener(v -> etAmount.setText("100"));
         findViewById(R.id.btn_500).setOnClickListener(v -> etAmount.setText("500"));
-        findViewById(R.id.btn_1000).setOnClickListener(v -> etAmount.setText("1000"));
+        findViewById(R.id.btn_10000).setOnClickListener(v -> etAmount.setText("10000"));
         
         otpLauncher = registerForActivityResult(
             new androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult(),
@@ -161,11 +161,12 @@ public class SendMoneyActivity extends AppCompatActivity {
                 }
 
                 btnContinue.setEnabled(false);
-                btnContinue.setText("Sending OTP...");
+                btnContinue.setText("Sending Email OTP...");
 
                 OtpService.generateAndSend(this, currentUserEmail, new OtpService.OtpCallback() {
                     @Override
                     public void onSuccess() {
+                        btnContinue.setEnabled(true);
                         btnContinue.setText("Verify to Send");
                         Intent intent = new Intent(SendMoneyActivity.this, VerifyOtpActivity.class);
                         intent.putExtra("email", currentUserEmail);
@@ -174,15 +175,10 @@ public class SendMoneyActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onFallback(String fallbackOtp, String error) {
-                        btnContinue.setText("Verify to Send");
-                        com.google.android.material.snackbar.Snackbar.make(btnContinue, "📧 SMTP missing. Test OTP: " + fallbackOtp, com.google.android.material.snackbar.Snackbar.LENGTH_INDEFINITE)
-                            .setAction("Next", v2 -> {
-                                Intent intent = new Intent(SendMoneyActivity.this, VerifyOtpActivity.class);
-                                intent.putExtra("email", currentUserEmail);
-                                intent.putExtra(VerifyOtpActivity.EXTRA_PURPOSE, VerifyOtpActivity.PURPOSE_SEND_MONEY);
-                                otpLauncher.launch(intent);
-                            }).show();
+                    public void onFallback(String error) {
+                        btnContinue.setEnabled(true);
+                        btnContinue.setText("Continue");
+                        Toast.makeText(SendMoneyActivity.this, "Failed to send OTP to your email: " + error, Toast.LENGTH_LONG).show();
                     }
                 });
 
@@ -232,8 +228,10 @@ public class SendMoneyActivity extends AppCompatActivity {
                 });
 
                 // 3. Success
-                startActivity(new Intent(SendMoneyActivity.this, TransferSuccessActivity.class)
-                    .putExtra("amount", amount).putExtra("recipient", selectedContact.getName()));
+                Intent intent = new Intent(SendMoneyActivity.this, TransferSuccessActivity.class);
+                intent.putExtra("amount", amount);
+                intent.putExtra("recipient", selectedContact.getName());
+                startActivity(intent);
                 finish();
             }
 

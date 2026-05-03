@@ -1,5 +1,7 @@
 package com.colormine.banking;
 
+import static java.lang.String.*;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
@@ -19,26 +21,18 @@ import javax.mail.internet.MimeMessage;
 
 /**
  * OtpService — generates, sends, and verifies 6-digit OTPs via Gmail SMTP.
- *
- * SETUP REQUIRED:
- *   1. Replace SMTP_EMAIL with a Gmail address you own.
- *   2. Enable 2-Step Verification on that account.
- *   3. Go to Google Account → Security → App Passwords → generate one.
- *   4. Replace SMTP_PASSWORD with that 16-character App Password.
- *
- * FALLBACK:  If email sending fails (credentials not set / no network),
- *            the OTP is passed back via onFallback() so you can show it
- *            on-screen for testing.
+ * 
+ * REQUIREMENT: Real-time delivery to user's email only. No in-app fallback.
  */
 public class OtpService {
 
     private static final String TAG = "OtpService";
 
     // ──────────────────────────────────────────────────────────────────────────
-    // ► CONFIGURE THESE TWO LINES before demo / submission
+    // ► CONFIGURE THESE TWO LINES FOR REAL-TIME EMAIL DELIVERY
     // ──────────────────────────────────────────────────────────────────────────
-    private static final String SMTP_EMAIL    = "colorminebankapp@gmail.com"; // sender Gmail
-    private static final String SMTP_PASSWORD = "YOUR_APP_PASSWORD_HERE";     // 16-char App Password
+    private static final String SMTP_EMAIL    = "colorminebankapp@gmail.com"; 
+    private static final String SMTP_PASSWORD = "dcvlshwlddhnmbju";
     // ──────────────────────────────────────────────────────────────────────────
 
     private static final String PREF_NAME  = "OtpPrefs";
@@ -47,25 +41,13 @@ public class OtpService {
     private static final String KEY_EXPIRY = "otp_expiry";
     private static final long   OTP_VALID_MS = 5 * 60 * 1000L; // 5 minutes
 
-    // ── Callback ─────────────────────────────────────────────────────────────
-
     public interface OtpCallback {
-        /** Called on the main thread when email sent successfully. */
         void onSuccess();
-        /** Called on the main thread when sending failed; show `fallbackOtp` on screen. */
-        void onFallback(String fallbackOtp, String error);
+        void onFallback(String error);
     }
 
-    // ── Generate + Send ───────────────────────────────────────────────────────
-
-    /**
-     * Generates a fresh OTP, persists it with a 5-minute expiry, and sends it
-     * via Gmail SMTP on a background thread.
-     *
-     * @return the generated OTP string (use only for debug logging)
-     */
-    public static String generateAndSend(Context ctx, String recipientEmail, OtpCallback cb) {
-        String otp = String.format("%06d", new Random().nextInt(1_000_000));
+    public static void generateAndSend(Context ctx, String recipientEmail, OtpCallback cb) {
+        String otp = format("%06d",new Random().nextInt(1000000));
         persist(ctx, otp, recipientEmail);
 
         Handler mainHandler = new Handler(Looper.getMainLooper());
@@ -77,35 +59,25 @@ public class OtpService {
                 mainHandler.post(cb::onSuccess);
             } catch (Exception e) {
                 Log.w(TAG, "SMTP failed: " + e.getMessage());
-                mainHandler.post(() -> cb.onFallback(otp, e.getMessage()));
+                // Strictly pass error only, no OTP code back to UI
+                mainHandler.post(() -> cb.onFallback(e.getMessage()));
             }
         }).start();
-
-        return otp;
     }
 
-    // ── Verify ────────────────────────────────────────────────────────────────
-
-    /**
-     * Returns true if `enteredOtp` matches the stored code for `email` and
-     * has not yet expired.  Clears the stored OTP on a successful match.
-     */
     public static boolean verify(Context ctx, String enteredOtp, String email) {
         SharedPreferences p = ctx.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         String saved = p.getString(KEY_OTP, "");
         String savedEmail = p.getString(KEY_EMAIL, "");
         long   expiry = p.getLong(KEY_EXPIRY, 0);
 
-        if (System.currentTimeMillis() > expiry)     return false; // expired
-        if (!savedEmail.equalsIgnoreCase(email))     return false; // wrong email
-        if (!saved.equals(enteredOtp.trim()))        return false; // wrong code
+        if (System.currentTimeMillis() > expiry)     return false;
+        if (!savedEmail.equalsIgnoreCase(email))     return false;
+        if (!saved.equals(enteredOtp.trim()))        return false;
 
-        // Invalidate OTP after first successful use
         p.edit().remove(KEY_OTP).remove(KEY_EMAIL).remove(KEY_EXPIRY).apply();
         return true;
     }
-
-    // ── Internal ──────────────────────────────────────────────────────────────
 
     private static void persist(Context ctx, String otp, String email) {
         ctx.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
@@ -116,9 +88,8 @@ public class OtpService {
     }
 
     private static void sendViaSmtp(String to, String otp) throws Exception {
-        if (SMTP_PASSWORD.equals("YOUR_APP_PASSWORD_HERE")) {
-            // Credentials not configured — force fallback so the caller knows
-            throw new MessagingException("SMTP credentials not configured");
+        if (SMTP_PASSWORD.equals("YOUR_APP_PASSWORD_HERE") || SMTP_PASSWORD.isEmpty()) {
+            throw new MessagingException("SMTP credentials are not configured in OtpService.java");
         }
 
         Properties props = new Properties();
