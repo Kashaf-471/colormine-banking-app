@@ -1,7 +1,8 @@
 package com.colormine.banking;
 
-import android.content.DialogInterface;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -24,7 +25,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Admin Dashboard Activity for managing users and viewing transactions via Firebase.
@@ -35,7 +38,7 @@ public class AdminActivity extends AppCompatActivity implements UserAdapter.OnUs
     private UserAdapter adapter;
     private List<User> allUsersList;
     private List<User> filteredUsersList;
-    private TextView tvTotalBalance;
+    private TextView tvTotalBalance, tvAdminName, tvAdminEmail;
     private EditText etSearch;
     private DatabaseReference mDatabase;
 
@@ -45,16 +48,25 @@ public class AdminActivity extends AppCompatActivity implements UserAdapter.OnUs
         setContentView(R.layout.activity_admin);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        listView = findViewById(R.id.list_users);
-        tvTotalBalance = findViewById(R.id.tv_total_balance);
-        etSearch = findViewById(R.id.et_search_user);
+        initViews();
         
         allUsersList = new ArrayList<>();
         filteredUsersList = new ArrayList<>();
 
+        loadAdminProfile();
         loadUsersFromFirebase();
+        setupListeners();
+    }
 
-        // Search implementation
+    private void initViews() {
+        listView = findViewById(R.id.list_users);
+        tvTotalBalance = findViewById(R.id.tv_total_balance);
+        tvAdminName = findViewById(R.id.tv_admin_name);
+        tvAdminEmail = findViewById(R.id.tv_admin_email);
+        etSearch = findViewById(R.id.et_search_user);
+    }
+
+    private void setupListeners() {
         if (etSearch != null) {
             etSearch.addTextChangedListener(new TextWatcher() {
                 @Override
@@ -70,30 +82,94 @@ public class AdminActivity extends AppCompatActivity implements UserAdapter.OnUs
             });
         }
 
-        // Navigation to System Transactions
-        View cardTransactions = findViewById(R.id.card_all_transactions);
-        if (cardTransactions != null) {
-            cardTransactions.setOnClickListener(v -> {
-                startActivity(new Intent(AdminActivity.this, AdminTransactionsActivity.class));
-            });
-        }
+        findViewById(R.id.card_all_transactions).setOnClickListener(v -> {
+            startActivity(new Intent(AdminActivity.this, AdminTransactionsActivity.class));
+        });
 
-        // Logout implementation
-        View btnLogout = findViewById(R.id.btn_logout);
-        if (btnLogout != null) {
-            btnLogout.setOnClickListener(v -> {
-                new AlertDialog.Builder(this)
-                        .setTitle("Sign Out")
-                        .setMessage("Are you sure you want to sign out from admin console?")
-                        .setPositiveButton("Sign Out", (dialog, which) -> {
-                            getSharedPreferences("UserSession", MODE_PRIVATE).edit().clear().apply();
-                            startActivity(new Intent(AdminActivity.this, LoginSignupActivity.class));
-                            finish();
-                        })
-                        .setNegativeButton("Cancel", null)
-                        .show();
-            });
-        }
+        findViewById(R.id.card_broadcast).setOnClickListener(v -> showBroadcastDialog());
+
+        findViewById(R.id.btn_logout).setOnClickListener(v -> {
+            new AlertDialog.Builder(this)
+                    .setTitle("Sign Out")
+                    .setMessage("Are you sure you want to sign out from admin console?")
+                    .setPositiveButton("Sign Out", (dialog, which) -> {
+                        getSharedPreferences("UserSession", MODE_PRIVATE).edit().clear().apply();
+                        startActivity(new Intent(AdminActivity.this, LoginSignupActivity.class));
+                        finish();
+                    })
+                    .setNegativeButton("Cancel", null)
+                    .show();
+        });
+    }
+
+    private void showBroadcastDialog() {
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_broadcast, null);
+        EditText etTitle = view.findViewById(R.id.et_broadcast_title);
+        EditText etMessage = view.findViewById(R.id.et_broadcast_message);
+
+        new AlertDialog.Builder(this)
+            .setTitle("Broadcast Notification")
+            .setMessage("Send this message to ALL users")
+            .setView(view)
+            .setPositiveButton("Send All", (dialog, which) -> {
+                String title = etTitle.getText().toString().trim();
+                String message = etMessage.getText().toString().trim();
+                if (!title.isEmpty() && !message.isEmpty()) {
+                    sendBroadcast(title, message);
+                } else {
+                    Toast.makeText(this, "Title and Message required", Toast.LENGTH_SHORT).show();
+                }
+            })
+            .setNegativeButton("Cancel", null)
+            .show();
+    }
+
+    private void sendBroadcast(String title, String message) {
+        mDatabase.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int count = 0;
+                for (DataSnapshot userSnap : snapshot.getChildren()) {
+                    String sanitizedEmail = userSnap.getKey();
+                    if (sanitizedEmail != null) {
+                        String id = mDatabase.child("notifications").child(sanitizedEmail).push().getKey();
+                        Map<String, Object> notif = new HashMap<>();
+                        notif.put("title", title);
+                        notif.put("message", message);
+                        notif.put("timestamp", System.currentTimeMillis());
+                        if (id != null) {
+                            mDatabase.child("notifications").child(sanitizedEmail).child(id).setValue(notif);
+                            count++;
+                        }
+                    }
+                }
+                Toast.makeText(AdminActivity.this, "Broadcast sent to " + count + " users", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
+    }
+
+    private void loadAdminProfile() {
+        SharedPreferences pref = getSharedPreferences("UserSession", Context.MODE_PRIVATE);
+        String email = pref.getString("email", "");
+        if (email.isEmpty()) return;
+
+        String sanitizedEmail = email.replace(".", ",");
+        mDatabase.child("users").child(sanitizedEmail).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User admin = snapshot.getValue(User.class);
+                if (admin != null) {
+                    if (tvAdminName != null) tvAdminName.setText(admin.getName());
+                    if (tvAdminEmail != null) tvAdminEmail.setText(admin.getEmail());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
     }
 
     private void loadUsersFromFirebase() {
@@ -105,7 +181,6 @@ public class AdminActivity extends AppCompatActivity implements UserAdapter.OnUs
                 for (DataSnapshot userSnap : snapshot.getChildren()) {
                     User user = userSnap.getValue(User.class);
                     if (user != null) {
-                        // Skip system admin in the management list
                         if (user.getIsAdmin() != 1) {
                             allUsersList.add(user);
                             totalBalance += user.getBalance();
@@ -171,6 +246,10 @@ public class AdminActivity extends AppCompatActivity implements UserAdapter.OnUs
 
     @Override
     public void onView(User user) {
+        if (user == null || user.getEmail() == null) {
+            Toast.makeText(this, "Error: User data is missing", Toast.LENGTH_SHORT).show();
+            return;
+        }
         Intent intent = new Intent(this, UserDetailsActivity.class);
         intent.putExtra("user_email", user.getEmail());
         intent.putExtra("user_name", user.getName());
@@ -187,13 +266,11 @@ public class AdminActivity extends AppCompatActivity implements UserAdapter.OnUs
         EditText etBalance = view.findViewById(R.id.et_edit_balance);
         Spinner spinnerStatus = view.findViewById(R.id.spinner_status);
 
-        // Populate Status Spinner
         String[] statuses = {"ACTIVE", "BLOCKED"};
         ArrayAdapter<String> statusAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, statuses);
         statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerStatus.setAdapter(statusAdapter);
 
-        // Set current values
         if (etName != null) etName.setText(user.getName());
         if (etBalance != null) etBalance.setText(String.valueOf(user.getBalance()));
         if (user.getStatus() != null) {
