@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class SendMoneyActivity extends AppCompatActivity {
+public class SendMoneyActivity extends BaseActivity {
 
     private ImageButton btnBack;
     private RecyclerView rvContacts;
@@ -90,13 +90,17 @@ public class SendMoneyActivity extends AppCompatActivity {
                         }
                     }
                 }
-                
+
                 ContactAdapter adapter = new ContactAdapter(contacts, contact -> {
                     selectedContact = contact;
                     selectedContactInfo.setVisibility(View.VISIBLE);
                     tvSelectedAvatar.setText(contact.getAvatarInitial());
                     tvSelectedName.setText(contact.getName());
-                    tvSelectedUsername.setText(contact.getUsername());
+                    String username = contact.getUsername();
+                    if (username != null && username.contains("@")) {
+                        username = "@" + username.split("@")[0];
+                    }
+                    tvSelectedUsername.setText(username);
                 });
                 rvContacts.setAdapter(adapter);
 
@@ -104,7 +108,11 @@ public class SendMoneyActivity extends AppCompatActivity {
                     selectedContactInfo.setVisibility(View.VISIBLE);
                     tvSelectedAvatar.setText(selectedContact.getAvatarInitial());
                     tvSelectedName.setText(selectedContact.getName());
-                    tvSelectedUsername.setText(selectedContact.getUsername());
+                    String username = selectedContact.getUsername();
+                    if (username != null && username.contains("@")) {
+                        username = "@" + username.split("@")[0];
+                    }
+                    tvSelectedUsername.setText(username);
                 }
 
                 if (requestAmount > 0) {
@@ -119,11 +127,12 @@ public class SendMoneyActivity extends AppCompatActivity {
 
     private void setupListeners() {
         btnBack.setOnClickListener(v -> finish());
-        
+
+        findViewById(R.id.btn_50).setOnClickListener(v -> etAmount.setText("50"));
         findViewById(R.id.btn_100).setOnClickListener(v -> etAmount.setText("100"));
+        findViewById(R.id.btn_200).setOnClickListener(v -> etAmount.setText("200"));
         findViewById(R.id.btn_500).setOnClickListener(v -> etAmount.setText("500"));
-        findViewById(R.id.btn_10000).setOnClickListener(v -> etAmount.setText("10000"));
-        
+
         otpLauncher = registerForActivityResult(
             new androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -132,7 +141,7 @@ public class SendMoneyActivity extends AppCompatActivity {
                 } else {
                     btnContinue.setEnabled(true);
                     btnContinue.setText("Continue");
-                    Toast.makeText(this, "Transaction cancelled", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Verification cancelled", Toast.LENGTH_SHORT).show();
                 }
             }
         );
@@ -142,48 +151,114 @@ public class SendMoneyActivity extends AppCompatActivity {
                 Toast.makeText(this, "Select a recipient", Toast.LENGTH_SHORT).show();
                 return;
             }
-            
+
             String amountStr = etAmount.getText().toString();
             if (amountStr.isEmpty()) {
                 etAmount.setError("Required");
                 return;
             }
-            
+
             try {
                 pendingAmount = Double.parseDouble(amountStr);
-                
-                SharedPreferences pref = getSharedPreferences("UserSession", Context.MODE_PRIVATE);
-                String currentUserEmail = pref.getString("email", "");
-                
-                if (currentUserEmail.isEmpty()) {
-                    Toast.makeText(this, "Session expired", Toast.LENGTH_SHORT).show();
+                checkAccountStatusAndProceed();
+            } catch (NumberFormatException e) {
+                etAmount.setError("Invalid amount");
+            }
+        });
+    }
+
+    private void checkAccountStatusAndProceed() {
+        SharedPreferences pref = getSharedPreferences("UserSession", Context.MODE_PRIVATE);
+        String currentUserEmail = pref.getString("email", "");
+        String sanitizedEmail = currentUserEmail.replace(".", ",");
+
+        btnContinue.setEnabled(false);
+        btnContinue.setText("Checking security...");
+
+        mDatabase.child("users").child(sanitizedEmail).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User user = snapshot.getValue(User.class);
+                if (user != null && "FROZEN".equalsIgnoreCase(user.getStatus())) {
+                    btnContinue.setEnabled(true);
+                    btnContinue.setText("Continue");
+                    new androidx.appcompat.app.AlertDialog.Builder(SendMoneyActivity.this)
+                        .setTitle("Account Frozen")
+                        .setMessage("Your account is currently frozen. Please unfreeze it from Security settings to make transfers.")
+                        .setPositiveButton("OK", null)
+                        .show();
                     return;
                 }
 
-                btnContinue.setEnabled(false);
-                btnContinue.setText("Sending Email OTP...");
+                // Check Transaction PIN if set via SettingsManager
+                String savedPin = settingsManager.getTransactionPin();
 
-                OtpService.generateAndSend(this, currentUserEmail, new OtpService.OtpCallback() {
-                    @Override
-                    public void onSuccess() {
-                        btnContinue.setEnabled(true);
-                        btnContinue.setText("Verify to Send");
-                        Intent intent = new Intent(SendMoneyActivity.this, VerifyOtpActivity.class);
-                        intent.putExtra("email", currentUserEmail);
-                        intent.putExtra(VerifyOtpActivity.EXTRA_PURPOSE, VerifyOtpActivity.PURPOSE_SEND_MONEY);
-                        otpLauncher.launch(intent);
-                    }
+                if (!savedPin.isEmpty()) {
+                    showPinDialog(savedPin);
+                } else {
+                    startOtpFlow(currentUserEmail);
+                }
+            }
 
-                    @Override
-                    public void onFallback(String error) {
-                        btnContinue.setEnabled(true);
-                        btnContinue.setText("Continue");
-                        Toast.makeText(SendMoneyActivity.this, "Failed to send OTP to your email: " + error, Toast.LENGTH_LONG).show();
-                    }
-                });
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                btnContinue.setEnabled(true);
+                btnContinue.setText("Continue");
+            }
+        });
+    }
 
-            } catch (NumberFormatException e) {
-                etAmount.setError("Invalid amount");
+    private void showPinDialog(String correctPin) {
+        btnContinue.setEnabled(true);
+        btnContinue.setText("Continue");
+
+        android.widget.LinearLayout layout = new android.widget.LinearLayout(this);
+        layout.setOrientation(android.widget.LinearLayout.VERTICAL);
+        layout.setPadding(64, 32, 64, 0);
+
+        android.widget.EditText etPin = new android.widget.EditText(this);
+        etPin.setHint("Enter 4-digit PIN");
+        etPin.setInputType(android.text.InputType.TYPE_CLASS_NUMBER | android.text.InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+        etPin.setMaxLines(1);
+        layout.addView(etPin);
+
+        new androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle("Confirm Transaction")
+            .setMessage("Please enter your transaction PIN to continue.")
+            .setView(layout)
+            .setPositiveButton("Verify", (dialog, which) -> {
+                String inputPin = etPin.getText().toString().trim();
+                if (correctPin.equals(inputPin)) {
+                    SharedPreferences pref = getSharedPreferences("UserSession", Context.MODE_PRIVATE);
+                    startOtpFlow(pref.getString("email", ""));
+                } else {
+                    Toast.makeText(this, "Incorrect PIN", Toast.LENGTH_SHORT).show();
+                }
+            })
+            .setNegativeButton("Cancel", null)
+            .show();
+    }
+
+    private void startOtpFlow(String email) {
+        btnContinue.setEnabled(false);
+        btnContinue.setText("Sending Email OTP...");
+
+        OtpService.generateAndSend(this, email, new OtpService.OtpCallback() {
+            @Override
+            public void onSuccess() {
+                btnContinue.setEnabled(true);
+                btnContinue.setText("Verify to Send");
+                Intent intent = new Intent(SendMoneyActivity.this, VerifyOtpActivity.class);
+                intent.putExtra("email", email);
+                intent.putExtra(VerifyOtpActivity.EXTRA_PURPOSE, VerifyOtpActivity.PURPOSE_SEND_MONEY);
+                otpLauncher.launch(intent);
+            }
+
+            @Override
+            public void onFallback(String error) {
+                btnContinue.setEnabled(true);
+                btnContinue.setText("Continue");
+                Toast.makeText(SendMoneyActivity.this, "Failed to send OTP to your email: " + error, Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -192,6 +267,8 @@ public class SendMoneyActivity extends AppCompatActivity {
         SharedPreferences pref = getSharedPreferences("UserSession", Context.MODE_PRIVATE);
         String senderEmail = pref.getString("email", "");
         String sanitizedSender = senderEmail.replace(".", ",");
+        
+        if (selectedContact == null) return;
         String sanitizedRecipient = selectedContact.getUsername().replace(".", ",");
 
         btnContinue.setEnabled(false);
@@ -211,6 +288,13 @@ public class SendMoneyActivity extends AppCompatActivity {
                 mDatabase.child("users").child(sanitizedSender).child("balance").setValue(sender.getBalance() - amount);
                 recordTransaction(senderEmail, "EXPENSE", amount, "Sent to " + selectedContact.getName(), "Transfer");
                 recordNotification(senderEmail, "Transfer Sent", "You sent $" + amount + " to " + selectedContact.getName());
+                
+                // Real Push Notification
+                com.colormine.banking.utils.NotificationHelper.showNotification(
+                    SendMoneyActivity.this, 
+                    "Transfer Successful", 
+                    "You sent $" + amount + " to " + selectedContact.getName()
+                );
 
                 // 2. Update Recipient Balance
                 mDatabase.child("users").child(sanitizedRecipient).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -261,6 +345,8 @@ public class SendMoneyActivity extends AppCompatActivity {
     }
 
     private void recordNotification(String email, String title, String message) {
+        if (!settingsManager.isNotificationsEnabled()) return;
+        
         String sanitizedEmail = email.replace(".", ",");
         String id = mDatabase.child("notifications").child(sanitizedEmail).push().getKey();
         Map<String, Object> notif = new HashMap<>();

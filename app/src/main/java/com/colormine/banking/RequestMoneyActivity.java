@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,7 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class RequestMoneyActivity extends AppCompatActivity {
+public class RequestMoneyActivity extends BaseActivity {
 
     private ImageButton btnBack;
     private RecyclerView rvContacts;
@@ -98,7 +99,11 @@ public class RequestMoneyActivity extends AppCompatActivity {
                     selectedContactInfo.setVisibility(View.VISIBLE);
                     tvSelectedAvatar.setText(contact.getAvatarInitial());
                     tvSelectedName.setText(contact.getName());
-                    tvSelectedUsername.setText(contact.getUsername());
+                    String username = contact.getUsername();
+                    if (username != null && username.contains("@")) {
+                        username = "@" + username.split("@")[0];
+                    }
+                    tvSelectedUsername.setText(username);
                 });
                 rvContacts.setAdapter(adapter);
             }
@@ -111,9 +116,10 @@ public class RequestMoneyActivity extends AppCompatActivity {
     private void setupListeners() {
         btnBack.setOnClickListener(v -> finish());
         
+        findViewById(R.id.btn_50).setOnClickListener(v -> etAmount.setText("50"));
         findViewById(R.id.btn_100).setOnClickListener(v -> etAmount.setText("100"));
+        findViewById(R.id.btn_200).setOnClickListener(v -> etAmount.setText("200"));
         findViewById(R.id.btn_500).setOnClickListener(v -> etAmount.setText("500"));
-        findViewById(R.id.btn_1000).setOnClickListener(v -> etAmount.setText("1000"));
         
         btnContinue.setOnClickListener(v -> {
             if (selectedContact == null) {
@@ -143,14 +149,49 @@ public class RequestMoneyActivity extends AppCompatActivity {
         }
 
         btnContinue.setEnabled(false);
+        btnContinue.setText("Checking security...");
+
+        // Check if account is frozen
+        mDatabase.child("users").child(currentUserEmail.replace(".", ",")).child("status")
+            .addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    String status = snapshot.getValue(String.class);
+                    if ("FROZEN".equalsIgnoreCase(status)) {
+                        btnContinue.setEnabled(true);
+                        btnContinue.setText("Send Request");
+                        new AlertDialog.Builder(RequestMoneyActivity.this)
+                            .setTitle("Account Frozen")
+                            .setMessage("Your account is currently frozen. Please unfreeze it from Security settings to make requests.")
+                            .setPositiveButton("OK", null)
+                            .show();
+                    } else {
+                        proceedWithRequest(amount);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    btnContinue.setEnabled(true);
+                    btnContinue.setText("Send Request");
+                }
+            });
+    }
+
+    private void proceedWithRequest(double amount) {
         btnContinue.setText("Sending Request...");
 
         String sanitizedRecipient = selectedContact.getUsername().replace(".", ",");
-        
-        // Record notification for recipient
+
+        // Record notification for recipient if enabled in settings
+        if (!settingsManager.isNotificationsEnabled()) {
+            proceedToSuccess(amount);
+            return;
+        }
+
         String title = "Money Request";
         String message = currentUserName + " has requested $" + String.format("%.2f", amount) + " from you.";
-        
+
         String id = mDatabase.child("notifications").child(sanitizedRecipient).push().getKey();
         Map<String, Object> notif = new HashMap<>();
         notif.put("title", title);
@@ -159,21 +200,35 @@ public class RequestMoneyActivity extends AppCompatActivity {
         notif.put("type", "request");
         notif.put("senderEmail", currentUserEmail);
         notif.put("amount", amount);
-        
+
         if (id != null) {
             mDatabase.child("notifications").child(sanitizedRecipient).child(id).setValue(notif)
-                .addOnSuccessListener(aVoid -> {
-                    Intent intent = new Intent(RequestMoneyActivity.this, RequestSuccessActivity.class);
-                    intent.putExtra("amount", amount);
-                    intent.putExtra("recipient", selectedContact.getName());
-                    startActivity(intent);
-                    finish();
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(RequestMoneyActivity.this, "Failed to send request", Toast.LENGTH_SHORT).show();
-                    btnContinue.setEnabled(true);
-                    btnContinue.setText("Send Request");
-                });
+                    .addOnSuccessListener(aVoid -> {
+                        // Real Push Notification for sender (acknowledgment)
+                        com.colormine.banking.utils.NotificationHelper.showNotification(
+                                RequestMoneyActivity.this,
+                                "Request Sent",
+                                "Your request for $" + String.format("%.2f", amount) + " has been sent to " + selectedContact.getName()
+                        );
+
+                        Intent intent = new Intent(RequestMoneyActivity.this, RequestSuccessActivity.class);
+                        intent.putExtra("amount", amount);
+                        intent.putExtra("recipient", selectedContact.getName());
+                        startActivity(intent);
+                        finish();
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(RequestMoneyActivity.this, "Failed to send request", Toast.LENGTH_SHORT).show();
+                        btnContinue.setEnabled(true);
+                        btnContinue.setText("Send Request");
+                    });
         }
+    }
+    private void proceedToSuccess(double amount) {
+        Intent intent = new Intent(RequestMoneyActivity.this, RequestSuccessActivity.class);
+        intent.putExtra("amount", amount);
+        intent.putExtra("recipient", selectedContact.getName());
+        startActivity(intent);
+        finish();
     }
 }

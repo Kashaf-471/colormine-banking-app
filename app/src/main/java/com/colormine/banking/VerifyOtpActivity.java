@@ -23,6 +23,7 @@ public class VerifyOtpActivity extends AppCompatActivity {
     public static final String EXTRA_PURPOSE = "purpose";
     public static final String PURPOSE_PASSWORD_RESET = "password_reset";
     public static final String PURPOSE_SEND_MONEY     = "send_money";
+    public static final String PURPOSE_LOGIN          = "login";
 
     private TextView tvSubtitle, tvResend, tvCountdown;
     private Button   btnVerify;
@@ -126,6 +127,10 @@ public class VerifyOtpActivity extends AppCompatActivity {
 
         if (PURPOSE_SEND_MONEY.equals(purpose)) {
             // Return RESULT_OK so SendMoneyActivity can proceed with the transfer
+            setResult(RESULT_OK);
+            finish();
+        } else if (PURPOSE_LOGIN.equals(purpose)) {
+            // Return RESULT_OK so LoginFragment can proceed with the login
             setResult(RESULT_OK);
             finish();
         } else {

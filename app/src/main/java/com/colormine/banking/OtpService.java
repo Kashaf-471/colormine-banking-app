@@ -34,7 +34,7 @@ public class OtpService {
     // ──────────────────────────────────────────────────────────────────────────
 
     private static final String PREF_NAME  = "OtpPrefs";
-    private static final String KEY_ OTP    = "otp_code";
+    private static final String KEY_OTP    = "otp_code";
     private static final String KEY_EMAIL  = "otp_email";
     private static final String KEY_EXPIRY = "otp_expiry";
     private static final long   OTP_VALID_MS = 5 * 60 * 1000L; // 5 minutes
