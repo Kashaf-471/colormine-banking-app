@@ -10,11 +10,10 @@ public class ColorMineApp extends Application {
     public void onCreate() {
         super.onCreate();
         
-        // Apply Dark Mode preference globally at startup
-        SharedPreferences sharedPreferences = getSharedPreferences("AppSettings", Context.MODE_PRIVATE);
-        boolean isDarkMode = sharedPreferences.getBoolean("darkMode", false);
+        // Apply Dark Mode preference globally at startup using SettingsManager
+        com.colormine.banking.utils.SettingsManager settingsManager = com.colormine.banking.utils.SettingsManager.getInstance(this);
         
-        if (isDarkMode) {
+        if (settingsManager.isDarkMode()) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
