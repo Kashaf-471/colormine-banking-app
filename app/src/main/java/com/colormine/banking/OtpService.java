@@ -1,7 +1,5 @@
 package com.colormine.banking;
 
-import static java.lang.String.*;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
@@ -31,12 +29,12 @@ public class OtpService {
     // ──────────────────────────────────────────────────────────────────────────
     // ► CONFIGURE THESE TWO LINES FOR REAL-TIME EMAIL DELIVERY
     // ──────────────────────────────────────────────────────────────────────────
-    private static final String SMTP_EMAIL    = "colorminebankapp@gmail.com"; 
+    private static final String SMTP_EMAIL    = "fatimamalik23202320@gmail.com";
     private static final String SMTP_PASSWORD = "dcvlshwlddhnmbju";
     // ──────────────────────────────────────────────────────────────────────────
 
     private static final String PREF_NAME  = "OtpPrefs";
-    private static final String KEY_OTP    = "otp_code";
+    private static final String KEY_ OTP    = "otp_code";
     private static final String KEY_EMAIL  = "otp_email";
     private static final String KEY_EXPIRY = "otp_expiry";
     private static final long   OTP_VALID_MS = 5 * 60 * 1000L; // 5 minutes
@@ -47,7 +45,7 @@ public class OtpService {
     }
 
     public static void generateAndSend(Context ctx, String recipientEmail, OtpCallback cb) {
-        String otp = format("%06d",new Random().nextInt(1000000));
+        String otp = String.format("%06d", new Random().nextInt(1000000));
         persist(ctx, otp, recipientEmail);
 
         Handler mainHandler = new Handler(Looper.getMainLooper());
@@ -59,7 +57,6 @@ public class OtpService {
                 mainHandler.post(cb::onSuccess);
             } catch (Exception e) {
                 Log.w(TAG, "SMTP failed: " + e.getMessage());
-                // Strictly pass error only, no OTP code back to UI
                 mainHandler.post(() -> cb.onFallback(e.getMessage()));
             }
         }).start();
@@ -88,6 +85,7 @@ public class OtpService {
     }
 
     private static void sendViaSmtp(String to, String otp) throws Exception {
+        // FIXED condition: Only throw if the password is still the placeholder.
         if (SMTP_PASSWORD.equals("YOUR_APP_PASSWORD_HERE") || SMTP_PASSWORD.isEmpty()) {
             throw new MessagingException("SMTP credentials are not configured in OtpService.java");
         }
