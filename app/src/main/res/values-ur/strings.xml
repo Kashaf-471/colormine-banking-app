@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">کلر مائن</string>
+    <string name="tagline">آپ کا اسمارٹ بینکنگ پارٹنر</string>
+
+    <string name="tab_login">لاگ ان</string>
+    <string name="tab_signup">سائن اپ</string>
+    
+    <string name="welcome_back">خوش آمدید،</string>
+    <string name="total_balance">کل بیلنس</string>
+    
+    <string name="nav_home">ہوم</string>
+    <string name="nav_stats">اعداد و شمار</string>
+    <string name="nav_history">تاریخچہ</string>
+    <string name="nav_account">اکاؤنٹ</string>
+
+    <string name="settings_title">ایپ کی ترتیبات</string>
+    <string name="dark_mode">ڈارک موڈ</string>
+    <string name="language">زبان</string>
+    <string name="push_notifications">پش نوٹیفکیشنز</string>
+    <string name="sounds">آوازیں</string>
+    <string name="vibration">تھرتھراہٹ</string>
+    
+    <string name="security_title">سیکیورٹی</string>
+    <string name="security_status_title">سیکیورٹی کی حالت</string>
+    <string name="biometric_login">بایومیٹرک لاگ ان</string>
+    <string name="login_alerts">لاگ ان الرٹس</string>
+    
+    <string name="btn_logout">لاگ آؤٹ</string>
+
+    <string name="request_money_title">رقم کی درخواست</string>
+    <string name="label_request_amount">درخواست کی رقم</string>
+    <string name="btn_send_request">درخواست بھیجیں</string>
+    <string name="request_success_title">درخواست بھیج دی گئی!</string>
+    <string name="request_success_subtitle">آپ کی درخواست کامیابی کے ساتھ بھیج دی گئی ہے</string>
+    
+    <string name="security_score_format">%1$d%%</string>
+    <string name="security_msg_protected">آپ کا اکاؤنٹ اچھی طرح محفوظ ہے</string>
+    <string name="security_msg_good">اچھا — بہتر بنانے کے لیے مزید آپشنز فعال کریں</string>
+    <string name="security_msg_improve">اپنے اکاؤنٹ کو محفوظ بنانے کے لیے نیچے دیے گئے فیچرز کو فعال کریں</string>
+</resources>

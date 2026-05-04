@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary Colors -->
+    <color name="colorPrimary">#A78BFA</color>
+    <color name="colorPrimaryDark">#8B5CF6</color>
+    <color name="colorSecondary">#F472B6</color>
+
+    <!-- Backgrounds -->
+    <color name="colorBackground">#0F172A</color>
+    <color name="colorSurface">#1E293B</color>
+
+    <!-- Text Colors -->
+    <color name="colorTextPrimary">#F1F5F9</color>
+    <color name="colorTextSecondary">#94A3B8</color>
+    <color name="colorTextHint">#64748B</color>
+    <color name="colorTextWhite">#FFFFFF</color>
+
+    <!-- Component Backgrounds (Dark variants) -->
+    <color name="colorGray50">#1E293B</color>
+    <color name="colorGray100">#334155</color>
+    <color name="colorGray200">#475569</color>
+    
+    <color name="colorPurple100">#2E1065</color> <!-- Very dark purple -->
+    <color name="colorGreen100">#064E3B</color>  <!-- Very dark green -->
+    <color name="colorRed50">#450A0A</color>     <!-- Very dark red -->
+    <color name="colorPink50">#500724</color>    <!-- Very dark pink -->
+    <color name="colorYellow100">#422006</color> <!-- Very dark yellow -->
+    
+    <color name="colorDivider">#334155</color>
+</resources>

@@ -2,6 +2,6 @@
 <!-- Gray-50 action item row background -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
-    <solid android:color="#F9FAFB" />
+    <solid android:color="@color/colorGray50" />
     <corners android:radius="12dp" />
 </shape>

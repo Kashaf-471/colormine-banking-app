@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Base application theme -->
-    <style name="Theme.ColorMineBank" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="Theme.ColorMineBank" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorSecondary</item>
@@ -127,5 +127,14 @@
     <style name="TextAppearance.ColorMineBank.Tab" parent="TextAppearance.MaterialComponents.Button">
         <item name="android:fontFamily">@font/poppins_medium</item>
         <item name="android:textSize">@dimen/text_base</item>
+    </style>
+
+    <!-- Custom Alert Dialog Style -->
+    <style name="CustomAlertDialog" parent="Theme.MaterialComponents.DayNight.Dialog.Alert">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowMinWidthMajor">90%</item>
+        <item name="android:windowMinWidthMinor">90%</item>
     </style>
 </resources>

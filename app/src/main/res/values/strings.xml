@@ -140,6 +140,10 @@
     <string name="login_alerts_subtitle">Get notified of new logins</string>
     <string name="more_options_title">More Options</string>
     <string name="change_password">Change Password</string>
+    <string name="security_score_format">%1$d%%</string>
+    <string name="security_msg_protected">Your account is well protected</string>
+    <string name="security_msg_good">Good — enable more options to improve</string>
+    <string name="security_msg_improve">Enable features below to secure your account</string>
 
     <!-- Settings -->
     <string name="settings_title">App Settings</string>

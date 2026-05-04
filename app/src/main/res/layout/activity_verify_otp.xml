@@ -92,7 +92,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="@dimen/spacing_xxl">
+                android:padding="@dimen/spacing_lg">
 
                 <!-- OTP fields row -->
                 <LinearLayout
@@ -105,9 +105,10 @@
 
                     <EditText
                         android:id="@+id/otp_1"
-                        android:layout_width="48dp"
+                        android:layout_width="0dp"
                         android:layout_height="52dp"
-                        android:layout_marginEnd="6dp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="4dp"
                         android:background="@drawable/selector_otp_input"
                         android:fontFamily="@font/poppins_semibold"
                         android:gravity="center"
@@ -118,9 +119,10 @@
 
                     <EditText
                         android:id="@+id/otp_2"
-                        android:layout_width="48dp"
+                        android:layout_width="0dp"
                         android:layout_height="52dp"
-                        android:layout_marginEnd="6dp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="4dp"
                         android:background="@drawable/selector_otp_input"
                         android:fontFamily="@font/poppins_semibold"
                         android:gravity="center"
@@ -131,9 +133,10 @@
 
                     <EditText
                         android:id="@+id/otp_3"
-                        android:layout_width="48dp"
+                        android:layout_width="0dp"
                         android:layout_height="52dp"
-                        android:layout_marginEnd="6dp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="4dp"
                         android:background="@drawable/selector_otp_input"
                         android:fontFamily="@font/poppins_semibold"
                         android:gravity="center"
@@ -144,9 +147,10 @@
 
                     <EditText
                         android:id="@+id/otp_4"
-                        android:layout_width="48dp"
+                        android:layout_width="0dp"
                         android:layout_height="52dp"
-                        android:layout_marginEnd="6dp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="4dp"
                         android:background="@drawable/selector_otp_input"
                         android:fontFamily="@font/poppins_semibold"
                         android:gravity="center"
@@ -157,9 +161,10 @@
 
                     <EditText
                         android:id="@+id/otp_5"
-                        android:layout_width="48dp"
+                        android:layout_width="0dp"
                         android:layout_height="52dp"
-                        android:layout_marginEnd="6dp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="4dp"
                         android:background="@drawable/selector_otp_input"
                         android:fontFamily="@font/poppins_semibold"
                         android:gravity="center"
@@ -170,8 +175,9 @@
 
                     <EditText
                         android:id="@+id/otp_6"
-                        android:layout_width="48dp"
+                        android:layout_width="0dp"
                         android:layout_height="52dp"
+                        android:layout_weight="1"
                         android:background="@drawable/selector_otp_input"
                         android:fontFamily="@font/poppins_semibold"
                         android:gravity="center"
