@@ -28,6 +28,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.colormine.banking.utils.SettingsManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,6 +72,23 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Refresh balance visibility instantly when returning from settings
+        applyBalanceMask();
+        loadUserProfile();
+    }
+
+    private void applyBalanceMask() {
+        if (!isAdded() || tvBalance == null) return;
+        SettingsManager settingsManager = SettingsManager.getInstance(requireContext());
+        if (settingsManager.isHideBalance()) {
+            tvBalance.setText("$ ****.**");
+        }
+        // The actual amount will be filled by loadUserProfile() if mask is off
+    }
+
     private void loadUserProfile() {
         String sanitizedEmail = userEmail.replace(".", ",");
         mDatabase.child("users").child(sanitizedEmail).addValueEventListener(new ValueEventListener() {
@@ -79,19 +97,25 @@ public class HomeFragment extends Fragment {
                 if (!isAdded()) return;
                 User user = snapshot.getValue(User.class);
                 if (user != null) {
+                    SettingsManager settingsManager = SettingsManager.getInstance(requireContext());
+                    boolean hideBalance = settingsManager.isHideBalance();
+                    
                     String formattedBalance = String.format("$%,.2f", user.getBalance());
                     if (tvUserName != null) tvUserName.setText(user.getName());
-                    if (tvBalance != null) tvBalance.setText(formattedBalance);
+                    
+                    if (tvBalance != null) {
+                        tvBalance.setText(hideBalance ? "$ ****.**" : formattedBalance);
+                    }
                     if (tvCardNumber != null) tvCardNumber.setText(user.getCardNumber());
                     
                     // Note: If you don't have a specific ID for expiry in XML, we'll try to find it
-                    View expiryView = getView().findViewById(R.id.card_expiry);
+                    View expiryView = getView() != null ? getView().findViewById(R.id.card_expiry) : null;
                     if (expiryView instanceof TextView) {
                         ((TextView) expiryView).setText(user.getCardExpiry());
                     }
 
                     if (getActivity() instanceof MainActivity) {
-                        ((MainActivity) getActivity()).updateDrawerInfo(user.getName(), user.getEmail(), formattedBalance);
+                        ((MainActivity) getActivity()).updateDrawerInfo(user.getName(), user.getEmail(), hideBalance ? "$ ****.**" : formattedBalance);
                     }
                 }
             }

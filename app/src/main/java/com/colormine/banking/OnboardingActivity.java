@@ -9,7 +9,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.colormine.banking.adapters.OnboardingAdapter;
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
-public class OnboardingActivity extends AppCompatActivity {
+public class OnboardingActivity extends BaseActivity {
 
     private ViewPager2 viewPager;
     private Button btnNext;

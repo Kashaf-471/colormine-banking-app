@@ -29,25 +29,34 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Notification notification = notifications.get(position);
-        holder.tvTitle.setText(notification.getTitle());
-        
-        CharSequence relativeTime = DateUtils.getRelativeTimeSpanString(
-                notification.getTimestamp(), 
-                System.currentTimeMillis(), 
-                DateUtils.MINUTE_IN_MILLIS);
-        holder.tvTime.setText(relativeTime);
+        if (notification != null) {
+            holder.tvTitle.setText(notification.getTitle() != null ? notification.getTitle() : "Notification");
+            
+            long timestamp = notification.getTimestamp();
+            if (timestamp > 0) {
+                CharSequence relativeTime = DateUtils.getRelativeTimeSpanString(
+                        timestamp, 
+                        System.currentTimeMillis(), 
+                        DateUtils.MINUTE_IN_MILLIS);
+                holder.tvTime.setText(relativeTime);
+            } else {
+                holder.tvTime.setText("Recently");
+            }
 
-        holder.unreadDot.setVisibility(notification.isRead() ? View.GONE : View.VISIBLE);
+            holder.unreadDot.setVisibility(notification.isRead() ? View.GONE : View.VISIBLE);
 
-        if ("request".equals(notification.getType())) {
-            holder.itemView.setOnClickListener(v -> {
-                android.content.Intent intent = new android.content.Intent(v.getContext(), com.colormine.banking.SendMoneyActivity.class);
-                intent.putExtra("request_recipient_email", notification.getSenderEmail());
-                intent.putExtra("request_amount", notification.getAmount());
-                v.getContext().startActivity(intent);
-            });
-        } else {
-            holder.itemView.setOnClickListener(null);
+            if ("request".equals(notification.getType())) {
+                holder.itemView.setOnClickListener(v -> {
+                    if (notification.getSenderEmail() != null) {
+                        android.content.Intent intent = new android.content.Intent(v.getContext(), com.colormine.banking.SendMoneyActivity.class);
+                        intent.putExtra("request_recipient_email", notification.getSenderEmail());
+                        intent.putExtra("request_amount", notification.getAmount());
+                        v.getContext().startActivity(intent);
+                    }
+                });
+            } else {
+                holder.itemView.setOnClickListener(null);
+            }
         }
     }
 

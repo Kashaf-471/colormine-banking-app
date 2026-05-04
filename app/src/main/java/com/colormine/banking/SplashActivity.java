@@ -20,7 +20,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends BaseActivity {
     
     private static final int SPLASH_DELAY = 3000; // 3 seconds delay
     private FirebaseAuth mAuth;
@@ -28,6 +28,12 @@ public class SplashActivity extends AppCompatActivity {
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Apply theme before super.onCreate
+        android.content.SharedPreferences settings = getSharedPreferences("AppSettings", MODE_PRIVATE);
+        boolean darkMode = settings.getBoolean("darkMode", false);
+        androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(
+            darkMode ? androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES : androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         

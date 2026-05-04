@@ -46,6 +46,10 @@ public class HistoryFragment extends Fragment {
         rvTransactions.setLayoutManager(new LinearLayoutManager(getContext()));
         filterTabs = view.findViewById(R.id.filter_tabs);
 
+        view.findViewById(R.id.btn_notifications).setOnClickListener(v -> {
+            startActivity(new android.content.Intent(getContext(), com.colormine.banking.NotificationsActivity.class));
+        });
+
         allTransactions = new ArrayList<>();
         setupTabs();
         loadTransactionsFromFirebase();

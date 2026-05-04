@@ -40,6 +40,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executor;
 
+import com.colormine.banking.OtpService;
+import com.colormine.banking.VerifyOtpActivity;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import static android.app.Activity.RESULT_OK;
+
 import static androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG;
 import static androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_WEAK;
 
@@ -52,6 +58,9 @@ public class LoginFragment extends Fragment {
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
     private SharedPreferences securityPrefs;
+    private ActivityResultLauncher<Intent> otpLauncher;
+    private User pendingUser;
+    private String pendingEmail;
 
     @Nullable
     @Override
@@ -71,6 +80,19 @@ public class LoginFragment extends Fragment {
 
         btnLogin.setOnClickListener(v -> attemptLogin());
         linkForgot.setOnClickListener(v -> startActivity(new Intent(getActivity(), ForgotPasswordActivity.class)));
+
+        otpLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK) {
+                    // OTP Verified successfully, proceed to dashboard
+                    proceedToDashboard(pendingUser, pendingEmail);
+                } else {
+                    setLoading(false);
+                    Toast.makeText(getContext(), "Verification cancelled", Toast.LENGTH_SHORT).show();
+                }
+            }
+        );
 
         // Setup Biometric Login if enabled
         if (securityPrefs.getBoolean("biometric", false)) {
@@ -182,18 +204,15 @@ public class LoginFragment extends Fragment {
                             sendLoginAlert(sanitizedEmail);
                         }
 
-                        SharedPreferences pref = requireActivity().getSharedPreferences("UserSession", Context.MODE_PRIVATE);
-                        pref.edit()
-                            .putString("email", email)
-                            .putLong("loginTime", System.currentTimeMillis())
-                            .apply();
-                        
-                        if (user.getIsAdmin() == 1) {
-                            startActivity(new Intent(getActivity(), AdminActivity.class));
+                        if (user.getSettings() != null && Boolean.TRUE.equals(user.getSettings().get("twoFactor"))) {
+                            // 2FA Enabled - Send OTP and verify
+                            pendingUser = user;
+                            pendingEmail = email;
+                            sendOtpAndVerify(email);
                         } else {
-                            startActivity(new Intent(getActivity(), MainActivity.class));
+                            // 2FA Disabled - Proceed directly
+                            proceedToDashboard(user, email);
                         }
-                        requireActivity().finish();
                     }
                 } else {
                     Toast.makeText(getContext(), "Profile not found.", Toast.LENGTH_LONG).show();
@@ -204,6 +223,41 @@ public class LoginFragment extends Fragment {
                 setLoading(false);
             }
         });
+    }
+
+    private void sendOtpAndVerify(String email) {
+        setLoading(true);
+        OtpService.generateAndSend(requireContext(), email, new OtpService.OtpCallback() {
+            @Override
+            public void onSuccess() {
+                setLoading(false);
+                Intent intent = new Intent(getActivity(), VerifyOtpActivity.class);
+                intent.putExtra("email", email);
+                intent.putExtra(VerifyOtpActivity.EXTRA_PURPOSE, VerifyOtpActivity.PURPOSE_LOGIN);
+                otpLauncher.launch(intent);
+            }
+
+            @Override
+            public void onFallback(String error) {
+                setLoading(false);
+                Toast.makeText(getContext(), "Failed to send verification code: " + error, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void proceedToDashboard(User user, String email) {
+        SharedPreferences pref = requireActivity().getSharedPreferences("UserSession", Context.MODE_PRIVATE);
+        pref.edit()
+            .putString("email", email)
+            .putLong("loginTime", System.currentTimeMillis())
+            .apply();
+        
+        if (user.getIsAdmin() == 1) {
+            startActivity(new Intent(getActivity(), AdminActivity.class));
+        } else {
+            startActivity(new Intent(getActivity(), MainActivity.class));
+        }
+        requireActivity().finish();
     }
 
     private void sendLoginAlert(String sanitizedEmail) {

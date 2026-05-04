@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-public class HelpActivity extends AppCompatActivity {
+public class HelpActivity extends BaseActivity {
 
     private static final int PERMISSION_REQUEST_CALL = 1;
     private static final int PERMISSION_REQUEST_LOCATION = 3;
@@ -34,6 +34,7 @@ public class HelpActivity extends AppCompatActivity {
         RelativeLayout btnCallSupport = findViewById(R.id.btn_call_support);
         RelativeLayout btnSmsSupport = findViewById(R.id.btn_sms_support);
         RelativeLayout btnGetLocation = findViewById(R.id.btn_get_location);
+        RelativeLayout btnTerms = findViewById(R.id.btn_terms);
         tvLocationStatus = findViewById(R.id.tv_location_status);
         tvCallLabel = findViewById(R.id.tv_call_support_label);
 
@@ -45,6 +46,7 @@ public class HelpActivity extends AppCompatActivity {
         btnCallSupport.setOnClickListener(v -> makePhoneCall());
         btnSmsSupport.setOnClickListener(v -> sendSms());
         btnGetLocation.setOnClickListener(v -> getLocation());
+        btnTerms.setOnClickListener(v -> startActivity(new Intent(this, TermsActivity.class)));
     }
 
     private void makePhoneCall() {

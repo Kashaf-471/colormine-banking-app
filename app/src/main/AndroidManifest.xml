@@ -119,6 +119,8 @@
             android:screenOrientation="portrait" android:exported="false"/>
         <activity android:name=".HelpActivity"
             android:screenOrientation="portrait" android:exported="false"/>
+        <activity android:name=".TermsActivity"
+            android:screenOrientation="portrait" android:exported="false"/>
         <activity android:name=".CameraActivity"
             android:screenOrientation="portrait" android:exported="false"/>
 

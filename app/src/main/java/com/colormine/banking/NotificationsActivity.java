@@ -64,10 +64,14 @@ public class NotificationsActivity extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     notificationList.clear();
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        Notification notification = dataSnapshot.getValue(Notification.class);
-                        if (notification != null) {
-                            notification.setId(dataSnapshot.getKey());
-                            notificationList.add(notification);
+                        try {
+                            Notification notification = dataSnapshot.getValue(Notification.class);
+                            if (notification != null) {
+                                notification.setId(dataSnapshot.getKey());
+                                notificationList.add(notification);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                     }
                     // Show newest first

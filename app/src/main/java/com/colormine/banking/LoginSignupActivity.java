@@ -8,7 +8,7 @@ import com.colormine.banking.fragments.SignupFragment;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-public class LoginSignupActivity extends AppCompatActivity implements SignupFragment.OnSignupSuccessListener {
+public class LoginSignupActivity extends BaseActivity implements SignupFragment.OnSignupSuccessListener {
 
     private ViewPager2 viewPager;
     private TabLayout tabLayout;

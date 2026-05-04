@@ -23,7 +23,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-public class MainActivity extends AppCompatActivity implements HomeFragment.OnTabSwitchListener {
+public class MainActivity extends BaseActivity implements HomeFragment.OnTabSwitchListener {
 
     public static final String EXTRA_SELECT_TAB = "extra_select_tab";
     private ViewPager2 viewPager;
