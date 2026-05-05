@@ -29,6 +29,7 @@ public class CardStatisticActivity extends AppCompatActivity {
     private TextView tvTotalSpending, tvIncome, tvExpense;
     private DatabaseReference mDatabase;
     private String userEmail;
+    private String cardId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +38,7 @@ public class CardStatisticActivity extends AppCompatActivity {
 
         SharedPreferences pref = getSharedPreferences("UserSession", Context.MODE_PRIVATE);
         userEmail = pref.getString("email", "");
+        cardId = getIntent().getStringExtra("CARD_ID");
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         ImageButton btnBack = findViewById(R.id.btn_back);
@@ -79,6 +81,13 @@ public class CardStatisticActivity extends AppCompatActivity {
                     for (DataSnapshot snap : snapshot.getChildren()) {
                         Double amount = snap.child("amount").getValue(Double.class);
                         String type = snap.child("type").getValue(String.class);
+                        String txnCardId = snap.child("card_id").getValue(String.class);
+
+                        // If cardId is provided, filter by it. If not (e.g. legacy), show only if it matches nothing? 
+                        // Actually, if cardId is null, we only show it if the intent cardId is null.
+                        if (cardId != null && !cardId.equals(txnCardId)) {
+                            continue;
+                        }
 
                         if (amount != null && type != null) {
                             if (type.equals("INCOME")) {

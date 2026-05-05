@@ -61,7 +61,9 @@ public class CardDetailActivity extends AppCompatActivity {
         Button btnSendMoney = findViewById(R.id.btn_send_money);
 
         actionViewStats.setOnClickListener(v -> {
-            startActivity(new Intent(this, CardStatisticActivity.class));
+            Intent intent = new Intent(this, CardStatisticActivity.class);
+            intent.putExtra("CARD_ID", selectedCardId);
+            startActivity(intent);
         });
         
         actionCopyCard.setOnClickListener(v -> {

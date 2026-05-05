@@ -29,6 +29,7 @@ public class ManageCardsActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private String userEmail;
     private String primaryCardId;
+    private ValueEventListener cardsListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +74,7 @@ public class ManageCardsActivity extends AppCompatActivity {
 
     private void loadCards() {
         String sanitizedEmail = userEmail.replace(".", ",");
-        mDatabase.child("users").child(sanitizedEmail).addValueEventListener(new ValueEventListener() {
+        cardsListener = mDatabase.child("users").child(sanitizedEmail).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
@@ -91,6 +92,14 @@ public class ManageCardsActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (cardsListener != null) {
+            mDatabase.child("users").child(userEmail.replace(".", ",")).removeEventListener(cardsListener);
+        }
     }
 
     private void setPrimaryCard(String cardId) {
