@@ -13,6 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.colormine.banking.BaseActivity;
 import com.colormine.banking.CardDetailActivity;
 import com.colormine.banking.LoginSignupActivity;
 import com.colormine.banking.MainActivity;
@@ -42,6 +44,7 @@ public class HomeFragment extends Fragment {
     private TextView tvBalance, tvUserName, tvCardNumber, tvCardExpiry;
     private DatabaseReference mDatabase;
     private String userEmail;
+    private ValueEventListener profileListener, transactionListener;
 
     @Nullable
     @Override
@@ -81,6 +84,17 @@ public class HomeFragment extends Fragment {
         loadUserProfile();
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (profileListener != null) {
+            mDatabase.child("users").child(userEmail.replace(".", ",")).removeEventListener(profileListener);
+        }
+        if (transactionQuery != null && transactionListener != null) {
+            transactionQuery.removeEventListener(transactionListener);
+        }
+    }
+
     private void applyBalanceMask() {
         if (!isAdded() || tvBalance == null) return;
         SettingsManager settingsManager = SettingsManager.getInstance(requireContext());
@@ -91,7 +105,7 @@ public class HomeFragment extends Fragment {
 
     private void loadUserProfile() {
         String sanitizedEmail = userEmail.replace(".", ",");
-        mDatabase.child("users").child(sanitizedEmail).addValueEventListener(new ValueEventListener() {
+        profileListener = mDatabase.child("users").child(sanitizedEmail).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (!isAdded()) return;
@@ -100,14 +114,8 @@ public class HomeFragment extends Fragment {
                     SettingsManager settingsManager = SettingsManager.getInstance(requireContext());
                     boolean hideBalance = settingsManager.isHideBalance();
                     
-                    String formattedBalance = String.format("$%,.2f", user.getBalance());
                     if (tvUserName != null) tvUserName.setText(user.getName());
-                    
-                    if (tvBalance != null) {
-                        tvBalance.setText(hideBalance ? "$ ****.**" : formattedBalance);
-                    }
-
-                    // Display the preferred (primary) card info
+                    String primaryBalance = String.format("$%,.2f", user.getBalance());
                     Card primaryCard = null;
                     if (user.getCards() != null && !user.getCards().isEmpty()) {
                         String primaryId = user.getPrimaryCardId();
@@ -123,12 +131,17 @@ public class HomeFragment extends Fragment {
                             primaryCard = user.getCards().get(0);
                         }
 
+                        primaryBalance = String.format("$%,.2f", primaryCard.getBalance());
                         if (tvCardNumber != null) tvCardNumber.setText(primaryCard.getCardNumber());
                         if (tvCardExpiry != null) tvCardExpiry.setText(primaryCard.getExpiryDate());
                     }
                     
+                    if (tvBalance != null) {
+                        tvBalance.setText(hideBalance ? "$ ****.**" : primaryBalance);
+                    }
+                    
                     if (getActivity() instanceof MainActivity) {
-                        ((MainActivity) getActivity()).updateDrawerInfo(user.getName(), user.getEmail(), hideBalance ? "$ ****.**" : formattedBalance);
+                        ((MainActivity) getActivity()).updateDrawerInfo(user.getName(), user.getEmail(), hideBalance ? "$ ****.**" : primaryBalance);
                     }
                 }
             }
@@ -138,10 +151,11 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    private com.google.firebase.database.Query transactionQuery;
+
     private void loadTransactions() {
-        mDatabase.child("transactions").orderByChild("user_email").equalTo(userEmail)
-            .limitToLast(10)
-            .addValueEventListener(new ValueEventListener() {
+        transactionQuery = mDatabase.child("transactions").orderByChild("user_email").equalTo(userEmail);
+        transactionListener = transactionQuery.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (!isAdded()) return;
@@ -155,7 +169,8 @@ public class HomeFragment extends Fragment {
                         String type = postSnapshot.child("type").getValue(String.class);
 
                         if (amount != null) {
-                            transactionList.add(0, new Transaction(id, title, date, category, amount, "INCOME".equals(type)));
+                            String cardId = postSnapshot.child("card_id").getValue(String.class);
+                            transactionList.add(0, new Transaction(id, title, date, category, amount, "INCOME".equals(type), cardId));
                         }
                     }
                     if (adapter == null) {
@@ -180,7 +195,12 @@ public class HomeFragment extends Fragment {
         
         View btnNotif = view.findViewById(R.id.btn_notifications);
         if (btnNotif != null) {
-            btnNotif.setOnClickListener(v -> startActivity(new Intent(requireContext(), NotificationsActivity.class)));
+            btnNotif.setOnClickListener(v -> {
+                if (getActivity() instanceof BaseActivity) {
+                    ((BaseActivity) getActivity()).playClickFeedback();
+                }
+                startActivity(new Intent(requireContext(), NotificationsActivity.class));
+            });
         }
     }
 
@@ -191,20 +211,33 @@ public class HomeFragment extends Fragment {
     }
 
     private void initQuickActions(View view) {
-        view.findViewById(R.id.action_send).setOnClickListener(v ->
-            startActivity(new Intent(requireContext(), SendMoneyActivity.class)));
+        view.findViewById(R.id.action_send).setOnClickListener(v -> {
+            playFeedback();
+            startActivity(new Intent(requireContext(), SendMoneyActivity.class));
+        });
 
-        view.findViewById(R.id.action_request).setOnClickListener(v ->
-            startActivity(new Intent(requireContext(), RequestMoneyActivity.class)));
+        view.findViewById(R.id.action_request).setOnClickListener(v -> {
+            playFeedback();
+            startActivity(new Intent(requireContext(), RequestMoneyActivity.class));
+        });
 
-        view.findViewById(R.id.action_cards).setOnClickListener(v ->
-            startActivity(new Intent(requireContext(), ManageCardsActivity.class)));
+        view.findViewById(R.id.action_cards).setOnClickListener(v -> {
+            playFeedback();
+            startActivity(new Intent(requireContext(), ManageCardsActivity.class));
+        });
 
         view.findViewById(R.id.action_stats).setOnClickListener(v -> {
+            playFeedback();
             if (getActivity() instanceof OnTabSwitchListener) {
                 ((OnTabSwitchListener) getActivity()).onTabSwitchRequested(1); // Stats tab
             }
         });
+    }
+
+    private void playFeedback() {
+        if (getActivity() instanceof BaseActivity) {
+            ((BaseActivity) getActivity()).playClickFeedback();
+        }
     }
 
     private void initTransactions(View view) {

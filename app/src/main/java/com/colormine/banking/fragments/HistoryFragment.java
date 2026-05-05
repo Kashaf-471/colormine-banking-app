@@ -75,7 +75,8 @@ public class HistoryFragment extends Fragment {
                         String type = postSnapshot.child("type").getValue(String.class);
 
                         if (amount != null) {
-                            allTransactions.add(0, new Transaction(id, title, date, category, amount, "INCOME".equals(type)));
+                            String cardId = postSnapshot.child("card_id").getValue(String.class);
+                            allTransactions.add(0, new Transaction(id, title, date, category, amount, "INCOME".equals(type), cardId));
                         }
                     }
                     

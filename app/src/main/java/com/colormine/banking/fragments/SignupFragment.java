@@ -195,12 +195,27 @@ public class SignupFragment extends Fragment {
                 if (task.isSuccessful()) {
                     Toast.makeText(getContext(), "Registration Successful! You can now login.", Toast.LENGTH_SHORT).show();
                     if (listener != null) {
+                        recordInitialTransaction(email, sanitizedEmail);
                         listener.onSignupSuccess();
                     }
                 } else {
                     Toast.makeText(getContext(), "Account created but profile setup failed.", Toast.LENGTH_SHORT).show();
                 }
             });
+    }
+
+    private void recordInitialTransaction(String email, String sanitizedEmail) {
+        String date = new java.text.SimpleDateFormat("MMM dd, yyyy HH:mm", java.util.Locale.getDefault()).format(new java.util.Date());
+        String txnId = mDatabase.child("transactions").push().getKey();
+        java.util.Map<String, Object> txn = new java.util.HashMap<>();
+        txn.put("user_email", email);
+        txn.put("type", "INCOME");
+        txn.put("amount", 5000.00);
+        txn.put("title", "Initial Welcome Deposit");
+        txn.put("date", date);
+        txn.put("category", "Deposit");
+        txn.put("card_id", "default");
+        if (txnId != null) mDatabase.child("transactions").child(txnId).setValue(txn);
     }
 
     private String generateRandomDigits(int length) {

@@ -42,6 +42,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder
         holder.tvCardHolder.setText(card.getCardHolderName());
         holder.tvExpiryDate.setText(card.getExpiryDate());
         holder.tvCvv.setText(card.getCvv());
+        holder.tvBalance.setText(String.format("$%,.2f", card.getBalance()));
         
         boolean isPrimary = card.getId().equals(primaryCardId);
         holder.tvPrimaryBadge.setVisibility(isPrimary ? View.VISIBLE : View.GONE);
@@ -72,7 +73,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder
     }
 
     static class CardViewHolder extends RecyclerView.ViewHolder {
-        TextView tvCardNumber, tvCardHolder, tvExpiryDate, tvCvv, tvPrimaryBadge;
+        TextView tvCardNumber, tvCardHolder, tvExpiryDate, tvCvv, tvPrimaryBadge, tvBalance;
         ImageView ivCardType;
 
         public CardViewHolder(@NonNull View itemView) {
@@ -82,6 +83,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder
             tvExpiryDate = itemView.findViewById(R.id.tv_expiry_date);
             tvCvv = itemView.findViewById(R.id.tv_cvv);
             tvPrimaryBadge = itemView.findViewById(R.id.tv_primary_badge);
+            tvBalance = itemView.findViewById(R.id.tv_card_balance);
             ivCardType = itemView.findViewById(R.id.iv_card_type);
         }
     }

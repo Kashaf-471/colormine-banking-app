@@ -7,14 +7,16 @@ public class Transaction {
     private String category;
     private double amount;
     private boolean isIncome;
+    private String cardId;
 
-    public Transaction(String id, String name, String date, String category, double amount, boolean isIncome) {
+    public Transaction(String id, String name, String date, String category, double amount, boolean isIncome, String cardId) {
         this.id = id;
         this.name = name;
         this.date = date;
         this.category = category;
         this.amount = amount;
         this.isIncome = isIncome;
+        this.cardId = cardId;
     }
 
     public String getId() { return id; }
@@ -23,4 +25,5 @@ public class Transaction {
     public String getCategory() { return category; }
     public double getAmount() { return amount; }
     public boolean isIncome() { return isIncome; }
+    public String getCardId() { return cardId; }
 }

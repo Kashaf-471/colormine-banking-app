@@ -208,9 +208,11 @@ public class LoginFragment extends Fragment {
                             // 2FA Enabled - Send OTP and verify
                             pendingUser = user;
                             pendingEmail = email;
+                            Toast.makeText(getContext(), "2-Step Verification required", Toast.LENGTH_SHORT).show();
                             sendOtpAndVerify(email);
                         } else {
                             // 2FA Disabled - Proceed directly
+                            Toast.makeText(getContext(), "Login Successful", Toast.LENGTH_SHORT).show();
                             proceedToDashboard(user, email);
                         }
                     }
