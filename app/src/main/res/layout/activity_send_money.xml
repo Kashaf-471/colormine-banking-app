@@ -100,6 +100,15 @@
                             android:text="--"
                             android:textColor="@color/colorTextSecondary"
                             android:textSize="12sp"/>
+                        <TextView
+                            android:id="@+id/tv_selected_card_balance"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="Balance: $0.00"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="12sp"
+                            android:layout_marginTop="2dp"/>
                     </LinearLayout>
                     <ImageView
                         android:layout_width="20dp"

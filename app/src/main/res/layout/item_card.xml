@@ -57,6 +57,16 @@
         android:textSize="22sp" />
 
     <TextView
+        android:id="@+id/tv_card_balance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="$1,234.56"
+        android:textColor="@color/colorTextWhite"
+        android:textSize="18sp" />
+
+    <TextView
         android:id="@+id/tv_card_holder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

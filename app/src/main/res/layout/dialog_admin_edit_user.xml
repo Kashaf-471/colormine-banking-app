@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="@drawable/bg_screen">
+
+    <TextView
+        android:id="@+id/tv_dialog_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit User Profile"
+        android:textSize="20sp"
+        android:fontFamily="@font/poppins_semibold"
+        android:textColor="@color/colorTextPrimary"
+        android:layout_marginBottom="20dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Basic Info"
+        android:textSize="12sp"
+        android:fontFamily="@font/poppins_medium"
+        android:textColor="@color/colorTextSecondary"
+        android:layout_marginBottom="8dp"/>
+
+    <EditText
+        android:id="@+id/et_edit_name"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:hint="Full Name"
+        android:background="@drawable/bg_input"
+        android:paddingHorizontal="16dp"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="@font/poppins_regular"
+        android:inputType="textPersonName"/>
+
+    <Spinner
+        android:id="@+id/spinner_status"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@drawable/bg_input"
+        android:layout_marginBottom="24dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorGray100"
+        android:layout_marginBottom="24dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Manage Card Balances"
+        android:textSize="14sp"
+        android:fontFamily="@font/poppins_semibold"
+        android:textColor="@color/colorPrimary"
+        android:layout_marginBottom="12dp"/>
+
+    <Spinner
+        android:id="@+id/spinner_select_card"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@drawable/bg_input"
+        android:layout_marginBottom="16dp"/>
+
+    <EditText
+        android:id="@+id/et_card_balance"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:hint="Card Balance"
+        android:background="@drawable/bg_input"
+        android:paddingHorizontal="16dp"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="@font/poppins_medium"
+        android:inputType="numberDecimal"/>
+    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="* Editing this will automatically sync the total balance."
+        android:textSize="11sp"
+        android:fontFamily="@font/poppins_regular"
+        android:textColor="@color/colorTextSecondary"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="4dp"/>
+
+</LinearLayout>

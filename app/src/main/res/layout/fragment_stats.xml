@@ -30,14 +30,7 @@
         </RelativeLayout>
 
         <!-- Chart Card -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/card_chart"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="24dp"
-            app:cardElevation="0dp"
-            app:cardBackgroundColor="@color/colorSurface"
-            android:layout_marginBottom="16dp">
+        <androidx.cardview.widget.CardView android:layout_width="match_parent" android:layout_height="wrap_content" app:cardCornerRadius="24dp" app:cardElevation="4dp" app:cardBackgroundColor="@color/colorSurface" android:layout_marginBottom="16dp">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -74,14 +67,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginBottom="24dp">
-            <androidx.cardview.widget.CardView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginEnd="8dp"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="0dp"
-                app:cardBackgroundColor="@color/colorSurface">
+            <androidx.cardview.widget.CardView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="8dp" app:cardCornerRadius="20dp" app:cardElevation="4dp" app:cardBackgroundColor="@color/colorSurface">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -121,7 +107,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 app:cardCornerRadius="20dp"
-                app:cardElevation="0dp"
+                app:cardElevation="4dp"
                 app:cardBackgroundColor="@color/colorSurface">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -159,60 +145,6 @@
             </androidx.cardview.widget.CardView>
         </LinearLayout>
 
-        <!-- Category Breakdown -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:fontFamily="@font/poppins_semibold"
-            android:text="Category Breakdown"
-            android:textColor="@color/colorTextPrimary"
-            android:textSize="16sp" />
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/card_categories"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="24dp"
-            app:cardElevation="0dp"
-            app:cardBackgroundColor="@color/colorSurface">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
-
-                <!-- Category 1 -->
-                <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="16dp">
-                    <LinearLayout android:id="@+id/icon_food" android:layout_width="40dp" android:layout_height="40dp" android:background="@drawable/bg_icon_purple" android:gravity="center" android:layout_marginEnd="12dp">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🍔" android:textSize="20sp"/>
-                    </LinearLayout>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_toEndOf="@id/icon_food" android:fontFamily="@font/poppins_medium" android:text="Food &amp; Drink" android:textColor="@color/colorTextPrimary" android:textSize="14sp"/>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_toEndOf="@id/icon_food" android:layout_alignParentBottom="true" android:fontFamily="@font/poppins_regular" android:text="24 Transactions" android:textColor="@color/colorTextSecondary" android:textSize="12sp"/>
-                    <TextView android:id="@+id/tv_cat_food_amount" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:layout_centerVertical="true" android:fontFamily="@font/poppins_bold" android:text="$120.50" android:textColor="@color/colorError" android:textSize="14sp"/>
-                </RelativeLayout>
-
-                <!-- Category 2 -->
-                <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="16dp">
-                    <LinearLayout android:id="@+id/icon_shopping" android:layout_width="40dp" android:layout_height="40dp" android:background="@drawable/bg_icon_purple" android:gravity="center" android:layout_marginEnd="12dp">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🛍️" android:textSize="20sp"/>
-                    </LinearLayout>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_toEndOf="@id/icon_shopping" android:fontFamily="@font/poppins_medium" android:text="Shopping" android:textColor="@color/colorTextPrimary" android:textSize="14sp"/>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_toEndOf="@id/icon_shopping" android:layout_alignParentBottom="true" android:fontFamily="@font/poppins_regular" android:text="12 Transactions" android:textColor="@color/colorTextSecondary" android:textSize="12sp"/>
-                    <TextView android:id="@+id/tv_cat_shopping_amount" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:layout_centerVertical="true" android:fontFamily="@font/poppins_bold" android:text="$450.00" android:textColor="@color/colorError" android:textSize="14sp"/>
-                </RelativeLayout>
-
-                <!-- Category 3 -->
-                <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
-                    <LinearLayout android:id="@+id/icon_sub" android:layout_width="40dp" android:layout_height="40dp" android:background="@drawable/bg_icon_purple" android:gravity="center" android:layout_marginEnd="12dp">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="📱" android:textSize="20sp"/>
-                    </LinearLayout>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_toEndOf="@id/icon_sub" android:fontFamily="@font/poppins_medium" android:text="Subscriptions" android:textColor="@color/colorTextPrimary" android:textSize="14sp"/>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_toEndOf="@id/icon_sub" android:layout_alignParentBottom="true" android:fontFamily="@font/poppins_regular" android:text="8 Transactions" android:textColor="@color/colorTextSecondary" android:textSize="12sp"/>
-                    <TextView android:id="@+id/tv_cat_sub_amount" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:layout_centerVertical="true" android:fontFamily="@font/poppins_bold" android:text="$85.20" android:textColor="@color/colorError" android:textSize="14sp"/>
-                </RelativeLayout>
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
 
     </LinearLayout>
 </ScrollView>

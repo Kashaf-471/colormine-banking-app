@@ -19,7 +19,7 @@
         </RelativeLayout>
 
         <!-- MPAndroidChart LineChart -->
-        <androidx.cardview.widget.CardView android:layout_width="match_parent" android:layout_height="wrap_content" app:cardCornerRadius="24dp" app:cardElevation="8dp" app:cardBackgroundColor="@color/colorSurface" android:layout_marginBottom="16dp">
+        <androidx.cardview.widget.CardView android:layout_width="match_parent" android:layout_height="wrap_content" app:cardCornerRadius="24dp" app:cardElevation="4dp" app:cardBackgroundColor="@color/colorSurface" android:layout_marginBottom="16dp">
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="24dp">
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="@font/poppins_semibold" android:text="Spending Overview" android:textColor="@color/colorTextPrimary" android:textSize="16sp" android:layout_marginBottom="4dp"/>
                 <TextView android:id="@+id/tv_total_spending" android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="@font/poppins_bold" android:text="$2,456.00" android:textColor="@color/colorPrimary" android:textSize="28sp" android:layout_marginBottom="16dp"/>
@@ -32,7 +32,7 @@
 
         <!-- Income / Expense cards row -->
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="16dp">
-            <androidx.cardview.widget.CardView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="8dp" app:cardCornerRadius="20dp" app:cardElevation="6dp" app:cardBackgroundColor="@color/colorSurface">
+            <androidx.cardview.widget.CardView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="8dp" app:cardCornerRadius="20dp" app:cardElevation="4dp" app:cardBackgroundColor="@color/colorSurface">
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
                     <LinearLayout android:layout_width="40dp" android:layout_height="40dp" android:background="@drawable/bg_icon_green" android:gravity="center" android:layout_marginBottom="8dp">
                         <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_arrow_down_left" app:tint="@color/colorSuccess"/>
@@ -41,7 +41,7 @@
                     <TextView android:id="@+id/tv_income" android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="@font/poppins_bold" android:text="+$3,200" android:textColor="@color/colorSuccess" android:textSize="18sp"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
-            <androidx.cardview.widget.CardView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" app:cardCornerRadius="20dp" app:cardElevation="6dp" app:cardBackgroundColor="@color/colorSurface">
+            <androidx.cardview.widget.CardView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" app:cardCornerRadius="20dp" app:cardElevation="4dp" app:cardBackgroundColor="@color/colorSurface">
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
                     <LinearLayout android:layout_width="40dp" android:layout_height="40dp" android:background="@drawable/bg_icon_red" android:gravity="center" android:layout_marginBottom="8dp">
                         <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_arrow_up_right" app:tint="@color/colorError"/>

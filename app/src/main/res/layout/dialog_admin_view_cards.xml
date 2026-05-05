@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="@drawable/bg_screen">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="User Card Portfolio"
+        android:textSize="20sp"
+        android:fontFamily="@font/poppins_semibold"
+        android:textColor="@color/colorTextPrimary"
+        android:layout_marginBottom="4dp"/>
+
+    <TextView
+        android:id="@+id/tv_user_summary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Summary for User"
+        android:textSize="13sp"
+        android:fontFamily="@font/poppins_regular"
+        android:textColor="@color/colorTextSecondary"
+        android:layout_marginBottom="20dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_admin_cards"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="100dp"
+        android:maxHeight="400dp"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/btn_close_view"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="Close"
+        android:textAllCaps="false"
+        android:fontFamily="@font/poppins_semibold"
+        android:background="@drawable/bg_btn_primary"
+        android:textColor="@color/colorTextWhite"/>
+
+</LinearLayout>
