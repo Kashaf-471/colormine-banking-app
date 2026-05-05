@@ -68,7 +68,8 @@ public class AdminTransactionsActivity extends AppCompatActivity {
                     
                     // Displaying email in brackets next to title for admin clarity
                     String displayTitle = title + " (" + email + ")";
-                    transactionList.add(0, new Transaction(id, displayTitle, date, category, amount, "INCOME".equals(type)));
+                    String cardId = postSnapshot.child("card_id").getValue(String.class);
+                    transactionList.add(0, new Transaction(id, displayTitle, date, category, amount, "INCOME".equals(type), cardId));
                 }
 
                 if (adapter == null) {

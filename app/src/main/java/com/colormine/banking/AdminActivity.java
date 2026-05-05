@@ -9,6 +9,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -17,6 +18,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.colormine.banking.adapters.UserAdapter;
 import com.colormine.banking.models.User;
 import com.google.firebase.database.DataSnapshot;
@@ -227,6 +230,39 @@ public class AdminActivity extends AppCompatActivity implements UserAdapter.OnUs
         showEditDialog(user);
     }
 
+    private void showCardManagementDialog(User user) {
+        if (user.getCards() == null || user.getCards().isEmpty()) {
+            Toast.makeText(this, "User has no cards", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_admin_view_cards, null);
+        TextView tvSummary = view.findViewById(R.id.tv_user_summary);
+        RecyclerView rvCards = view.findViewById(R.id.rv_admin_cards);
+        Button btnClose = view.findViewById(R.id.btn_close_view);
+
+        tvSummary.setText("Showing all active cards for " + user.getName());
+        rvCards.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(this));
+        
+        com.colormine.banking.adapters.CardAdapter cardAdapter = new com.colormine.banking.adapters.CardAdapter(
+            user.getCards(), 
+            user.getPrimaryCardId(), 
+            null
+        );
+        rvCards.setAdapter(cardAdapter);
+
+        AlertDialog dialog = new AlertDialog.Builder(this)
+            .setView(view)
+            .create();
+
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        }
+
+        btnClose.setOnClickListener(v -> dialog.dismiss());
+        dialog.show();
+    }
+
     @Override
     public void onDelete(User user) {
         new AlertDialog.Builder(this)
@@ -236,7 +272,7 @@ public class AdminActivity extends AppCompatActivity implements UserAdapter.OnUs
                     if (user.getEmail() != null) {
                         String sanitizedEmail = user.getEmail().replace(".", ",");
                         mDatabase.child("users").child(sanitizedEmail).removeValue()
-                            .addOnSuccessListener(aVoid -> Toast.makeText(AdminActivity.this, "User deleted from Firebase", Toast.LENGTH_SHORT).show())
+                            .addOnSuccessListener(aVoid -> Toast.makeText(AdminActivity.this, "User deleted", Toast.LENGTH_SHORT).show())
                             .addOnFailureListener(e -> Toast.makeText(AdminActivity.this, "Failed to delete: " + e.getMessage(), Toast.LENGTH_SHORT).show());
                     }
                 })
@@ -246,53 +282,65 @@ public class AdminActivity extends AppCompatActivity implements UserAdapter.OnUs
 
     @Override
     public void onView(User user) {
-        if (user == null || user.getEmail() == null) {
-            Toast.makeText(this, "Error: User data is missing", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        Intent intent = new Intent(this, UserDetailsActivity.class);
-        intent.putExtra("user_email", user.getEmail());
-        intent.putExtra("user_name", user.getName());
-        intent.putExtra("user_balance", user.getBalance());
-        intent.putExtra("user_status", user.getStatus());
-        startActivity(intent);
+        showCardManagementDialog(user);
     }
 
     private void showEditDialog(User user) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        View view = LayoutInflater.from(this).inflate(R.layout.dialog_edit_user, null);
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_admin_edit_user, null);
         
         EditText etName = view.findViewById(R.id.et_edit_name);
-        EditText etBalance = view.findViewById(R.id.et_edit_balance);
         Spinner spinnerStatus = view.findViewById(R.id.spinner_status);
+        Spinner spinnerCards = view.findViewById(R.id.spinner_select_card);
+        EditText etCardBalance = view.findViewById(R.id.et_card_balance);
 
+        // 1. Setup Status Spinner
         String[] statuses = {"ACTIVE", "BLOCKED"};
         ArrayAdapter<String> statusAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, statuses);
         statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerStatus.setAdapter(statusAdapter);
-
-        if (etName != null) etName.setText(user.getName());
-        if (etBalance != null) etBalance.setText(String.valueOf(user.getBalance()));
         if (user.getStatus() != null) {
-            int position = user.getStatus().equals("BLOCKED") ? 1 : 0;
-            spinnerStatus.setSelection(position);
+            spinnerStatus.setSelection(user.getStatus().equals("BLOCKED") ? 1 : 0);
         }
 
-        builder.setView(view);
-        builder.setPositiveButton("Update", (dialog, which) -> {
-            String name = etName.getText().toString().trim();
-            String balanceStr = etBalance.getText().toString().trim();
-            String newStatus = spinnerStatus.getSelectedItem().toString();
+        // 2. Setup Cards Spinner
+        List<com.colormine.banking.models.Card> userCards = user.getCards();
+        List<String> cardNames = new ArrayList<>();
+        for (com.colormine.banking.models.Card c : userCards) {
+            cardNames.add(c.getCardNumber() + " (" + c.getCardHolderName() + ")");
+        }
+        ArrayAdapter<String> cardsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, cardNames);
+        cardsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerCards.setAdapter(cardsAdapter);
 
-            if (!name.isEmpty() && !balanceStr.isEmpty()) {
+        spinnerCards.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(android.widget.AdapterView<?> parent, View view, int position, long id) {
+                etCardBalance.setText(String.valueOf(userCards.get(position).getBalance()));
+            }
+            @Override
+            public void onNothingSelected(android.widget.AdapterView<?> parent) {}
+        });
+
+        if (etName != null) etName.setText(user.getName());
+
+        builder.setView(view);
+        builder.setPositiveButton("Save Changes", (dialog, which) -> {
+            String name = etName.getText().toString().trim();
+            String newStatus = spinnerStatus.getSelectedItem().toString();
+            String cardBalanceStr = etCardBalance.getText().toString().trim();
+
+            if (!name.isEmpty() && !cardBalanceStr.isEmpty()) {
                 try {
-                    double balance = Double.parseDouble(balanceStr);
-                    String sanitizedEmail = user.getEmail().replace(".", ",");
+                    double newCardBalance = Double.parseDouble(cardBalanceStr);
+                    int selectedCardIndex = spinnerCards.getSelectedItemPosition();
                     
                     user.setName(name);
-                    user.setBalance(balance);
                     user.setStatus(newStatus);
+                    userCards.get(selectedCardIndex).setBalance(newCardBalance);
+                    user.syncGlobalBalance(); // Keep total synced
 
+                    String sanitizedEmail = user.getEmail().replace(".", ",");
                     mDatabase.child("users").child(sanitizedEmail).setValue(user)
                         .addOnSuccessListener(aVoid -> Toast.makeText(AdminActivity.this, "User updated successfully", Toast.LENGTH_SHORT).show())
                         .addOnFailureListener(e -> Toast.makeText(AdminActivity.this, "Update failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
@@ -300,10 +348,15 @@ public class AdminActivity extends AppCompatActivity implements UserAdapter.OnUs
                     Toast.makeText(this, "Invalid balance format", Toast.LENGTH_SHORT).show();
                 }
             } else {
-                Toast.makeText(this, "All fields are required", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Name and balance are required", Toast.LENGTH_SHORT).show();
             }
         });
         builder.setNegativeButton("Cancel", null);
-        builder.show();
+        
+        AlertDialog dialog = builder.create();
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        }
+        dialog.show();
     }
 }
