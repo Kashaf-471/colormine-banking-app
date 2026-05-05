@@ -30,14 +30,15 @@ import java.util.concurrent.Executor;
 
 public class SecurityActivity extends BaseActivity {
 
-    private Switch switchBiometric, switchAlerts, switch2fa, switchFreeze, switchPin;
-    private TextView tvPinStatus, tvSecurityScore, tvSecuritySubtitle;
+    private Switch switchBiometric, switchAlerts, switch2fa, switchFreeze;
+    private TextView tvSecurityScore, tvSecuritySubtitle;
     private ProgressBar securityProgress;
     private DatabaseReference mDatabase;
     private String userEmail;
     private Executor executor;
     private BiometricPrompt biometricPrompt;
     private BiometricPrompt.PromptInfo promptInfo;
+    private boolean isInitializing = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,26 +52,28 @@ public class SecurityActivity extends BaseActivity {
         initViews();
         setupBiometric();
         loadSettings();
+        isInitializing = false;
         updateSecurityScore();
     }
 
     private void initViews() {
         ImageButton btnBack = findViewById(R.id.btn_back);
         btnBack.setOnClickListener(v -> finish());
+        
+        findViewById(R.id.btn_notifications).setOnClickListener(v -> {
+            startActivity(new Intent(this, NotificationsActivity.class));
+        });
 
         switchBiometric = findViewById(R.id.switch_biometric);
         switch2fa = findViewById(R.id.switch_2fa);
         switchFreeze = findViewById(R.id.switch_freeze);
-        switchPin = findViewById(R.id.switch_pin);
         switchAlerts = findViewById(R.id.switch_alerts);
         
-        tvPinStatus = findViewById(R.id.tv_pin_status);
         tvSecurityScore = findViewById(R.id.tv_security_score);
         tvSecuritySubtitle = findViewById(R.id.tv_security_subtitle);
         securityProgress = findViewById(R.id.security_progress);
 
         // Option rows
-        findViewById(R.id.option_pin).setOnClickListener(v -> showPinSetupDialog());
         findViewById(R.id.option_change_password).setOnClickListener(v -> {
             // Action handled by click, switch is just visual
             Toast.makeText(this, "Redirecting to Change Password...", Toast.LENGTH_SHORT).show();
@@ -82,29 +85,64 @@ public class SecurityActivity extends BaseActivity {
 
         // Toggle listeners
         switchBiometric.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isInitializing) return;
+            playClickFeedback();
             if (isChecked) {
                 biometricPrompt.authenticate(promptInfo);
             } else {
                 settingsManager.setBiometricEnabled(false);
                 updateSecurityScore();
+                Toast.makeText(this, "Biometric Login Disabled", Toast.LENGTH_SHORT).show();
             }
         });
 
         switch2fa.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isInitializing) return;
+            playClickFeedback();
             settingsManager.set2FAEnabled(isChecked);
+            
+            // Sync to Firebase
+            String sanitizedEmail = userEmail.replace(".", ",");
+            mDatabase.child("users").child(sanitizedEmail).child("settings").child("twoFactor")
+                    .setValue(isChecked)
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(this, isChecked ? "2-Step Verification Enabled" : "2-Step Verification Disabled", Toast.LENGTH_SHORT).show();
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(this, "Failed to update 2FA: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        // Revert switch if failed
+                        isInitializing = true;
+                        switch2fa.setChecked(!isChecked);
+                        isInitializing = false;
+                    });
+
             updateSecurityScore();
         });
 
+
         switchFreeze.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isInitializing) return;
+            playClickFeedback();
             settingsManager.setAccountFrozen(isChecked);
+            
+            // Sync to Firebase
+            String sanitizedEmail = userEmail.replace(".", ",");
+            mDatabase.child("users").child(sanitizedEmail).child("status")
+                    .setValue(isChecked ? "FROZEN" : "ACTIVE");
+
             updateSecurityScore();
             if (isChecked) {
                 Toast.makeText(this, "Account Frozen. All transfers blocked.", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "Account Unfrozen.", Toast.LENGTH_SHORT).show();
             }
         });
 
         switchAlerts.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isInitializing) return;
+            playClickFeedback();
             settingsManager.setLoginAlertsEnabled(isChecked);
+            Toast.makeText(this, isChecked ? "Login alerts enabled" : "Login alerts disabled", Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -145,19 +183,11 @@ public class SecurityActivity extends BaseActivity {
         switch2fa.setChecked(settingsManager.is2FAEnabled());
         switchFreeze.setChecked(settingsManager.isAccountFrozen());
         switchAlerts.setChecked(settingsManager.isLoginAlertsEnabled());
-        updatePinStatus();
     }
 
-    private void updatePinStatus() {
-        String pin = settingsManager.getTransactionPin();
-        boolean isSet = !pin.isEmpty();
-        tvPinStatus.setText(isSet ? "Active" : "Not Set");
-        switchPin.setChecked(isSet);
-    }
 
     private void updateSecurityScore() {
         int score = 0;
-        if (!settingsManager.getTransactionPin().isEmpty()) score += 30;
         if (settingsManager.is2FAEnabled()) score += 30;
         if (settingsManager.isBiometricEnabled()) score += 20;
         if (settingsManager.isLoginAlertsEnabled()) score += 20;
@@ -174,29 +204,4 @@ public class SecurityActivity extends BaseActivity {
         }
     }
 
-    private void showPinSetupDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomAlertDialog);
-        View view = LayoutInflater.from(this).inflate(R.layout.dialog_setup_pin, null);
-        builder.setView(view);
-
-        EditText etPin = view.findViewById(R.id.et_pin);
-        Button btnSave = view.findViewById(R.id.btn_save_pin);
-        
-        AlertDialog dialog = builder.create();
-
-        btnSave.setOnClickListener(v -> {
-            String pin = etPin.getText().toString();
-            if (pin.length() == 4) {
-                settingsManager.setTransactionPin(pin);
-                updatePinStatus();
-                updateSecurityScore();
-                dialog.dismiss();
-                Toast.makeText(this, "Transaction PIN set successfully!", Toast.LENGTH_SHORT).show();
-            } else {
-                etPin.setError("PIN must be 4 digits");
-            }
-        });
-
-        dialog.show();
-    }
 }

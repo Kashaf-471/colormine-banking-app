@@ -13,7 +13,7 @@ import java.io.File;
 
 public class SettingsActivity extends BaseActivity {
 
-    private Switch switchDarkMode, switchNotifications, switchSounds, switchVibration, switchHideBalance;
+    private Switch switchDarkMode, switchSounds, switchVibration, switchHideBalance;
     private TextView tvAutoLockValue;
 
     private static final String[] AUTO_LOCK_OPTIONS = {"30 seconds", "1 minute", "5 minutes", "10 minutes", "Never"};
@@ -29,7 +29,6 @@ public class SettingsActivity extends BaseActivity {
 
         // Views
         switchDarkMode      = findViewById(R.id.switch_dark_mode);
-        switchNotifications = findViewById(R.id.switch_notifications);
         switchSounds        = findViewById(R.id.switch_sounds);
         switchVibration     = findViewById(R.id.switch_vibration);
         switchHideBalance   = findViewById(R.id.switch_hide_balance);
@@ -41,7 +40,6 @@ public class SettingsActivity extends BaseActivity {
 
     private void loadCurrentSettings() {
         switchDarkMode.setChecked(settingsManager.isDarkMode());
-        switchNotifications.setChecked(settingsManager.isNotificationsEnabled());
         switchSounds.setChecked(settingsManager.isSoundsEnabled());
         switchVibration.setChecked(settingsManager.isVibrationEnabled());
         switchHideBalance.setChecked(settingsManager.isHideBalance());
@@ -59,27 +57,22 @@ public class SettingsActivity extends BaseActivity {
             androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(
                 isChecked ? androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES : androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO);
             recreate();
+            Toast.makeText(this, isChecked ? "Dark Mode Enabled" : "Light Mode Enabled", Toast.LENGTH_SHORT).show();
         });
 
-        // Notifications
-        switchNotifications.setOnCheckedChangeListener((btn, isChecked) -> {
-            playClickFeedback();
-            settingsManager.setNotificationsEnabled(isChecked);
-            if (isChecked) {
-                NotificationHelper.showNotification(this, "Notifications Enabled", "You will now receive account alerts.");
-            }
-        });
 
         // Sounds
         switchSounds.setOnCheckedChangeListener((btn, isChecked) -> {
             settingsManager.setSoundsEnabled(isChecked);
             playClickFeedback();
+            Toast.makeText(this, isChecked ? "Sound effects enabled" : "Sound effects disabled", Toast.LENGTH_SHORT).show();
         });
 
         // Vibration
         switchVibration.setOnCheckedChangeListener((btn, isChecked) -> {
             settingsManager.setVibrationEnabled(isChecked);
             playClickFeedback();
+            Toast.makeText(this, isChecked ? "Haptic feedback enabled" : "Haptic feedback disabled", Toast.LENGTH_SHORT).show();
         });
 
         // Hide Balance

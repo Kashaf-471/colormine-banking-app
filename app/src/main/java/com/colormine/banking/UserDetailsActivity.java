@@ -168,7 +168,8 @@ public class UserDetailsActivity extends AppCompatActivity {
                         String category = postSnapshot.child("category").getValue(String.class);
 
                         if (amount != null) {
-                            transactionList.add(0, new Transaction(id, title, date, category, amount, "INCOME".equals(type)));
+                            String cardId = postSnapshot.child("card_id").getValue(String.class);
+                            transactionList.add(0, new Transaction(id, title, date, category, amount, "INCOME".equals(type), cardId));
                         }
                     }
 

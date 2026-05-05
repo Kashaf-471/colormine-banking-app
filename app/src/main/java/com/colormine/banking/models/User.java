@@ -114,6 +114,19 @@ public class User {
     public void setCards(List<Card> cards) { this.cards = cards; }
     public void setPrimaryCardId(String primaryCardId) { this.primaryCardId = primaryCardId; }
     
+    /**
+     * Synchronizes the global balance field with the sum of all card balances.
+     */
+    public void syncGlobalBalance() {
+        double total = 0;
+        if (cards != null) {
+            for (Card c : cards) {
+                total += c.getBalance();
+            }
+        }
+        this.balance = total;
+    }
+    
     public void setCardNumber(String cardNumber) { this.cardNumber = cardNumber; }
     public void setCardExpiry(String cardExpiry) { this.cardExpiry = cardExpiry; }
     public void setCardCvv(String cardCvv) { this.cardCvv = cardCvv; }
