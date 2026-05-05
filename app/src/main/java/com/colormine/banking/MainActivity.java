@@ -54,6 +54,7 @@ public class MainActivity extends BaseActivity implements HomeFragment.OnTabSwit
         bottomTabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                playClickFeedback();
                 updateTabView(tab, true);
             }
 
@@ -67,6 +68,7 @@ public class MainActivity extends BaseActivity implements HomeFragment.OnTabSwit
         });
 
         navigationView.setNavigationItemSelectedListener(item -> {
+            playClickFeedback();
             int id = item.getItemId();
             if (id == R.id.nav_my_account) {
                 viewPager.setCurrentItem(3);

@@ -20,6 +20,7 @@ import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.media.ToneGenerator;
 import android.net.Uri;
+import android.view.View;
 
 public class BaseActivity extends AppCompatActivity {
 
@@ -112,21 +113,25 @@ public class BaseActivity extends AppCompatActivity {
             Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
             if (vibrator != null && vibrator.hasVibrator()) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    vibrator.vibrate(
-                            VibrationEffect.createOneShot(20, VibrationEffect.DEFAULT_AMPLITUDE)
-                    );
+                    vibrator.vibrate(VibrationEffect.createOneShot(40, VibrationEffect.DEFAULT_AMPLITUDE));
                 } else {
-                    vibrator.vibrate(20);
+                    vibrator.vibrate(40);
                 }
             }
         }
 
         if (settingsManager.isSoundsEnabled()) {
             try {
-                getWindow().getDecorView().playSoundEffect(
-                        android.view.SoundEffectConstants.CLICK
-                );
+                // Use a crisp system sound
+                ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_SYSTEM, 60);
+                tg.startTone(ToneGenerator.TONE_PROP_BEEP, 60);
             } catch (Exception ignored) {}
+        }
+    }
+
+    public void performHaptic(View view) {
+        if (settingsManager.isVibrationEnabled()) {
+            view.performHapticFeedback(android.view.HapticFeedbackConstants.VIRTUAL_KEY);
         }
     }
 
