@@ -12,12 +12,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import com.colormine.banking.models.Card;
 import com.colormine.banking.models.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import java.util.List;
 
 public class CardDetailActivity extends AppCompatActivity {
 
@@ -27,11 +29,14 @@ public class CardDetailActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private String userEmail;
     private String realCvv = "000";
+    private String selectedCardId = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card_detail);
+
+        selectedCardId = getIntent().getStringExtra("CARD_ID");
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         SharedPreferences pref = getSharedPreferences("UserSession", Context.MODE_PRIVATE);
@@ -94,11 +99,26 @@ public class CardDetailActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
-                if (user != null) {
-                    if (tvCardNumber != null) tvCardNumber.setText(user.getCardNumber());
-                    if (tvCardHolder != null) tvCardHolder.setText(user.getName());
-                    if (tvExpiry != null) tvExpiry.setText(user.getCardExpiry());
-                    realCvv = user.getCardCvv();
+                if (user != null && user.getCards() != null && !user.getCards().isEmpty()) {
+                    Card cardToShow = null;
+                    if (selectedCardId != null) {
+                        for (Card c : user.getCards()) {
+                            if (selectedCardId.equals(c.getId())) {
+                                cardToShow = c;
+                                break;
+                            }
+                        }
+                    }
+                    
+                    // Default to first card if not found or no ID passed
+                    if (cardToShow == null) {
+                        cardToShow = user.getCards().get(0);
+                    }
+
+                    if (tvCardNumber != null) tvCardNumber.setText(cardToShow.getCardNumber());
+                    if (tvCardHolder != null) tvCardHolder.setText(cardToShow.getCardHolderName());
+                    if (tvExpiry != null) tvExpiry.setText(cardToShow.getExpiryDate());
+                    realCvv = cardToShow.getCvv();
                     
                     // Reset CVV view
                     isCvvVisible = false;
