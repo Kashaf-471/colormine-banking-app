@@ -41,7 +41,7 @@ public class SendMoneyActivity extends BaseActivity {
     private Button btnContinue;
     private LinearLayout selectedContactInfo, btnSelectCard;
     private TextView tvSelectedAvatar, tvSelectedName, tvSelectedUsername;
-    private TextView tvSelectedCardNumber, tvSelectedCardExpiry;
+    private TextView tvSelectedCardNumber, tvSelectedCardExpiry, tvSelectedCardBalance;
     private ImageView ivSelectedCardType;
     
     private Contact selectedContact = null;
@@ -77,6 +77,7 @@ public class SendMoneyActivity extends BaseActivity {
         btnSelectCard = findViewById(R.id.btn_select_card);
         tvSelectedCardNumber = findViewById(R.id.tv_selected_card_number);
         tvSelectedCardExpiry = findViewById(R.id.tv_selected_card_expiry);
+        tvSelectedCardBalance = findViewById(R.id.tv_selected_card_balance);
         ivSelectedCardType = findViewById(R.id.iv_selected_card_type);
     }
 
@@ -106,6 +107,7 @@ public class SendMoneyActivity extends BaseActivity {
         selectedCard = card;
         tvSelectedCardNumber.setText(card.getCardNumber());
         tvSelectedCardExpiry.setText("Exp: " + card.getExpiryDate());
+        tvSelectedCardBalance.setText(String.format("Balance: $%,.2f", card.getBalance()));
         // You can add logic to set card type icon here
     }
 
@@ -191,6 +193,10 @@ public class SendMoneyActivity extends BaseActivity {
         btnBack.setOnClickListener(v -> finish());
         btnSelectCard.setOnClickListener(v -> showCardSelectionDialog());
 
+        findViewById(R.id.btn_notifications).setOnClickListener(v -> {
+            startActivity(new Intent(this, NotificationsActivity.class));
+        });
+
         findViewById(R.id.btn_50).setOnClickListener(v -> etAmount.setText("50"));
         findViewById(R.id.btn_100).setOnClickListener(v -> etAmount.setText("100"));
         findViewById(R.id.btn_200).setOnClickListener(v -> etAmount.setText("200"));
@@ -247,7 +253,10 @@ public class SendMoneyActivity extends BaseActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
-                if (user != null && "FROZEN".equalsIgnoreCase(user.getStatus())) {
+                boolean isFrozen = (user != null && "FROZEN".equalsIgnoreCase(user.getStatus())) 
+                        || com.colormine.banking.utils.SettingsManager.getInstance(SendMoneyActivity.this).isAccountFrozen();
+                        
+                if (isFrozen) {
                     resetButton();
                     new AlertDialog.Builder(SendMoneyActivity.this)
                         .setTitle("Account Frozen")
@@ -266,7 +275,13 @@ public class SendMoneyActivity extends BaseActivity {
                     if (!globalPin.isEmpty()) {
                         showCardPinDialog(globalPin);
                     } else {
-                        startOtpFlow(currentUserEmail);
+                        // Only start OTP flow if 2FA is enabled in user settings
+                        if (user != null && user.getSettings() != null && Boolean.TRUE.equals(user.getSettings().get("twoFactor"))) {
+                            startOtpFlow(currentUserEmail);
+                        } else {
+                            // 2FA is off and no PIN is set, proceed directly
+                            performFirebaseTransaction(pendingAmount);
+                        }
                     }
                 }
             }
@@ -345,15 +360,35 @@ public class SendMoneyActivity extends BaseActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User sender = snapshot.getValue(User.class);
-                if (sender == null || sender.getBalance() < amount) {
-                    Toast.makeText(SendMoneyActivity.this, "Insufficient balance!", Toast.LENGTH_SHORT).show();
+                if (sender == null || selectedCard == null) {
                     resetButton();
                     return;
                 }
 
-                // 1. Update Sender Balance
-                mDatabase.child("users").child(sanitizedSender).child("balance").setValue(sender.getBalance() - amount);
-                recordTransaction(senderEmail, "EXPENSE", amount, "Sent to " + selectedContact.getName() + " via Card " + selectedCard.getCardNumber().substring(selectedCard.getCardNumber().length()-4), "Transfer");
+                // Check if the SPECIFIC SELECTED CARD has enough balance
+                if (selectedCard.getBalance() < amount) {
+                    Toast.makeText(SendMoneyActivity.this, "Insufficient balance on selected card!", Toast.LENGTH_SHORT).show();
+                    resetButton();
+                    return;
+                }
+
+                // 1. Update Sender's specific card balance and global balance
+                List<Card> updatedCards = sender.getCards();
+                for (Card c : updatedCards) {
+                    if (c.getId().equals(selectedCard.getId())) {
+                        c.setBalance(c.getBalance() - amount);
+                        break;
+                    }
+                }
+                
+                double newGlobalBalance = sender.getBalance() - amount;
+                
+                Map<String, Object> updates = new HashMap<>();
+                updates.put("balance", newGlobalBalance);
+                updates.put("cards", updatedCards);
+
+                mDatabase.child("users").child(sanitizedSender).updateChildren(updates);
+                recordTransaction(senderEmail, "EXPENSE", amount, "Sent to " + selectedContact.getName() + " via Card " + selectedCard.getCardNumber().substring(selectedCard.getCardNumber().length()-4), "Transfer", selectedCard.getId());
                 recordNotification(senderEmail, "Transfer Sent", "You sent $" + amount + " to " + selectedContact.getName());
                 
                 // Real Push Notification
@@ -369,8 +404,33 @@ public class SendMoneyActivity extends BaseActivity {
                     public void onDataChange(@NonNull DataSnapshot snap) {
                         User recipient = snap.getValue(User.class);
                         if (recipient != null) {
-                            mDatabase.child("users").child(sanitizedRecipient).child("balance").setValue(recipient.getBalance() + amount);
-                            recordTransaction(selectedContact.getUsername(), "INCOME", amount, "Received from " + sender.getName(), "Transfer");
+                            double newRecipBalance = recipient.getBalance() + amount;
+                            List<Card> recipCards = recipient.getCards();
+                            String targetCardId = "default";
+                            
+                            if (recipCards != null && !recipCards.isEmpty()) {
+                                String primaryId = recipient.getPrimaryCardId();
+                                boolean updated = false;
+                                for (Card rc : recipCards) {
+                                    if (primaryId != null && rc.getId().equals(primaryId)) {
+                                        rc.setBalance(rc.getBalance() + amount);
+                                        targetCardId = rc.getId();
+                                        updated = true;
+                                        break;
+                                    }
+                                }
+                                if (!updated) {
+                                    recipCards.get(0).setBalance(recipCards.get(0).getBalance() + amount);
+                                    targetCardId = recipCards.get(0).getId();
+                                }
+                            }
+                            
+                            Map<String, Object> recipUpdates = new HashMap<>();
+                            recipUpdates.put("balance", newRecipBalance);
+                            recipUpdates.put("cards", recipCards);
+                            mDatabase.child("users").child(sanitizedRecipient).updateChildren(recipUpdates);
+
+                            recordTransaction(selectedContact.getUsername(), "INCOME", amount, "Received from " + sender.getName(), "Transfer", targetCardId);
                             recordNotification(selectedContact.getUsername(), "Payment Received", "You received $" + amount + " from " + sender.getName());
                         }
                     }
@@ -398,7 +458,7 @@ public class SendMoneyActivity extends BaseActivity {
         btnContinue.setText("Continue");
     }
 
-    private void recordTransaction(String email, String type, double amount, String title, String category) {
+    private void recordTransaction(String email, String type, double amount, String title, String category, String cardId) {
         String date = new SimpleDateFormat("MMM dd, yyyy HH:mm", Locale.getDefault()).format(new Date());
         String txnId = mDatabase.child("transactions").push().getKey();
         Map<String, Object> txn = new HashMap<>();
@@ -408,6 +468,7 @@ public class SendMoneyActivity extends BaseActivity {
         txn.put("title", title);
         txn.put("date", date);
         txn.put("category", category);
+        txn.put("card_id", cardId);
         if (txnId != null) mDatabase.child("transactions").child(txnId).setValue(txn);
     }
 

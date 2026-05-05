@@ -162,6 +162,16 @@ public class CardTransferActivity extends BaseActivity {
             return;
         }
 
+        // Check if account is frozen
+        if (com.colormine.banking.utils.SettingsManager.getInstance(this).isAccountFrozen()) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Account Frozen")
+                    .setMessage("Your account is currently frozen. Please unfreeze it from Security settings to make transfers.")
+                    .setPositiveButton("OK", null)
+                    .show();
+            return;
+        }
+
         performTransfer(amount);
     }
 
@@ -189,9 +199,16 @@ public class CardTransferActivity extends BaseActivity {
                     }
 
                     if (updatedFrom && updatedTo) {
-                        mDatabase.child("users").child(sanitizedEmail).child("cards").setValue(cards)
+                        Map<String, Object> updates = new HashMap<>();
+                        updates.put("cards", cards);
+                        // Global balance remains the same because it's an internal transfer
+                        // but if we want to be safe and ensure it's synced (though it should be)
+                        // updates.put("balance", user.getBalance()); 
+                        
+                        mDatabase.child("users").child(sanitizedEmail).updateChildren(updates)
                                 .addOnSuccessListener(aVoid -> {
-                                    recordTransaction(amount);
+                                    recordTransaction(fromCard, "EXPENSE", amount, "Transfer to Card " + toCard.getCardNumber().substring(toCard.getCardNumber().length()-4), "Transfer");
+                                    recordTransaction(toCard, "INCOME", amount, "Transfer from Card " + fromCard.getCardNumber().substring(fromCard.getCardNumber().length()-4), "Transfer");
                                     Toast.makeText(CardTransferActivity.this, "Transfer Successful!", Toast.LENGTH_SHORT).show();
                                     finish();
                                 })
@@ -212,16 +229,17 @@ public class CardTransferActivity extends BaseActivity {
         });
     }
 
-    private void recordTransaction(double amount) {
+    private void recordTransaction(Card card, String type, double amount, String title, String category) {
         String date = new SimpleDateFormat("MMM dd, yyyy HH:mm", Locale.getDefault()).format(new Date());
         String txnId = mDatabase.child("transactions").push().getKey();
         Map<String, Object> txn = new HashMap<>();
         txn.put("user_email", userEmail);
-        txn.put("type", "TRANSFER");
+        txn.put("type", type);
         txn.put("amount", amount);
-        txn.put("title", "Card Transfer: " + fromCard.getCardNumber().substring(fromCard.getCardNumber().length()-4) + " to " + toCard.getCardNumber().substring(toCard.getCardNumber().length()-4));
+        txn.put("title", title);
         txn.put("date", date);
-        txn.put("category", "Transfer");
+        txn.put("category", category);
+        txn.put("card_id", card.getId());
         if (txnId != null) mDatabase.child("transactions").child(txnId).setValue(txn);
     }
 }

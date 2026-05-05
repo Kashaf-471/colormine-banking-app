@@ -116,6 +116,10 @@ public class RequestMoneyActivity extends BaseActivity {
     private void setupListeners() {
         btnBack.setOnClickListener(v -> finish());
         
+        findViewById(R.id.btn_notifications).setOnClickListener(v -> {
+            startActivity(new Intent(this, NotificationsActivity.class));
+        });
+        
         findViewById(R.id.btn_50).setOnClickListener(v -> etAmount.setText("50"));
         findViewById(R.id.btn_100).setOnClickListener(v -> etAmount.setText("100"));
         findViewById(R.id.btn_200).setOnClickListener(v -> etAmount.setText("200"));
@@ -157,7 +161,10 @@ public class RequestMoneyActivity extends BaseActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     String status = snapshot.getValue(String.class);
-                    if ("FROZEN".equalsIgnoreCase(status)) {
+                    boolean isFrozen = "FROZEN".equalsIgnoreCase(status) 
+                            || com.colormine.banking.utils.SettingsManager.getInstance(RequestMoneyActivity.this).isAccountFrozen();
+                            
+                    if (isFrozen) {
                         btnContinue.setEnabled(true);
                         btnContinue.setText("Send Request");
                         new AlertDialog.Builder(RequestMoneyActivity.this)
