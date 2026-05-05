@@ -124,6 +124,14 @@
         <activity android:name=".CameraActivity"
             android:screenOrientation="portrait" android:exported="false"/>
 
+        <!-- New Card Features -->
+        <activity android:name=".ManageCardsActivity"
+            android:screenOrientation="portrait" android:exported="false"/>
+        <activity android:name=".AddCardActivity"
+            android:screenOrientation="portrait" android:exported="false"/>
+        <activity android:name=".CardTransferActivity"
+            android:screenOrientation="portrait" android:exported="false"/>
+
         <!-- Background Service -->
         <service
             android:name=".services.SyncService"

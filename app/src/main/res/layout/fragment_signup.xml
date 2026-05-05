@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -84,7 +85,18 @@
                 android:textColor="@color/colorTextPrimary"
                 android:textColorHint="@color/colorTextHint"
                 android:textSize="14sp"
-                android:layout_marginBottom="20dp"/>
+                android:layout_marginBottom="12dp"/>
+
+            <CheckBox
+                android:id="@+id/cb_terms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:fontFamily="@font/poppins_regular"
+                android:text="I agree to the Terms and Conditions"
+                android:textColor="@color/colorTextSecondary"
+                android:textSize="13sp"
+                android:buttonTint="@color/colorPrimary" />
 
             <Button
                 android:id="@+id/btn_signup"

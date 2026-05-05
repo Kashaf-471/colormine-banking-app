@@ -70,6 +70,8 @@ public class MainActivity extends BaseActivity implements HomeFragment.OnTabSwit
             int id = item.getItemId();
             if (id == R.id.nav_my_account) {
                 viewPager.setCurrentItem(3);
+            } else if (id == R.id.nav_topup) {
+                startActivity(new Intent(this, CardTransferActivity.class));
             } else if (id == R.id.nav_settings) {
                 startActivity(new Intent(this, SettingsActivity.class));
             } else if (id == R.id.nav_security) {

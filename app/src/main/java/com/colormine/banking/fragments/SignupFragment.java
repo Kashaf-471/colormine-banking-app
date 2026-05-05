@@ -1,18 +1,29 @@
 package com.colormine.banking.fragments;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import com.colormine.banking.R;
+import com.colormine.banking.TermsActivity;
 import com.colormine.banking.models.User;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,6 +38,7 @@ import java.util.Random;
 public class SignupFragment extends Fragment {
 
     private EditText etName, etEmail, etPassword;
+    private CheckBox cbTerms;
     private Button btnSignup;
     private ProgressBar progressBar;
     private FirebaseAuth mAuth;
@@ -53,12 +65,37 @@ public class SignupFragment extends Fragment {
         etName = view.findViewById(R.id.et_signup_name);
         etEmail = view.findViewById(R.id.et_signup_email);
         etPassword = view.findViewById(R.id.et_signup_password);
+        cbTerms = view.findViewById(R.id.cb_terms);
         btnSignup = view.findViewById(R.id.btn_signup);
         progressBar = view.findViewById(R.id.signup_progress);
 
+        setupTermsText();
         btnSignup.setOnClickListener(v -> attemptSignup());
 
         return view;
+    }
+
+    private void setupTermsText() {
+        String text = "I agree to the Terms and Conditions";
+        SpannableString ss = new SpannableString(text);
+        
+        ClickableSpan clickableSpan = new ClickableSpan() {
+            @Override
+            public void onClick(@NonNull View widget) {
+                startActivity(new Intent(getActivity(), TermsActivity.class));
+            }
+
+            @Override
+            public void updateDrawState(@NonNull TextPaint ds) {
+                super.updateDrawState(ds);
+                ds.setUnderlineText(true);
+                ds.setColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary));
+            }
+        };
+
+        ss.setSpan(clickableSpan, 15, text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        cbTerms.setText(ss);
+        cbTerms.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     private void attemptSignup() {
@@ -93,6 +130,11 @@ public class SignupFragment extends Fragment {
         if (password.length() < 6) {
             etPassword.setError("Password should be at least 6 characters");
             etPassword.requestFocus();
+            return;
+        }
+
+        if (!cbTerms.isChecked()) {
+            Toast.makeText(getContext(), "Please agree to the Terms and Conditions", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -132,11 +174,12 @@ public class SignupFragment extends Fragment {
         etName.setEnabled(!isLoading);
         etEmail.setEnabled(!isLoading);
         etPassword.setEnabled(!isLoading);
+        cbTerms.setEnabled(!isLoading);
     }
 
     private void createNewUserInDatabase(String name, String email, String password) {
         // Generate random card details
-        String cardNumber = "4242 " + generateRandomDigits(4) + " " + generateRandomDigits(4) + " " + generateRandomDigits(4);
+        String cardNumber = generateRandomDigits(4) + " " + generateRandomDigits(4) + " " + generateRandomDigits(4) + " " + generateRandomDigits(4);
         String cardExpiry = "12/28";
         String cardCvv = generateRandomDigits(3);
 

@@ -5,143 +5,297 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_screen"
     android:fillViewport="true">
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="@dimen/screen_padding">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/screen_padding">
+
         <!-- Header -->
-        <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="24dp">
-            <ImageButton android:id="@+id/btn_back" android:layout_width="44dp" android:layout_height="44dp" android:background="@drawable/bg_icon_btn_white" android:src="@drawable/ic_arrow_left" android:padding="10dp" android:contentDescription="Back" android:layout_centerVertical="true"/>
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true" android:fontFamily="@font/poppins_semibold" android:text="@string/settings_title" android:textColor="@color/colorTextPrimary" android:textSize="18sp"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp">
+            <ImageButton
+                android:id="@+id/btn_back"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="@drawable/bg_icon_btn_white"
+                android:src="@drawable/ic_arrow_left"
+                android:padding="10dp"
+                android:contentDescription="Back"
+                android:layout_centerVertical="true"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="Settings"
+                android:textColor="@color/colorTextPrimary"
+                android:textSize="18sp"/>
         </RelativeLayout>
 
-        <androidx.cardview.widget.CardView android:layout_width="match_parent" android:layout_height="wrap_content" app:cardCornerRadius="24dp" app:cardElevation="8dp" app:cardBackgroundColor="@color/colorSurface">
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="24dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Preferences"
+            android:fontFamily="@font/poppins_semibold"
+            android:textColor="@color/colorTextSecondary"
+            android:textSize="14sp"
+            android:layout_marginBottom="12dp"
+            android:layout_marginStart="4dp"/>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="@color/colorSurface"
+            android:layout_marginBottom="24dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp">
 
                 <!-- Dark Mode -->
-                <RelativeLayout android:layout_width="match_parent" android:layout_height="56dp" android:layout_marginBottom="4dp">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:fontFamily="@font/poppins_medium" android:text="@string/dark_mode" android:textColor="@color/colorTextPrimary" android:textSize="14sp"/>
-                    <Switch android:id="@+id/switch_dark_mode" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:layout_centerVertical="true" android:track="@drawable/selector_switch_track"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:paddingHorizontal="12dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="Dark Mode"
+                        android:textColor="@color/colorTextPrimary"
+                        android:fontFamily="@font/poppins_medium"/>
+                    <Switch
+                        android:id="@+id/switch_dark_mode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:track="@drawable/selector_switch_track"/>
                 </RelativeLayout>
+
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/colorGray100" android:layout_marginHorizontal="12dp"/>
 
                 <!-- Push Notifications -->
-                <RelativeLayout android:layout_width="match_parent" android:layout_height="56dp" android:layout_marginBottom="4dp">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:fontFamily="@font/poppins_medium" android:text="@string/push_notifications" android:textColor="@color/colorTextPrimary" android:textSize="14sp"/>
-                    <Switch android:id="@+id/switch_notifications" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:layout_centerVertical="true" android:checked="true" android:track="@drawable/selector_switch_track"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:paddingHorizontal="12dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="Push Notifications"
+                        android:textColor="@color/colorTextPrimary"
+                        android:fontFamily="@font/poppins_medium"/>
+                    <Switch
+                        android:id="@+id/switch_notifications"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:track="@drawable/selector_switch_track"/>
                 </RelativeLayout>
+
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/colorGray100" android:layout_marginHorizontal="12dp"/>
 
                 <!-- Sounds -->
-                <RelativeLayout android:layout_width="match_parent" android:layout_height="56dp" android:layout_marginBottom="4dp">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:fontFamily="@font/poppins_medium" android:text="@string/sounds" android:textColor="@color/colorTextPrimary" android:textSize="14sp"/>
-                    <Switch android:id="@+id/switch_sounds" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:layout_centerVertical="true" android:checked="true" android:track="@drawable/selector_switch_track"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:paddingHorizontal="12dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="Sound Effects"
+                        android:textColor="@color/colorTextPrimary"
+                        android:fontFamily="@font/poppins_medium"/>
+                    <Switch
+                        android:id="@+id/switch_sounds"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:track="@drawable/selector_switch_track"/>
                 </RelativeLayout>
+
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/colorGray100" android:layout_marginHorizontal="12dp"/>
 
                 <!-- Vibration -->
-                <RelativeLayout android:layout_width="match_parent" android:layout_height="56dp" android:layout_marginBottom="4dp">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:fontFamily="@font/poppins_medium" android:text="@string/vibration" android:textColor="@color/colorTextPrimary" android:textSize="14sp"/>
-                    <Switch android:id="@+id/switch_vibration" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:layout_centerVertical="true" android:checked="true" android:track="@drawable/selector_switch_track"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:paddingHorizontal="12dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="Haptic Feedback"
+                        android:textColor="@color/colorTextPrimary"
+                        android:fontFamily="@font/poppins_medium"/>
+                    <Switch
+                        android:id="@+id/switch_vibration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:track="@drawable/selector_switch_track"/>
                 </RelativeLayout>
+
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/colorGray100" android:layout_marginHorizontal="12dp"/>
 
                 <!-- Hide Balance -->
-                <RelativeLayout android:layout_width="match_parent" android:layout_height="56dp" android:layout_marginBottom="4dp">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:fontFamily="@font/poppins_medium" android:text="Hide Dashboard Balance" android:textColor="@color/colorTextPrimary" android:textSize="14sp"/>
-                    <Switch android:id="@+id/switch_hide_balance" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:layout_centerVertical="true" android:track="@drawable/selector_switch_track"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:paddingHorizontal="12dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="Hide Balance"
+                        android:textColor="@color/colorTextPrimary"
+                        android:fontFamily="@font/poppins_medium"/>
+                    <Switch
+                        android:id="@+id/switch_hide_balance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:track="@drawable/selector_switch_track"/>
                 </RelativeLayout>
 
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Security &amp; App"
+            android:fontFamily="@font/poppins_semibold"
+            android:textColor="@color/colorTextSecondary"
+            android:textSize="14sp"
+            android:layout_marginBottom="12dp"
+            android:layout_marginStart="4dp"/>
 
-                <!-- Auto-Lock Timeout -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="@color/colorSurface"
+            android:layout_marginBottom="24dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <!-- Auto Lock -->
                 <RelativeLayout
                     android:id="@+id/option_auto_lock"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
+                    android:paddingHorizontal="12dp"
                     android:clickable="true"
                     android:focusable="true"
-                    android:layout_marginBottom="4dp">
+                    android:background="?android:attr/selectableItemBackground">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:fontFamily="@font/poppins_medium"
-                        android:text="@string/auto_lock"
+                        android:text="Auto-Lock"
                         android:textColor="@color/colorTextPrimary"
-                        android:textSize="14sp"/>
-                    <LinearLayout
+                        android:fontFamily="@font/poppins_medium"/>
+                    <TextView
+                        android:id="@+id/tv_auto_lock_value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:id="@+id/tv_auto_lock_value"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/poppins_regular"
-                            android:text="@string/auto_lock_subtitle"
-                            android:textColor="@color/colorTextSecondary"
-                            android:textSize="13sp"/>
-                        <ImageView
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:layout_marginStart="4dp"
-                            android:src="@drawable/ic_chevron_right"
-                            app:tint="@color/colorTextHint"/>
-                    </LinearLayout>
+                        android:text="5 minutes"
+                        android:textColor="@color/colorTextSecondary"
+                        android:fontFamily="@font/poppins_regular"/>
                 </RelativeLayout>
 
-                <!-- Terms & Conditions -->
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/colorGray100" android:layout_marginHorizontal="12dp"/>
+
+                <!-- Terms -->
                 <RelativeLayout
                     android:id="@+id/option_terms"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
+                    android:paddingHorizontal="12dp"
                     android:clickable="true"
                     android:focusable="true"
-                    android:layout_marginBottom="4dp">
+                    android:background="?android:attr/selectableItemBackground">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:fontFamily="@font/poppins_medium"
                         android:text="Terms &amp; Conditions"
                         android:textColor="@color/colorTextPrimary"
-                        android:textSize="14sp"/>
+                        android:fontFamily="@font/poppins_medium"/>
                     <ImageView
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:src="@drawable/ic_chevron_right"
-                        app:tint="@color/colorTextHint"/>
+                        android:src="@drawable/ic_arrow_left"
+                        android:rotation="180"
+                        app:tint="@color/colorGray400"/>
                 </RelativeLayout>
 
-                <!-- Update App -->
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/colorGray100" android:layout_marginHorizontal="12dp"/>
+
+                <!-- Update -->
                 <RelativeLayout
                     android:id="@+id/option_update"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
+                    android:paddingHorizontal="12dp"
                     android:clickable="true"
                     android:focusable="true"
-                    android:layout_marginBottom="4dp">
+                    android:background="?android:attr/selectableItemBackground">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:fontFamily="@font/poppins_medium"
                         android:text="Check for Updates"
                         android:textColor="@color/colorTextPrimary"
-                        android:textSize="14sp"/>
+                        android:fontFamily="@font/poppins_medium"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:fontFamily="@font/poppins_regular"
-                        android:text="v1.0.4"
+                        android:text="v1.0"
                         android:textColor="@color/colorTextSecondary"
-                        android:textSize="13sp"/>
+                        android:fontFamily="@font/poppins_regular"/>
                 </RelativeLayout>
 
-                <!-- Clear Cache -->
-                <Button android:id="@+id/btn_clear_cache" android:layout_width="match_parent" android:layout_height="48dp" android:layout_marginTop="8dp" android:background="@drawable/bg_danger_btn" android:fontFamily="@font/poppins_medium" android:text="@string/clear_cache" android:textColor="@color/colorError" android:textSize="14sp" android:stateListAnimator="@null"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
+
+        <Button
+            android:id="@+id/btn_clear_cache"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@drawable/bg_btn_primary"
+            android:backgroundTint="@color/colorError"
+            android:text="Clear Cache"
+            android:textColor="@color/colorTextWhite"
+            android:fontFamily="@font/poppins_semibold"
+            android:textAllCaps="false"
+            android:stateListAnimator="@null"
+            android:layout_marginBottom="32dp"/>
+
     </LinearLayout>
 </ScrollView>
