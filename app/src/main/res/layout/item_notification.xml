@@ -43,7 +43,9 @@
                     android:text="Notification Title"
                     android:textColor="@color/colorTextPrimary"
                     android:textSize="14sp"
-                    android:layout_alignParentStart="true"/>
+                    android:layout_alignParentStart="true"
+                    android:layout_toStartOf="@+id/tv_notif_time"
+                    android:layout_marginEnd="8dp"/>
 
                 <View
                     android:id="@+id/notif_unread_dot"
@@ -74,6 +76,23 @@
                 android:text="Notification details go here..."
                 android:textColor="@color/colorTextSecondary"
                 android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tv_notif_action_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_card_pill"
+                android:backgroundTint="@color/colorBlue100"
+                android:fontFamily="@font/poppins_medium"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:text="TAP TO PAY →"
+                android:textColor="@color/colorBlue600"
+                android:textSize="10sp"
+                android:visibility="gone" />
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
