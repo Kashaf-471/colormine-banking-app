@@ -82,7 +82,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             app:cardCornerRadius="@dimen/radius_xxl"
-            app:cardElevation="8dp"
+            app:cardElevation="0dp"
             app:cardBackgroundColor="@color/colorSurface"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

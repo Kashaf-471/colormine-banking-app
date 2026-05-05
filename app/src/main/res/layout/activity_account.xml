@@ -5,112 +5,152 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_screen"
     android:fillViewport="true">
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="@dimen/screen_padding" android:paddingBottom="100dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/screen_padding">
 
         <!-- Header -->
-        <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="24dp">
-            <ImageButton android:id="@+id/btn_back" android:layout_width="44dp" android:layout_height="44dp" android:background="@drawable/bg_icon_btn_white" android:src="@drawable/ic_arrow_left" android:padding="10dp" android:contentDescription="Back" android:layout_centerVertical="true"/>
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true" android:fontFamily="@font/poppins_semibold" android:text="@string/account_title" android:textColor="@color/colorTextPrimary" android:textSize="18sp"/>
-            <RelativeLayout android:id="@+id/btn_notifications" android:layout_width="44dp" android:layout_height="44dp" android:layout_alignParentEnd="true" android:layout_centerVertical="true" android:background="@drawable/bg_icon_btn_white" android:clickable="true" android:focusable="true">
-                <ImageView android:layout_width="22dp" android:layout_height="22dp" android:layout_centerInParent="true" android:src="@drawable/ic_bell" app:tint="@color/colorTextPrimary"/>
-                <View android:layout_width="8dp" android:layout_height="8dp" android:layout_alignParentEnd="true" android:layout_alignParentTop="true" android:layout_marginTop="8dp" android:layout_marginEnd="8dp" android:background="@drawable/bg_dot_red"/>
-            </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp">
+            <ImageButton
+                android:id="@+id/btn_back"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="@drawable/bg_icon_btn_white"
+                android:src="@drawable/ic_arrow_left"
+                android:padding="10dp"
+                android:contentDescription="Back"
+                android:layout_centerVertical="true"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="My Account"
+                android:textColor="@color/colorTextPrimary"
+                android:textSize="18sp"/>
         </RelativeLayout>
 
-        <!-- Profile card -->
-        <androidx.cardview.widget.CardView android:layout_width="match_parent" android:layout_height="wrap_content" app:cardCornerRadius="24dp" app:cardElevation="8dp" app:cardBackgroundColor="@color/colorSurface" android:layout_marginBottom="16dp">
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="24dp">
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal" android:layout_marginBottom="20dp">
-                    <LinearLayout android:layout_width="80dp" android:layout_height="80dp" android:background="@drawable/bg_avatar" android:gravity="center" android:layout_marginEnd="16dp">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="👤" android:textSize="40sp"/>
-                    </LinearLayout>
-                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
-                        <TextView android:id="@+id/tv_user_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="@font/poppins_bold" android:text="@string/user_name" android:textColor="@color/colorTextPrimary" android:textSize="22sp"/>
-                        <TextView android:id="@+id/tv_user_email" android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="@font/poppins_regular" android:text="@string/user_email" android:textColor="@color/colorTextSecondary" android:textSize="13sp"/>
-                    </LinearLayout>
-                </LinearLayout>
-                <!-- Stats row -->
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@drawable/bg_stats_row" android:orientation="horizontal" android:padding="16dp">
-                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="@font/poppins_bold" android:text="12" android:textColor="@color/colorPrimary" android:textSize="20sp"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="@font/poppins_regular" android:text="@string/stats_cards" android:textColor="@color/colorTextSecondary" android:textSize="11sp"/>
-                    </LinearLayout>
-                    <View android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/colorPurple200"/>
-                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="@font/poppins_bold" android:text="458" android:textColor="@color/colorPrimary" android:textSize="20sp"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="@font/poppins_regular" android:text="@string/stats_transactions" android:textColor="@color/colorTextSecondary" android:textSize="11sp"/>
-                    </LinearLayout>
-                    <View android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/colorPurple200"/>
-                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="@font/poppins_bold" android:text="5" android:textColor="@color/colorPrimary" android:textSize="20sp"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="@font/poppins_regular" android:text="@string/stats_years" android:textColor="@color/colorTextSecondary" android:textSize="11sp"/>
-                    </LinearLayout>
-                </LinearLayout>
+        <!-- Profile Info -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="@color/colorSurface"
+            android:layout_marginBottom="24dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="32dp"
+                android:gravity="center">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/iv_profile"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/ic_user"
+                    android:layout_marginBottom="16dp"
+                    app:civ_border_color="@color/colorPurple100"
+                    app:civ_border_width="4dp"/>
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="User Name"
+                    android:textColor="@color/colorTextPrimary"
+                    android:textSize="22sp"/>
+
+                <TextView
+                    android:id="@+id/tv_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_regular"
+                    android:text="user@example.com"
+                    android:textColor="@color/colorTextSecondary"
+                    android:textSize="14sp"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- Settings options card -->
-        <androidx.cardview.widget.CardView android:layout_width="match_parent" android:layout_height="wrap_content" app:cardCornerRadius="24dp" app:cardElevation="8dp" app:cardBackgroundColor="@color/colorSurface" android:layout_marginBottom="16dp">
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="24dp">
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="@font/poppins_semibold" android:text="@string/account_settings_title" android:textColor="@color/colorTextPrimary" android:textSize="16sp" android:layout_marginBottom="8dp"/>
+        <!-- Menu Options -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="@color/colorSurface">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp">
 
-                <!-- Personal Info -->
-                <RelativeLayout android:id="@+id/option_personal_info" android:layout_width="match_parent" android:layout_height="56dp" android:clickable="true" android:focusable="true" android:layout_marginBottom="4dp">
-                    <LinearLayout android:layout_width="40dp" android:layout_height="40dp" android:layout_centerVertical="true" android:background="@drawable/bg_icon_purple" android:gravity="center" android:layout_marginEnd="12dp" android:id="@+id/icon_personal">
-                        <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_user" app:tint="@color/colorPrimary"/>
-                    </LinearLayout>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_toEndOf="@id/icon_personal" android:fontFamily="@font/poppins_regular" android:text="@string/option_personal_info" android:textColor="@color/colorTextPrimary" android:textSize="14sp"/>
-                    <ImageView android:layout_width="16dp" android:layout_height="16dp" android:layout_alignParentEnd="true" android:layout_centerVertical="true" android:src="@drawable/ic_chevron_right" app:tint="@color/colorTextHint"/>
-                </RelativeLayout>
+                <LinearLayout
+                    android:id="@+id/btn_personal_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="12dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true">
+                    <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_user" app:tint="@color/colorPrimary" android:layout_marginEnd="16dp"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Personal Information" android:textColor="@color/colorTextPrimary" android:fontFamily="@font/poppins_medium"/>
+                    <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_chevron_right" app:tint="@color/colorTextHint"/>
+                </LinearLayout>
 
-                <!-- My Cards -->
-                <RelativeLayout android:id="@+id/option_my_cards" android:layout_width="match_parent" android:layout_height="56dp" android:clickable="true" android:focusable="true" android:layout_marginBottom="4dp">
-                    <LinearLayout android:layout_width="40dp" android:layout_height="40dp" android:layout_centerVertical="true" android:background="@drawable/bg_icon_purple" android:gravity="center" android:layout_marginEnd="12dp" android:id="@+id/icon_cards">
-                        <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_credit_card" app:tint="@color/colorBlue600"/>
-                    </LinearLayout>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_toEndOf="@id/icon_cards" android:fontFamily="@font/poppins_regular" android:text="@string/option_my_cards" android:textColor="@color/colorTextPrimary" android:textSize="14sp"/>
-                    <ImageView android:layout_width="16dp" android:layout_height="16dp" android:layout_alignParentEnd="true" android:layout_centerVertical="true" android:src="@drawable/ic_chevron_right" app:tint="@color/colorTextHint"/>
-                </RelativeLayout>
+                <LinearLayout
+                    android:id="@+id/btn_security"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="12dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true">
+                    <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_shield" app:tint="@color/colorPrimary" android:layout_marginEnd="16dp"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Security" android:textColor="@color/colorTextPrimary" android:fontFamily="@font/poppins_medium"/>
+                    <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_chevron_right" app:tint="@color/colorTextHint"/>
+                </LinearLayout>
 
-                <!-- Notifications -->
-                <RelativeLayout android:id="@+id/option_notifications" android:layout_width="match_parent" android:layout_height="56dp" android:clickable="true" android:focusable="true" android:layout_marginBottom="4dp">
-                    <LinearLayout android:layout_width="40dp" android:layout_height="40dp" android:layout_centerVertical="true" android:background="@drawable/bg_icon_purple" android:gravity="center" android:layout_marginEnd="12dp" android:id="@+id/icon_notif">
-                        <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_bell" app:tint="@color/colorWarning"/>
-                    </LinearLayout>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_toEndOf="@id/icon_notif" android:fontFamily="@font/poppins_regular" android:text="@string/option_notifications" android:textColor="@color/colorTextPrimary" android:textSize="14sp"/>
-                    <ImageView android:layout_width="16dp" android:layout_height="16dp" android:layout_alignParentEnd="true" android:layout_centerVertical="true" android:src="@drawable/ic_chevron_right" app:tint="@color/colorTextHint"/>
-                </RelativeLayout>
+                <LinearLayout
+                    android:id="@+id/btn_settings"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="12dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true">
+                    <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_settings" app:tint="@color/colorPrimary" android:layout_marginEnd="16dp"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Settings" android:textColor="@color/colorTextPrimary" android:fontFamily="@font/poppins_medium"/>
+                    <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_chevron_right" app:tint="@color/colorTextHint"/>
+                </LinearLayout>
 
-                <!-- Security -->
-                <RelativeLayout android:id="@+id/option_security" android:layout_width="match_parent" android:layout_height="56dp" android:clickable="true" android:focusable="true" android:layout_marginBottom="4dp">
-                    <LinearLayout android:layout_width="40dp" android:layout_height="40dp" android:layout_centerVertical="true" android:background="@drawable/bg_icon_green" android:gravity="center" android:layout_marginEnd="12dp" android:id="@+id/icon_security">
-                        <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_lock" app:tint="@color/colorSuccess"/>
-                    </LinearLayout>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_toEndOf="@id/icon_security" android:fontFamily="@font/poppins_regular" android:text="@string/option_security" android:textColor="@color/colorTextPrimary" android:textSize="14sp"/>
-                    <ImageView android:layout_width="16dp" android:layout_height="16dp" android:layout_alignParentEnd="true" android:layout_centerVertical="true" android:src="@drawable/ic_chevron_right" app:tint="@color/colorTextHint"/>
-                </RelativeLayout>
-
-                <!-- App Settings -->
-                <RelativeLayout android:id="@+id/option_settings" android:layout_width="match_parent" android:layout_height="56dp" android:clickable="true" android:focusable="true" android:layout_marginBottom="4dp">
-                    <LinearLayout android:layout_width="40dp" android:layout_height="40dp" android:layout_centerVertical="true" android:background="@drawable/bg_action_row" android:gravity="center" android:layout_marginEnd="12dp" android:id="@+id/icon_settings">
-                        <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_settings" app:tint="@color/colorTextSecondary"/>
-                    </LinearLayout>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_toEndOf="@id/icon_settings" android:fontFamily="@font/poppins_regular" android:text="@string/option_settings" android:textColor="@color/colorTextPrimary" android:textSize="14sp"/>
-                    <ImageView android:layout_width="16dp" android:layout_height="16dp" android:layout_alignParentEnd="true" android:layout_centerVertical="true" android:src="@drawable/ic_chevron_right" app:tint="@color/colorTextHint"/>
-                </RelativeLayout>
-
-                <!-- Help & Support -->
-                <RelativeLayout android:id="@+id/option_help" android:layout_width="match_parent" android:layout_height="56dp" android:clickable="true" android:focusable="true">
-                    <LinearLayout android:layout_width="40dp" android:layout_height="40dp" android:layout_centerVertical="true" android:background="@drawable/bg_icon_purple" android:gravity="center" android:layout_marginEnd="12dp" android:id="@+id/icon_help">
-                        <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_help" app:tint="@color/colorSecondary"/>
-                    </LinearLayout>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_toEndOf="@id/icon_help" android:fontFamily="@font/poppins_regular" android:text="@string/option_help" android:textColor="@color/colorTextPrimary" android:textSize="14sp"/>
-                    <ImageView android:layout_width="16dp" android:layout_height="16dp" android:layout_alignParentEnd="true" android:layout_centerVertical="true" android:src="@drawable/ic_chevron_right" app:tint="@color/colorTextHint"/>
-                </RelativeLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- Logout button -->
-        <Button android:id="@+id/btn_logout" android:layout_width="match_parent" android:layout_height="56dp" android:background="@drawable/bg_danger_btn" android:fontFamily="@font/poppins_semibold" android:text="@string/btn_logout" android:textColor="@color/colorError" android:textSize="15sp" android:stateListAnimator="@null"/>
+        <Button
+            android:id="@+id/btn_logout"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/bg_danger_btn"
+            android:text="Log Out"
+            android:textColor="@color/colorError"
+            android:fontFamily="@font/poppins_semibold"
+            android:stateListAnimator="@null"/>
+
     </LinearLayout>
 </ScrollView>

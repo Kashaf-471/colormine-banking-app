@@ -30,7 +30,7 @@
         android:layout_weight="1"
         android:layout_margin="@dimen/screen_padding"
         app:cardCornerRadius="24dp"
-        app:cardElevation="8dp"
+        app:cardElevation="0dp"
         app:cardBackgroundColor="@color/colorSurface">
 
         <ScrollView

@@ -16,11 +16,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.colormine.banking.CardDetailActivity;
 import com.colormine.banking.LoginSignupActivity;
 import com.colormine.banking.MainActivity;
+import com.colormine.banking.ManageCardsActivity;
 import com.colormine.banking.NotificationsActivity;
 import com.colormine.banking.R;
 import com.colormine.banking.RequestMoneyActivity;
 import com.colormine.banking.SendMoneyActivity;
 import com.colormine.banking.adapters.TransactionAdapter;
+import com.colormine.banking.models.Card;
 import com.colormine.banking.models.Transaction;
 import com.colormine.banking.models.User;
 import com.google.firebase.database.DataSnapshot;
@@ -59,7 +61,7 @@ public class HomeFragment extends Fragment {
         tvBalance = view.findViewById(R.id.card_balance_amount);
         tvUserName = view.findViewById(R.id.tv_user_name);
         tvCardNumber = view.findViewById(R.id.card_number);
-        tvCardExpiry = view.findViewById(R.id.card_expiry); // This ID should be present or updated in XML
+        tvCardExpiry = view.findViewById(R.id.card_expiry);
 
         initHeader(view);
         initCard(view);
@@ -75,7 +77,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        // Refresh balance visibility instantly when returning from settings
         applyBalanceMask();
         loadUserProfile();
     }
@@ -86,7 +87,6 @@ public class HomeFragment extends Fragment {
         if (settingsManager.isHideBalance()) {
             tvBalance.setText("$ ****.**");
         }
-        // The actual amount will be filled by loadUserProfile() if mask is off
     }
 
     private void loadUserProfile() {
@@ -106,14 +106,27 @@ public class HomeFragment extends Fragment {
                     if (tvBalance != null) {
                         tvBalance.setText(hideBalance ? "$ ****.**" : formattedBalance);
                     }
-                    if (tvCardNumber != null) tvCardNumber.setText(user.getCardNumber());
-                    
-                    // Note: If you don't have a specific ID for expiry in XML, we'll try to find it
-                    View expiryView = getView() != null ? getView().findViewById(R.id.card_expiry) : null;
-                    if (expiryView instanceof TextView) {
-                        ((TextView) expiryView).setText(user.getCardExpiry());
-                    }
 
+                    // Display the preferred (primary) card info
+                    Card primaryCard = null;
+                    if (user.getCards() != null && !user.getCards().isEmpty()) {
+                        String primaryId = user.getPrimaryCardId();
+                        if (primaryId != null) {
+                            for (Card c : user.getCards()) {
+                                if (primaryId.equals(c.getId())) {
+                                    primaryCard = c;
+                                    break;
+                                }
+                            }
+                        }
+                        if (primaryCard == null) {
+                            primaryCard = user.getCards().get(0);
+                        }
+
+                        if (tvCardNumber != null) tvCardNumber.setText(primaryCard.getCardNumber());
+                        if (tvCardExpiry != null) tvCardExpiry.setText(primaryCard.getExpiryDate());
+                    }
+                    
                     if (getActivity() instanceof MainActivity) {
                         ((MainActivity) getActivity()).updateDrawerInfo(user.getName(), user.getEmail(), hideBalance ? "$ ****.**" : formattedBalance);
                     }
@@ -173,7 +186,7 @@ public class HomeFragment extends Fragment {
 
     private void initCard(View view) {
         view.findViewById(R.id.home_card).setOnClickListener(v -> {
-            startActivity(new Intent(requireContext(), CardDetailActivity.class));
+            startActivity(new Intent(requireContext(), ManageCardsActivity.class));
         });
     }
 
@@ -185,7 +198,7 @@ public class HomeFragment extends Fragment {
             startActivity(new Intent(requireContext(), RequestMoneyActivity.class)));
 
         view.findViewById(R.id.action_cards).setOnClickListener(v ->
-            startActivity(new Intent(requireContext(), CardDetailActivity.class)));
+            startActivity(new Intent(requireContext(), ManageCardsActivity.class)));
 
         view.findViewById(R.id.action_stats).setOnClickListener(v -> {
             if (getActivity() instanceof OnTabSwitchListener) {
