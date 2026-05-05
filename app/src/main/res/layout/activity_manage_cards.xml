@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground">
+
+    <!-- Header -->
+    <RelativeLayout
+        android:id="@+id/manage_cards_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="@drawable/bg_icon_btn_white"
+            android:src="@drawable/ic_arrow_left"
+            android:padding="10dp"
+            android:contentDescription="Back"
+            android:layout_centerVertical="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="All Cards"
+            android:textColor="@color/colorTextPrimary"
+            android:textSize="18sp"/>
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_cards"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/manage_cards_header"
+        android:layout_above="@id/btn_add_card"
+        android:padding="16dp"
+        android:clipToPadding="false"/>
+
+    <Button
+        android:id="@+id/btn_add_card"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        android:background="@drawable/bg_btn_primary"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="Add Card +"
+        android:textAllCaps="false"
+        android:textColor="@color/colorTextWhite"
+        android:textSize="16sp"
+        android:stateListAnimator="@null"/>
+
+</RelativeLayout>

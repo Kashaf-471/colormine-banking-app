@@ -8,14 +8,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.colormine.banking.adapters.ContactAdapter;
+import com.colormine.banking.models.Card;
 import com.colormine.banking.models.Contact;
 import com.colormine.banking.models.User;
 import com.google.firebase.database.DataSnapshot;
@@ -37,9 +39,15 @@ public class SendMoneyActivity extends BaseActivity {
     private RecyclerView rvContacts;
     private EditText etAmount;
     private Button btnContinue;
-    private LinearLayout selectedContactInfo;
+    private LinearLayout selectedContactInfo, btnSelectCard;
     private TextView tvSelectedAvatar, tvSelectedName, tvSelectedUsername;
+    private TextView tvSelectedCardNumber, tvSelectedCardExpiry;
+    private ImageView ivSelectedCardType;
+    
     private Contact selectedContact = null;
+    private Card selectedCard = null;
+    private List<Card> userCards = new ArrayList<>();
+    
     private DatabaseReference mDatabase;
     private androidx.activity.result.ActivityResultLauncher<Intent> otpLauncher;
     private double pendingAmount;
@@ -53,6 +61,7 @@ public class SendMoneyActivity extends BaseActivity {
         initViews();
         setupContactsRecyclerView();
         setupListeners();
+        loadUserCards();
     }
 
     private void initViews() {
@@ -64,6 +73,59 @@ public class SendMoneyActivity extends BaseActivity {
         tvSelectedAvatar = findViewById(R.id.tv_selected_avatar);
         tvSelectedName = findViewById(R.id.tv_selected_name);
         tvSelectedUsername = findViewById(R.id.tv_selected_username);
+        
+        btnSelectCard = findViewById(R.id.btn_select_card);
+        tvSelectedCardNumber = findViewById(R.id.tv_selected_card_number);
+        tvSelectedCardExpiry = findViewById(R.id.tv_selected_card_expiry);
+        ivSelectedCardType = findViewById(R.id.iv_selected_card_type);
+    }
+
+    private void loadUserCards() {
+        SharedPreferences pref = getSharedPreferences("UserSession", Context.MODE_PRIVATE);
+        String currentUserEmail = pref.getString("email", "");
+        String sanitizedEmail = currentUserEmail.replace(".", ",");
+
+        mDatabase.child("users").child(sanitizedEmail).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User user = snapshot.getValue(User.class);
+                if (user != null && user.getCards() != null) {
+                    userCards = user.getCards();
+                    if (!userCards.isEmpty() && selectedCard == null) {
+                        updateSelectedCard(userCards.get(0));
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
+    }
+
+    private void updateSelectedCard(Card card) {
+        selectedCard = card;
+        tvSelectedCardNumber.setText(card.getCardNumber());
+        tvSelectedCardExpiry.setText("Exp: " + card.getExpiryDate());
+        // You can add logic to set card type icon here
+    }
+
+    private void showCardSelectionDialog() {
+        if (userCards.isEmpty()) {
+            Toast.makeText(this, "No cards available", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String[] cardDisplayNames = new String[userCards.size()];
+        for (int i = 0; i < userCards.size(); i++) {
+            cardDisplayNames[i] = userCards.get(i).getCardNumber() + " (" + userCards.get(i).getCardHolderName() + ")";
+        }
+
+        new AlertDialog.Builder(this)
+                .setTitle("Select Payment Method")
+                .setItems(cardDisplayNames, (dialog, which) -> {
+                    updateSelectedCard(userCards.get(which));
+                })
+                .show();
     }
 
     private void setupContactsRecyclerView() {
@@ -127,6 +189,7 @@ public class SendMoneyActivity extends BaseActivity {
 
     private void setupListeners() {
         btnBack.setOnClickListener(v -> finish());
+        btnSelectCard.setOnClickListener(v -> showCardSelectionDialog());
 
         findViewById(R.id.btn_50).setOnClickListener(v -> etAmount.setText("50"));
         findViewById(R.id.btn_100).setOnClickListener(v -> etAmount.setText("100"));
@@ -149,6 +212,11 @@ public class SendMoneyActivity extends BaseActivity {
         btnContinue.setOnClickListener(v -> {
             if (selectedContact == null) {
                 Toast.makeText(this, "Select a recipient", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            
+            if (selectedCard == null) {
+                Toast.makeText(this, "Select a payment card", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -180,9 +248,8 @@ public class SendMoneyActivity extends BaseActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
                 if (user != null && "FROZEN".equalsIgnoreCase(user.getStatus())) {
-                    btnContinue.setEnabled(true);
-                    btnContinue.setText("Continue");
-                    new androidx.appcompat.app.AlertDialog.Builder(SendMoneyActivity.this)
+                    resetButton();
+                    new AlertDialog.Builder(SendMoneyActivity.this)
                         .setTitle("Account Frozen")
                         .setMessage("Your account is currently frozen. Please unfreeze it from Security settings to make transfers.")
                         .setPositiveButton("OK", null)
@@ -190,41 +257,43 @@ public class SendMoneyActivity extends BaseActivity {
                     return;
                 }
 
-                // Check Transaction PIN if set via SettingsManager
-                String savedPin = settingsManager.getTransactionPin();
-
-                if (!savedPin.isEmpty()) {
-                    showPinDialog(savedPin);
+                // Verify PIN of the SELECTED card
+                if (selectedCard != null && selectedCard.getPin() != null && !selectedCard.getPin().isEmpty()) {
+                    showCardPinDialog(selectedCard.getPin());
                 } else {
-                    startOtpFlow(currentUserEmail);
+                    // Fallback to global PIN if card PIN is not set (for old cards)
+                    String globalPin = settingsManager.getTransactionPin();
+                    if (!globalPin.isEmpty()) {
+                        showCardPinDialog(globalPin);
+                    } else {
+                        startOtpFlow(currentUserEmail);
+                    }
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                btnContinue.setEnabled(true);
-                btnContinue.setText("Continue");
+                resetButton();
             }
         });
     }
 
-    private void showPinDialog(String correctPin) {
-        btnContinue.setEnabled(true);
-        btnContinue.setText("Continue");
+    private void showCardPinDialog(String correctPin) {
+        resetButton();
 
-        android.widget.LinearLayout layout = new android.widget.LinearLayout(this);
-        layout.setOrientation(android.widget.LinearLayout.VERTICAL);
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
         layout.setPadding(64, 32, 64, 0);
 
-        android.widget.EditText etPin = new android.widget.EditText(this);
-        etPin.setHint("Enter 4-digit PIN");
+        EditText etPin = new EditText(this);
+        etPin.setHint("Enter 4-digit Card PIN");
         etPin.setInputType(android.text.InputType.TYPE_CLASS_NUMBER | android.text.InputType.TYPE_NUMBER_VARIATION_PASSWORD);
         etPin.setMaxLines(1);
         layout.addView(etPin);
 
-        new androidx.appcompat.app.AlertDialog.Builder(this)
-            .setTitle("Confirm Transaction")
-            .setMessage("Please enter your transaction PIN to continue.")
+        new AlertDialog.Builder(this)
+            .setTitle("Card Verification")
+            .setMessage("Please enter the PIN for card ending in " + selectedCard.getCardNumber().substring(selectedCard.getCardNumber().length() - 4))
             .setView(layout)
             .setPositiveButton("Verify", (dialog, which) -> {
                 String inputPin = etPin.getText().toString().trim();
@@ -232,7 +301,7 @@ public class SendMoneyActivity extends BaseActivity {
                     SharedPreferences pref = getSharedPreferences("UserSession", Context.MODE_PRIVATE);
                     startOtpFlow(pref.getString("email", ""));
                 } else {
-                    Toast.makeText(this, "Incorrect PIN", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Incorrect Card PIN", Toast.LENGTH_SHORT).show();
                 }
             })
             .setNegativeButton("Cancel", null)
@@ -246,8 +315,7 @@ public class SendMoneyActivity extends BaseActivity {
         OtpService.generateAndSend(this, email, new OtpService.OtpCallback() {
             @Override
             public void onSuccess() {
-                btnContinue.setEnabled(true);
-                btnContinue.setText("Verify to Send");
+                resetButton();
                 Intent intent = new Intent(SendMoneyActivity.this, VerifyOtpActivity.class);
                 intent.putExtra("email", email);
                 intent.putExtra(VerifyOtpActivity.EXTRA_PURPOSE, VerifyOtpActivity.PURPOSE_SEND_MONEY);
@@ -256,8 +324,7 @@ public class SendMoneyActivity extends BaseActivity {
 
             @Override
             public void onFallback(String error) {
-                btnContinue.setEnabled(true);
-                btnContinue.setText("Continue");
+                resetButton();
                 Toast.makeText(SendMoneyActivity.this, "Failed to send OTP to your email: " + error, Toast.LENGTH_LONG).show();
             }
         });
@@ -286,7 +353,7 @@ public class SendMoneyActivity extends BaseActivity {
 
                 // 1. Update Sender Balance
                 mDatabase.child("users").child(sanitizedSender).child("balance").setValue(sender.getBalance() - amount);
-                recordTransaction(senderEmail, "EXPENSE", amount, "Sent to " + selectedContact.getName(), "Transfer");
+                recordTransaction(senderEmail, "EXPENSE", amount, "Sent to " + selectedContact.getName() + " via Card " + selectedCard.getCardNumber().substring(selectedCard.getCardNumber().length()-4), "Transfer");
                 recordNotification(senderEmail, "Transfer Sent", "You sent $" + amount + " to " + selectedContact.getName());
                 
                 // Real Push Notification
