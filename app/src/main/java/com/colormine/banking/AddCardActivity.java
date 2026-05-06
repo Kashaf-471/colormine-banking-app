@@ -161,6 +161,42 @@ public class AddCardActivity extends AppCompatActivity {
         }
 
         String sanitizedEmail = userEmail.replace(".", ",");
+
+        // Pre-format the card number (needed inside lambda)
+        StringBuilder formattedNumBuilder = new StringBuilder();
+        for (int i = 0; i < numberStr.length(); i++) {
+            if (i > 0 && i % 4 == 0) formattedNumBuilder.append(" ");
+            formattedNumBuilder.append(numberStr.charAt(i));
+        }
+        String formattedNum = formattedNumBuilder.toString();
+
+        // First check if account is blocked by admin
+        mDatabase.child("users").child(sanitizedEmail).child("status")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot statusSnapshot) {
+                        String status = statusSnapshot.getValue(String.class);
+                        if ("BLOCKED".equalsIgnoreCase(status)) {
+                            new androidx.appcompat.app.AlertDialog.Builder(AddCardActivity.this)
+                                    .setTitle("Account Blocked")
+                                    .setMessage("Your account has been blocked by an administrator. Please contact support for assistance.")
+                                    .setPositiveButton("OK", null)
+                                    .show();
+                            return;
+                        }
+                        // Account is not blocked — proceed to save the card
+                        doSaveCard(sanitizedEmail, name, formattedNum, expiry, cvv, pin);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        // On error, allow the operation to proceed
+                        doSaveCard(sanitizedEmail, name, formattedNum, expiry, cvv, pin);
+                    }
+                });
+    }
+
+    private void doSaveCard(String sanitizedEmail, String name, String formattedNum, String expiry, String cvv, String pin) {
         mDatabase.child("users").child(sanitizedEmail).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -168,25 +204,18 @@ public class AddCardActivity extends AppCompatActivity {
                 if (user != null) {
                     List<Card> cards = user.getCards();
                     if (cards == null) cards = new ArrayList<>();
-                    
-                    // Format number for display
-                    StringBuilder formattedNum = new StringBuilder();
-                    for(int i=0; i<numberStr.length(); i++) {
-                        if (i > 0 && i % 4 == 0) formattedNum.append(" ");
-                        formattedNum.append(numberStr.charAt(i));
-                    }
 
                     String cardId = UUID.randomUUID().toString();
-                    Card newCard = new Card(cardId, name, formattedNum.toString(), expiry, cvv, "Visa");
+                    Card newCard = new Card(cardId, name, formattedNum, expiry, cvv, "Visa");
                     newCard.setPin(pin);
-                    
+
                     cards.add(newCard);
-                    
+
                     // If it's the first card, make it primary
                     if (user.getPrimaryCardId() == null || user.getPrimaryCardId().isEmpty()) {
                         user.setPrimaryCardId(cardId);
                     }
-                    
+
                     mDatabase.child("users").child(sanitizedEmail).child("cards").setValue(cards);
                     mDatabase.child("users").child(sanitizedEmail).child("primaryCardId").setValue(user.getPrimaryCardId())
                         .addOnSuccessListener(aVoid -> {

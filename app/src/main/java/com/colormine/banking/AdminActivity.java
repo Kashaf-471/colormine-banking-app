@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -21,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.colormine.banking.adapters.UserAdapter;
+import com.colormine.banking.models.Card;
 import com.colormine.banking.models.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -90,6 +92,10 @@ public class AdminActivity extends AppCompatActivity implements UserAdapter.OnUs
         });
 
         findViewById(R.id.card_broadcast).setOnClickListener(v -> showBroadcastDialog());
+
+        findViewById(R.id.card_loan_requests).setOnClickListener(v -> {
+            startActivity(new Intent(AdminActivity.this, AdminLoansActivity.class));
+        });
 
         findViewById(R.id.btn_logout).setOnClickListener(v -> {
             new AlertDialog.Builder(this)
@@ -203,6 +209,32 @@ public class AdminActivity extends AppCompatActivity implements UserAdapter.OnUs
                 Toast.makeText(AdminActivity.this, "Failed to load users: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
+        // Load pending loans count
+        mDatabase.child("loan_requests").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int count = 0;
+                for (DataSnapshot loanSnap : snapshot.getChildren()) {
+                    if ("PENDING".equals(loanSnap.child("status").getValue(String.class))) {
+                        count++;
+                    }
+                }
+                TextView tvCount = findViewById(R.id.tv_pending_loans_count);
+                if (tvCount != null) {
+                    if (count > 0) {
+                        tvCount.setText(count + " pending requests requiring action");
+                        tvCount.setTextColor(getResources().getColor(R.color.colorWarning));
+                    } else {
+                        tvCount.setText("No pending loan requests");
+                        tvCount.setTextColor(getResources().getColor(R.color.colorTextSecondary));
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
     }
 
     private void filterUsers(String query) {
@@ -271,8 +303,13 @@ public class AdminActivity extends AppCompatActivity implements UserAdapter.OnUs
                 .setPositiveButton("Delete", (dialog, which) -> {
                     if (user.getEmail() != null) {
                         String sanitizedEmail = user.getEmail().replace(".", ",");
+                        // Remove user data from database
                         mDatabase.child("users").child(sanitizedEmail).removeValue()
-                            .addOnSuccessListener(aVoid -> Toast.makeText(AdminActivity.this, "User deleted", Toast.LENGTH_SHORT).show())
+                            .addOnSuccessListener(aVoid -> {
+                                // Also record the deleted email so signup can detect this
+                                mDatabase.child("deleted_users").child(sanitizedEmail).setValue(true);
+                                Toast.makeText(AdminActivity.this, "User deleted", Toast.LENGTH_SHORT).show();
+                            })
                             .addOnFailureListener(e -> Toast.makeText(AdminActivity.this, "Failed to delete: " + e.getMessage(), Toast.LENGTH_SHORT).show());
                     }
                 })
@@ -286,77 +323,112 @@ public class AdminActivity extends AppCompatActivity implements UserAdapter.OnUs
     }
 
     private void showEditDialog(User user) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_admin_edit_user, null);
         
         EditText etName = view.findViewById(R.id.et_edit_name);
         Spinner spinnerStatus = view.findViewById(R.id.spinner_status);
+        EditText etBalance = view.findViewById(R.id.et_card_balance);
         Spinner spinnerCards = view.findViewById(R.id.spinner_select_card);
-        EditText etCardBalance = view.findViewById(R.id.et_card_balance);
+        Button btnSave = view.findViewById(R.id.btn_save_user);
+        Button btnCancel = view.findViewById(R.id.btn_cancel_edit);
+        ImageButton btnClose = view.findViewById(R.id.btn_close_edit);
 
-        // 1. Setup Status Spinner
-        String[] statuses = {"ACTIVE", "BLOCKED"};
-        ArrayAdapter<String> statusAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, statuses);
+        if (user.getName() != null) etName.setText(user.getName());
+        
+        // Setup Status Spinner - only Active or Blocked
+        String[] statusOptions = {"Active", "Blocked"};
+        ArrayAdapter<String> statusAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, statusOptions);
         statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerStatus.setAdapter(statusAdapter);
+
         if (user.getStatus() != null) {
-            spinnerStatus.setSelection(user.getStatus().equals("BLOCKED") ? 1 : 0);
+            for (int i = 0; i < statusOptions.length; i++) {
+                if (statusOptions[i].equalsIgnoreCase(user.getStatus())) {
+                    spinnerStatus.setSelection(i);
+                    break;
+                }
+            }
         }
 
-        // 2. Setup Cards Spinner
-        List<com.colormine.banking.models.Card> userCards = user.getCards();
+        // Setup Card Spinner
+        List<Card> cards = user.getCards();
         List<String> cardNames = new ArrayList<>();
-        for (com.colormine.banking.models.Card c : userCards) {
-            cardNames.add(c.getCardNumber() + " (" + c.getCardHolderName() + ")");
+        if (cards != null && !cards.isEmpty()) {
+            for (Card card : cards) {
+                String last4 = "";
+                if (card.getCardNumber() != null && card.getCardNumber().length() >= 4) {
+                    last4 = card.getCardNumber().substring(card.getCardNumber().length() - 4);
+                }
+                cardNames.add(card.getType() + " (**** " + last4 + ")");
+            }
+        } else {
+            cardNames.add("No cards available");
         }
-        ArrayAdapter<String> cardsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, cardNames);
-        cardsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerCards.setAdapter(cardsAdapter);
+        
+        ArrayAdapter<String> cardAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, cardNames);
+        cardAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerCards.setAdapter(cardAdapter);
 
+        // Update balance field when a card is selected
         spinnerCards.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(android.widget.AdapterView<?> parent, View view, int position, long id) {
-                etCardBalance.setText(String.valueOf(userCards.get(position).getBalance()));
+            public void onItemSelected(android.widget.AdapterView<?> parent, View v, int position, long id) {
+                if (cards != null && position < cards.size()) {
+                    etBalance.setText(String.valueOf(cards.get(position).getBalance()));
+                }
             }
             @Override
             public void onNothingSelected(android.widget.AdapterView<?> parent) {}
         });
 
-        if (etName != null) etName.setText(user.getName());
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setView(view)
+                .create();
 
-        builder.setView(view);
-        builder.setPositiveButton("Save Changes", (dialog, which) -> {
-            String name = etName.getText().toString().trim();
-            String newStatus = spinnerStatus.getSelectedItem().toString();
-            String cardBalanceStr = etCardBalance.getText().toString().trim();
-
-            if (!name.isEmpty() && !cardBalanceStr.isEmpty()) {
-                try {
-                    double newCardBalance = Double.parseDouble(cardBalanceStr);
-                    int selectedCardIndex = spinnerCards.getSelectedItemPosition();
-                    
-                    user.setName(name);
-                    user.setStatus(newStatus);
-                    userCards.get(selectedCardIndex).setBalance(newCardBalance);
-                    user.syncGlobalBalance(); // Keep total synced
-
-                    String sanitizedEmail = user.getEmail().replace(".", ",");
-                    mDatabase.child("users").child(sanitizedEmail).setValue(user)
-                        .addOnSuccessListener(aVoid -> Toast.makeText(AdminActivity.this, "User updated successfully", Toast.LENGTH_SHORT).show())
-                        .addOnFailureListener(e -> Toast.makeText(AdminActivity.this, "Update failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
-                } catch (NumberFormatException e) {
-                    Toast.makeText(this, "Invalid balance format", Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                Toast.makeText(this, "Name and balance are required", Toast.LENGTH_SHORT).show();
-            }
-        });
-        builder.setNegativeButton("Cancel", null);
-        
-        AlertDialog dialog = builder.create();
         if (dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         }
+
+        btnSave.setOnClickListener(v -> {
+            String newName = etName.getText().toString().trim();
+            String newStatus = spinnerStatus.getSelectedItem().toString();
+            int selectedCardPos = spinnerCards.getSelectedItemPosition();
+            
+            double newCardBalance;
+            try {
+                newCardBalance = Double.parseDouble(etBalance.getText().toString().trim());
+            } catch (NumberFormatException e) {
+                newCardBalance = 0;
+            }
+
+            if (user.getEmail() != null) {
+                String sanitizedEmail = user.getEmail().replace(".", ",");
+                
+                // Update local card balance and sync total user balance
+                if (cards != null && selectedCardPos >= 0 && selectedCardPos < cards.size()) {
+                    cards.get(selectedCardPos).setBalance(newCardBalance);
+                    user.syncGlobalBalance();
+                }
+
+                Map<String, Object> updates = new HashMap<>();
+                updates.put("name", newName);
+                // Save status as uppercase to match app conventions (ACTIVE/BLOCKED)
+                updates.put("status", newStatus.toUpperCase());
+                updates.put("balance", user.getBalance());
+                updates.put("cards", cards);
+
+                mDatabase.child("users").child(sanitizedEmail).updateChildren(updates)
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(AdminActivity.this, "User updated successfully", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    })
+                    .addOnFailureListener(e -> Toast.makeText(AdminActivity.this, "Update failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+            }
+        });
+
+        btnCancel.setOnClickListener(v -> dialog.dismiss());
+        btnClose.setOnClickListener(v -> dialog.dismiss());
+
         dialog.show();
     }
 }

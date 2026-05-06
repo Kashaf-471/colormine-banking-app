@@ -162,7 +162,7 @@ public class CardTransferActivity extends BaseActivity {
             return;
         }
 
-        // Check if account is frozen
+        // Check if account is frozen (local setting)
         if (com.colormine.banking.utils.SettingsManager.getInstance(this).isAccountFrozen()) {
             new AlertDialog.Builder(this)
                     .setTitle("Account Frozen")
@@ -172,7 +172,29 @@ public class CardTransferActivity extends BaseActivity {
             return;
         }
 
-        performTransfer(amount);
+        // Check if account is blocked by admin (Firebase status)
+        String sanitizedEmailCheck = userEmail.replace(".", ",");
+        mDatabase.child("users").child(sanitizedEmailCheck).child("status")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        String status = snapshot.getValue(String.class);
+                        if ("BLOCKED".equalsIgnoreCase(status)) {
+                            new AlertDialog.Builder(CardTransferActivity.this)
+                                    .setTitle("Account Blocked")
+                                    .setMessage("Your account has been blocked by an administrator. Please contact support for assistance.")
+                                    .setPositiveButton("OK", null)
+                                    .show();
+                        } else {
+                            performTransfer(amount);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        performTransfer(amount);
+                    }
+                });
     }
 
     private void performTransfer(double amount) {

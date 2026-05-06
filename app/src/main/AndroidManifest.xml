@@ -105,6 +105,10 @@
             android:screenOrientation="portrait" android:exported="false"/>
         <activity android:name=".UserDetailsActivity"
             android:screenOrientation="portrait" android:exported="false"/>
+        <activity android:name=".LoanRequestActivity"
+            android:screenOrientation="portrait" android:exported="false"/>
+        <activity android:name=".AdminLoansActivity"
+            android:screenOrientation="portrait" android:exported="false"/>
 
         <!-- Account & Settings -->
         <activity android:name=".AccountActivity"
