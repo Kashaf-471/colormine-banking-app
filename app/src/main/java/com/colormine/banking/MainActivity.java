@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import java.util.HashMap;
+import java.util.Map;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
@@ -98,6 +100,91 @@ public class MainActivity extends BaseActivity implements HomeFragment.OnTabSwit
                 updateTabView(tab, i == selectedTab);
             }
         }
+
+        checkAndProcessRepayments();
+    }
+
+    private void checkAndProcessRepayments() {
+        String email = getSharedPreferences("UserSession", MODE_PRIVATE).getString("email", "");
+        if (email.isEmpty()) return;
+
+        String sanitizedEmail = email.replace(".", ",");
+        com.google.firebase.database.DatabaseReference db = com.google.firebase.database.FirebaseDatabase.getInstance().getReference();
+        
+        db.child("loan_requests").orderByChild("userId").equalTo(sanitizedEmail)
+            .addListenerForSingleValueEvent(new com.google.firebase.database.ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull com.google.firebase.database.DataSnapshot snapshot) {
+                    long now = System.currentTimeMillis();
+                    for (com.google.firebase.database.DataSnapshot loanSnap : snapshot.getChildren()) {
+                        String status = loanSnap.child("status").getValue(String.class);
+                        Long repaymentTimestamp = loanSnap.child("repaymentTimestamp").getValue(Long.class);
+                        
+                        if ("GRANTED".equals(status) && repaymentTimestamp != null && now >= repaymentTimestamp) {
+                            processLoanDeduction(loanSnap);
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull com.google.firebase.database.DatabaseError error) {}
+            });
+    }
+
+    private void processLoanDeduction(com.google.firebase.database.DataSnapshot loanSnap) {
+        String loanId = loanSnap.getKey();
+        double amount = loanSnap.child("amount").getValue(Double.class);
+        String cardId = loanSnap.child("cardId").getValue(String.class);
+        String userId = loanSnap.child("userId").getValue(String.class);
+        double interestRate = 0.1; // 10%
+        double totalDeduction = amount * (1 + interestRate);
+
+        com.google.firebase.database.DatabaseReference db = com.google.firebase.database.FirebaseDatabase.getInstance().getReference();
+        
+        db.child("users").child(userId).addListenerForSingleValueEvent(new com.google.firebase.database.ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull com.google.firebase.database.DataSnapshot snapshot) {
+                com.colormine.banking.models.User user = snapshot.getValue(com.colormine.banking.models.User.class);
+                if (user != null && user.getCards() != null) {
+                    for (com.colormine.banking.models.Card card : user.getCards()) {
+                        if (card.getId().equals(cardId)) {
+                            card.setBalance(card.getBalance() - totalDeduction);
+                            break;
+                        }
+                    }
+                    user.syncGlobalBalance();
+                    
+                    // Update user and loan status
+                    db.child("users").child(userId).setValue(user);
+                    db.child("loan_requests").child(loanId).child("status").setValue("REPAID");
+                    
+                    // Create transaction
+                    String txId = db.child("transactions").push().getKey();
+                    Map<String, Object> tx = new HashMap<>();
+                    tx.put("title", "Loan Auto-Repayment");
+                    tx.put("date", new java.text.SimpleDateFormat("dd MMM yyyy", java.util.Locale.getDefault()).format(new java.util.Date()));
+                    tx.put("category", "Loan");
+                    tx.put("amount", totalDeduction);
+                    tx.put("type", "EXPENSE");
+                    tx.put("user_email", userId.replace(",", "."));
+                    tx.put("card_id", cardId);
+                    tx.put("timestamp", System.currentTimeMillis());
+                    if (txId != null) db.child("transactions").child(txId).setValue(tx);
+
+                    // Notify user
+                    String notifId = db.child("notifications").child(userId).push().getKey();
+                    Map<String, Object> notif = new HashMap<>();
+                    notif.put("title", "Loan Repaid");
+                    notif.put("message", "Your loan of $" + String.format("%.2f", amount) + " plus 10% interest ($" + String.format("%.2f", totalDeduction) + " total) has been automatically deducted.");
+                    notif.put("timestamp", System.currentTimeMillis());
+                    notif.put("type", "loan_repayment");
+                    if (notifId != null) db.child("notifications").child(userId).child(notifId).setValue(notif);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull com.google.firebase.database.DatabaseError error) {}
+        });
     }
 
     private void setupDrawer(NavigationView navigationView) {

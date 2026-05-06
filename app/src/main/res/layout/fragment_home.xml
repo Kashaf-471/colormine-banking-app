@@ -279,7 +279,7 @@
                     android:textSize="11sp" />
             </LinearLayout>
             <LinearLayout
-                android:id="@+id/action_stats"
+                android:id="@+id/action_loan"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -295,7 +295,7 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/ic_trending_up"
+                        android:src="@drawable/ic_wallet"
                         app:tint="@color/colorPrimary"/>
                 </LinearLayout>
                 <TextView
@@ -303,7 +303,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
                     android:fontFamily="@font/poppins_regular"
-                    android:text="@string/quick_action_stats"
+                    android:text="@string/quick_action_loan"
                     android:textColor="@color/colorTextSecondary"
                     android:textSize="11sp" />
             </LinearLayout>

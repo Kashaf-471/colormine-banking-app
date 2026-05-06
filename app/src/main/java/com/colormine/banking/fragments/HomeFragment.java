@@ -226,11 +226,9 @@ public class HomeFragment extends Fragment {
             startActivity(new Intent(requireContext(), ManageCardsActivity.class));
         });
 
-        view.findViewById(R.id.action_stats).setOnClickListener(v -> {
+        view.findViewById(R.id.action_loan).setOnClickListener(v -> {
             playFeedback();
-            if (getActivity() instanceof OnTabSwitchListener) {
-                ((OnTabSwitchListener) getActivity()).onTabSwitchRequested(1); // Stats tab
-            }
+            startActivity(new Intent(requireContext(), com.colormine.banking.LoanRequestActivity.class));
         });
     }
 

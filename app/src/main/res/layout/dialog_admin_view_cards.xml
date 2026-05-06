@@ -1,47 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="24dp"
     android:background="@drawable/bg_screen">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="User Card Portfolio"
-        android:textSize="20sp"
-        android:fontFamily="@font/poppins_semibold"
-        android:textColor="@color/colorTextPrimary"
-        android:layout_marginBottom="4dp"/>
-
-    <TextView
-        android:id="@+id/tv_user_summary"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Summary for User"
-        android:textSize="13sp"
-        android:fontFamily="@font/poppins_regular"
-        android:textColor="@color/colorTextSecondary"
-        android:layout_marginBottom="20dp"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_admin_cards"
+    <!-- Fixed header always visible at top -->
+    <LinearLayout
+        android:id="@+id/header_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="100dp"
-        android:maxHeight="400dp"
-        android:layout_marginBottom="16dp"/>
+        android:orientation="vertical"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:paddingTop="24dp">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="User Card Portfolio"
+            android:textSize="20sp"
+            android:fontFamily="@font/poppins_semibold"
+            android:textColor="@color/colorTextPrimary"
+            android:layout_marginBottom="4dp"/>
+
+        <TextView
+            android:id="@+id/tv_user_summary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Summary for User"
+            android:textSize="13sp"
+            android:fontFamily="@font/poppins_regular"
+            android:textColor="@color/colorTextSecondary"
+            android:layout_marginBottom="12dp"/>
+
+    </LinearLayout>
+
+    <!-- Scrollable card list with bounded height -->
+    <ScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/header_layout"
+        android:layout_above="@+id/btn_close_view"
+        android:maxHeight="320dp"
+        android:fadeScrollbars="true">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_admin_cards"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:clipToPadding="false"
+            android:nestedScrollingEnabled="false"/>
+
+    </ScrollView>
+
+    <!-- Fixed Close button always visible at bottom -->
     <Button
         android:id="@+id/btn_close_view"
         android:layout_width="match_parent"
         android:layout_height="52dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="24dp"
+        android:layout_alignParentBottom="true"
         android:text="Close"
         android:textAllCaps="false"
         android:fontFamily="@font/poppins_semibold"
         android:background="@drawable/bg_btn_primary"
         android:textColor="@color/colorTextWhite"/>
 
-</LinearLayout>
+</RelativeLayout>
