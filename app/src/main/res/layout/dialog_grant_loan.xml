@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="@drawable/bg_screen">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Grant Loan"
+        android:textSize="20sp"
+        android:fontFamily="@font/poppins_bold"
+        android:textColor="@color/colorTextPrimary"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/tv_dialog_loan_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="User: John Doe\nAmount: $500.00"
+        android:fontFamily="@font/poppins_regular"
+        android:textColor="@color/colorTextSecondary"
+        android:textSize="14sp"
+        android:layout_marginBottom="20dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enter Repayment Duration (Days)"
+        android:fontFamily="@font/poppins_medium"
+        android:textColor="@color/colorTextPrimary"
+        android:textSize="13sp"
+        android:layout_marginBottom="8dp"/>
+
+    <EditText
+        android:id="@+id/et_duration_days"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:background="@drawable/bg_input"
+        android:padding="16dp"
+        android:hint="e.g. 30"
+        android:inputType="number"
+        android:fontFamily="@font/poppins_regular"
+        android:textSize="14sp"
+        android:layout_marginBottom="24dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_cancel_grant"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="8dp"
+            android:text="Cancel"
+            android:textAllCaps="false"
+            android:fontFamily="@font/poppins_semibold"
+            android:background="@drawable/bg_btn_outline"
+            android:textColor="@color/colorTextPrimary"
+            android:stateListAnimator="@null"/>
+
+        <Button
+            android:id="@+id/btn_confirm_grant"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_weight="1"
+            android:text="Grant Loan"
+            android:textAllCaps="false"
+            android:fontFamily="@font/poppins_semibold"
+            android:background="@drawable/bg_btn_primary"
+            android:textColor="@color/colorTextWhite"
+            android:stateListAnimator="@null"/>
+
+    </LinearLayout>
+
+</LinearLayout>

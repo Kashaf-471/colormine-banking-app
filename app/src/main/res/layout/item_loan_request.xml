@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@color/colorSurface">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp">
+            
+            <TextView
+                android:id="@+id/tv_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="User Name"
+                android:fontFamily="@font/poppins_semibold"
+                android:textColor="@color/colorTextPrimary"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:id="@+id/tv_loan_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:text="$1,000.00"
+                android:fontFamily="@font/poppins_bold"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp"/>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_card_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="VISA (**** 1234)"
+            android:fontFamily="@font/poppins_regular"
+            android:textColor="@color/colorTextSecondary"
+            android:textSize="12sp"
+            android:layout_marginBottom="16dp"/>
+
+        <LinearLayout
+            android:id="@+id/layout_actions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_grant"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:text="Grant"
+                android:textAllCaps="false"
+                android:textSize="12sp"
+                android:background="@drawable/bg_btn_primary"
+                android:textColor="@color/colorTextWhite"
+                android:stateListAnimator="@null"/>
+
+            <Button
+                android:id="@+id/btn_reject"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:text="Reject"
+                android:textAllCaps="false"
+                android:textSize="12sp"
+                android:background="@drawable/bg_danger_btn"
+                android:textColor="@color/colorTextWhite"
+                android:stateListAnimator="@null"/>
+        </LinearLayout>
+        
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="GRANTED"
+            android:fontFamily="@font/poppins_bold"
+            android:textSize="12sp"
+            android:visibility="gone"/>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
