@@ -232,4 +232,20 @@
     <string name="toast_password_updated">Password updated successfully!</string>
     <string name="camera_activity_title">Camera</string>
     <string name="btn_capture_photo">Capture Photo</string>
+    
+    <!-- Loan -->
+    <string name="quick_action_loan">Loan</string>
+    <string name="loan_request_title">Request Loan</string>
+    <string name="label_loan_amount">Loan Amount</string>
+    <string name="btn_request_loan">Request Loan</string>
+    <string name="label_select_card">Select Card to Receive Loan</string>
+    <string name="loan_success_title">Loan Requested!</string>
+    <string name="loan_success_subtitle">Your loan request has been sent to the admin for approval.</string>
+    <string name="toast_loan_requested">Loan request sent successfully!</string>
+    <string name="toast_grant_success">Loan granted successfully!</string>
+    <string name="admin_loan_requests">Loan Requests</string>
+    <string name="label_repayment_duration">Repayment Duration</string>
+    <string name="duration_7_days">7 Days</string>
+    <string name="duration_14_days">14 Days</string>
+    <string name="duration_30_days">30 Days</string>
 </resources>

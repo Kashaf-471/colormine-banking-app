@@ -253,9 +253,20 @@ public class SendMoneyActivity extends BaseActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
+                boolean isBlocked = user != null && "BLOCKED".equalsIgnoreCase(user.getStatus());
                 boolean isFrozen = (user != null && "FROZEN".equalsIgnoreCase(user.getStatus())) 
                         || com.colormine.banking.utils.SettingsManager.getInstance(SendMoneyActivity.this).isAccountFrozen();
                         
+                if (isBlocked) {
+                    resetButton();
+                    new AlertDialog.Builder(SendMoneyActivity.this)
+                        .setTitle("Account Blocked")
+                        .setMessage("Your account has been blocked by an administrator. Please contact support for assistance.")
+                        .setPositiveButton("OK", null)
+                        .show();
+                    return;
+                }
+
                 if (isFrozen) {
                     resetButton();
                     new AlertDialog.Builder(SendMoneyActivity.this)

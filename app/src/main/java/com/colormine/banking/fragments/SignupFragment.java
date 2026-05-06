@@ -140,6 +140,44 @@ public class SignupFragment extends Fragment {
 
         setLoading(true);
 
+        // Before creating a new Firebase Auth account, check if this email was previously
+        // deleted by an admin (it will still exist in Firebase Auth but not in users DB).
+        String sanitizedEmailCheck = email.replace(".", ",");
+        mDatabase.child("deleted_users").child(sanitizedEmailCheck)
+            .addListenerForSingleValueEvent(new com.google.firebase.database.ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull com.google.firebase.database.DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        // Email was deleted by admin. Try signing in to reuse the Auth account,
+                        // then overwrite the DB profile with fresh data.
+                        mAuth.signInWithEmailAndPassword(email, password)
+                            .addOnCompleteListener(requireActivity(), signInTask -> {
+                                if (signInTask.isSuccessful()) {
+                                    // Remove from deleted_users and re-create the DB profile
+                                    mDatabase.child("deleted_users").child(sanitizedEmailCheck).removeValue();
+                                    createNewUserInDatabase(signInTask.getResult().getUser().getDisplayName() != null
+                                            ? signInTask.getResult().getUser().getDisplayName() : name, email, password);
+                                } else {
+                                    // Old password differs — remove deleted flag and try fresh signup
+                                    mDatabase.child("deleted_users").child(sanitizedEmailCheck).removeValue();
+                                    proceedWithFirebaseAuthSignup(name, email, password);
+                                }
+                            });
+                    } else {
+                        // Normal path — not a deleted user
+                        proceedWithFirebaseAuthSignup(name, email, password);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull com.google.firebase.database.DatabaseError error) {
+                    // If check fails, just proceed normally
+                    proceedWithFirebaseAuthSignup(name, email, password);
+                }
+            });
+    }
+
+    private void proceedWithFirebaseAuthSignup(String name, String email, String password) {
         mAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(requireActivity(), task -> {
                 if (task.isSuccessful()) {

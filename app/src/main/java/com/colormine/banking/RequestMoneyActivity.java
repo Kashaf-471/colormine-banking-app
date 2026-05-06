@@ -161,10 +161,19 @@ public class RequestMoneyActivity extends BaseActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     String status = snapshot.getValue(String.class);
+                    boolean isBlocked = "BLOCKED".equalsIgnoreCase(status);
                     boolean isFrozen = "FROZEN".equalsIgnoreCase(status) 
                             || com.colormine.banking.utils.SettingsManager.getInstance(RequestMoneyActivity.this).isAccountFrozen();
                             
-                    if (isFrozen) {
+                    if (isBlocked) {
+                        btnContinue.setEnabled(true);
+                        btnContinue.setText("Send Request");
+                        new AlertDialog.Builder(RequestMoneyActivity.this)
+                            .setTitle("Account Blocked")
+                            .setMessage("Your account has been blocked by an administrator. Please contact support for assistance.")
+                            .setPositiveButton("OK", null)
+                            .show();
+                    } else if (isFrozen) {
                         btnContinue.setEnabled(true);
                         btnContinue.setText("Send Request");
                         new AlertDialog.Builder(RequestMoneyActivity.this)

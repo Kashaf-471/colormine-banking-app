@@ -28,6 +28,14 @@ public class RequestSuccessActivity extends AppCompatActivity {
         if (recipient != null) {
             tvRecipient.setText(recipient);
         }
+
+        boolean isLoan = getIntent().getBooleanExtra("isLoan", false);
+        if (isLoan) {
+            TextView tvTitle = findViewById(R.id.tv_title);
+            TextView tvSubtitle = findViewById(R.id.tv_subtitle);
+            if (tvTitle != null) tvTitle.setText(R.string.loan_success_title);
+            if (tvSubtitle != null) tvSubtitle.setText(R.string.loan_success_subtitle);
+        }
         
         // Generate random ref number for visual effect
         String randomRef = "#REQ" + (int)(Math.random() * 10000000);
