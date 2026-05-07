@@ -54,12 +54,15 @@
         <EditText
             android:id="@+id/et_edit_name"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="wrap_content"
             android:background="@drawable/bg_input"
             android:fontFamily="@font/poppins_regular"
             android:hint="Full Name"
             android:inputType="textPersonName"
             android:paddingHorizontal="16dp"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp"
+            android:gravity="center_vertical"
             android:layout_marginBottom="16dp" />
 
         <Spinner
@@ -94,12 +97,15 @@
         <EditText
             android:id="@+id/et_card_balance"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="wrap_content"
             android:background="@drawable/bg_input"
             android:fontFamily="@font/poppins_medium"
             android:hint="Card Balance"
             android:inputType="numberDecimal"
             android:paddingHorizontal="16dp"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp"
+            android:gravity="center_vertical"
             android:layout_marginBottom="8dp" />
 
         <TextView

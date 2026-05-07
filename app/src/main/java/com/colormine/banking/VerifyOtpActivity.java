@@ -17,13 +17,14 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.snackbar.Snackbar;
 
-public class VerifyOtpActivity extends AppCompatActivity {
+public class VerifyOtpActivity extends BaseActivity {
 
     /** Pass this extra to control what happens after successful verification. */
     public static final String EXTRA_PURPOSE = "purpose";
     public static final String PURPOSE_PASSWORD_RESET = "password_reset";
     public static final String PURPOSE_SEND_MONEY     = "send_money";
     public static final String PURPOSE_LOGIN          = "login";
+    public static final String PURPOSE_SIGNUP         = "signup";
 
     private TextView tvSubtitle, tvResend, tvCountdown;
     private Button   btnVerify;
@@ -131,6 +132,10 @@ public class VerifyOtpActivity extends AppCompatActivity {
             finish();
         } else if (PURPOSE_LOGIN.equals(purpose)) {
             // Return RESULT_OK so LoginFragment can proceed with the login
+            setResult(RESULT_OK);
+            finish();
+        } else if (PURPOSE_SIGNUP.equals(purpose)) {
+            // Return RESULT_OK so SignupFragment can proceed with account creation
             setResult(RESULT_OK);
             finish();
         } else {

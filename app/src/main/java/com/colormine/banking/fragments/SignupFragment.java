@@ -37,12 +37,15 @@ import java.util.Random;
 
 public class SignupFragment extends Fragment {
 
+    private com.google.android.material.textfield.TextInputLayout tilName, tilEmail, tilPassword;
     private EditText etName, etEmail, etPassword;
     private CheckBox cbTerms;
     private Button btnSignup;
     private ProgressBar progressBar;
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
+    private androidx.activity.result.ActivityResultLauncher<Intent> otpLauncher;
+    private String pName, pEmail, pPassword;
 
     public interface OnSignupSuccessListener {
         void onSignupSuccess();
@@ -62,6 +65,9 @@ public class SignupFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
+        tilName = view.findViewById(R.id.til_signup_name);
+        tilEmail = view.findViewById(R.id.til_signup_email);
+        tilPassword = view.findViewById(R.id.til_signup_password);
         etName = view.findViewById(R.id.et_signup_name);
         etEmail = view.findViewById(R.id.et_signup_email);
         etPassword = view.findViewById(R.id.et_signup_password);
@@ -71,6 +77,19 @@ public class SignupFragment extends Fragment {
 
         setupTermsText();
         btnSignup.setOnClickListener(v -> attemptSignup());
+
+        otpLauncher = registerForActivityResult(
+            new androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == android.app.Activity.RESULT_OK) {
+                    // OTP Verified! Now check deleted users and proceed
+                    checkDeletedAndProceed();
+                } else {
+                    setLoading(false);
+                    Toast.makeText(getContext(), "Verification cancelled", Toast.LENGTH_SHORT).show();
+                }
+            }
+        );
 
         return view;
     }
@@ -99,36 +118,52 @@ public class SignupFragment extends Fragment {
     }
 
     private void attemptSignup() {
-        String name = etName.getText().toString().trim();
-        String email = etEmail.getText().toString().trim();
-        String password = etPassword.getText().toString().trim();
+        if (getActivity() instanceof com.colormine.banking.BaseActivity) {
+            ((com.colormine.banking.BaseActivity) getActivity()).playClickFeedback();
+        }
 
-        if (name.isEmpty()) {
-            etName.setError("Full name is required");
+        pName = etName.getText().toString().trim();
+        pEmail = etEmail.getText().toString().trim();
+        pPassword = etPassword.getText().toString().trim();
+
+        tilName.setError(null);
+        tilEmail.setError(null);
+        tilPassword.setError(null);
+
+        if (pName.isEmpty()) {
+            tilName.setError("Full name is required");
+            etName.requestFocus();
+            return;
+        }
+        if (pName.length() < 3) {
+            tilName.setError("Name must be at least 3 characters");
             etName.requestFocus();
             return;
         }
 
-        if (email.isEmpty()) {
-            etEmail.setError("Email is required");
+        if (pEmail.isEmpty()) {
+            tilEmail.setError("Email is required");
+            etEmail.requestFocus();
+            return;
+        }
+        if (!Patterns.EMAIL_ADDRESS.matcher(pEmail).matches()) {
+            tilEmail.setError("Enter a valid email address");
             etEmail.requestFocus();
             return;
         }
 
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            etEmail.setError("Please enter a valid email address");
-            etEmail.requestFocus();
-            return;
-        }
-
-        if (password.isEmpty()) {
-            etPassword.setError("Password is required");
+        if (pPassword.isEmpty()) {
+            tilPassword.setError("Password is required");
             etPassword.requestFocus();
             return;
         }
-
-        if (password.length() < 6) {
-            etPassword.setError("Password should be at least 6 characters");
+        if (pPassword.length() < 6) {
+            tilPassword.setError("Password must be at least 6 characters");
+            etPassword.requestFocus();
+            return;
+        }
+        if (!pPassword.matches(".*\\d.*")) {
+            tilPassword.setError("Password must contain at least one digit");
             etPassword.requestFocus();
             return;
         }
@@ -139,10 +174,33 @@ public class SignupFragment extends Fragment {
         }
 
         setLoading(true);
+        sendOtpAndVerify();
+    }
 
+    private void sendOtpAndVerify() {
+        com.colormine.banking.OtpService.generateAndSend(requireContext(), pEmail, new com.colormine.banking.OtpService.OtpCallback() {
+            @Override
+            public void onSuccess() {
+                setLoading(false);
+                Intent intent = new Intent(getActivity(), com.colormine.banking.VerifyOtpActivity.class);
+                intent.putExtra("email", pEmail);
+                intent.putExtra(com.colormine.banking.VerifyOtpActivity.EXTRA_PURPOSE, com.colormine.banking.VerifyOtpActivity.PURPOSE_SIGNUP);
+                otpLauncher.launch(intent);
+            }
+
+            @Override
+            public void onFallback(String error) {
+                setLoading(false);
+                Toast.makeText(getContext(), "Failed to send verification code: " + error, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void checkDeletedAndProceed() {
+        setLoading(true);
         // Before creating a new Firebase Auth account, check if this email was previously
         // deleted by an admin (it will still exist in Firebase Auth but not in users DB).
-        String sanitizedEmailCheck = email.replace(".", ",");
+        String sanitizedEmailCheck = pEmail.replace(".", ",");
         mDatabase.child("deleted_users").child(sanitizedEmailCheck)
             .addListenerForSingleValueEvent(new com.google.firebase.database.ValueEventListener() {
                 @Override
@@ -150,29 +208,29 @@ public class SignupFragment extends Fragment {
                     if (snapshot.exists()) {
                         // Email was deleted by admin. Try signing in to reuse the Auth account,
                         // then overwrite the DB profile with fresh data.
-                        mAuth.signInWithEmailAndPassword(email, password)
+                        mAuth.signInWithEmailAndPassword(pEmail, pPassword)
                             .addOnCompleteListener(requireActivity(), signInTask -> {
                                 if (signInTask.isSuccessful()) {
                                     // Remove from deleted_users and re-create the DB profile
                                     mDatabase.child("deleted_users").child(sanitizedEmailCheck).removeValue();
                                     createNewUserInDatabase(signInTask.getResult().getUser().getDisplayName() != null
-                                            ? signInTask.getResult().getUser().getDisplayName() : name, email, password);
+                                            ? signInTask.getResult().getUser().getDisplayName() : pName, pEmail, pPassword);
                                 } else {
                                     // Old password differs — remove deleted flag and try fresh signup
                                     mDatabase.child("deleted_users").child(sanitizedEmailCheck).removeValue();
-                                    proceedWithFirebaseAuthSignup(name, email, password);
+                                    proceedWithFirebaseAuthSignup(pName, pEmail, pPassword);
                                 }
                             });
                     } else {
                         // Normal path — not a deleted user
-                        proceedWithFirebaseAuthSignup(name, email, password);
+                        proceedWithFirebaseAuthSignup(pName, pEmail, pPassword);
                     }
                 }
 
                 @Override
                 public void onCancelled(@NonNull com.google.firebase.database.DatabaseError error) {
                     // If check fails, just proceed normally
-                    proceedWithFirebaseAuthSignup(name, email, password);
+                    proceedWithFirebaseAuthSignup(pName, pEmail, pPassword);
                 }
             });
     }

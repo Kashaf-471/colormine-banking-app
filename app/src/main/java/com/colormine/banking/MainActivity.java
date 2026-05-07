@@ -295,4 +295,9 @@ public class MainActivity extends BaseActivity implements HomeFragment.OnTabSwit
             return 4;
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }

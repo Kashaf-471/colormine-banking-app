@@ -44,6 +44,16 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder
         holder.tvCvv.setText(card.getCvv());
         holder.tvBalance.setText(String.format("$%,.2f", card.getBalance()));
         
+        if (card.getCardNumber() != null) {
+            String num = card.getCardNumber().replace(" ", "");
+            if (num.startsWith("5")) {
+                holder.ivCardType.setImageResource(R.drawable.ic_mastercard);
+                holder.ivCardType.setVisibility(View.VISIBLE);
+            } else {
+                holder.ivCardType.setImageResource(R.drawable.ic_credit_card);
+            }
+        }
+        
         boolean isPrimary = card.getId().equals(primaryCardId);
         holder.tvPrimaryBadge.setVisibility(isPrimary ? View.VISIBLE : View.GONE);
 

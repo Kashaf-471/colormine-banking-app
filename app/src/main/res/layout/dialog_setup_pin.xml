@@ -36,7 +36,7 @@
         <EditText
             android:id="@+id/et_pin"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="wrap_content"
             android:background="@drawable/bg_input"
             android:fontFamily="@font/poppins_semibold"
             android:gravity="center"
@@ -44,6 +44,8 @@
             android:inputType="numberPassword"
             android:maxLength="4"
             android:letterSpacing="0.5"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
             android:textColor="@color/colorTextPrimary"
             android:textColorHint="@color/colorTextHint"
             android:textSize="24sp"

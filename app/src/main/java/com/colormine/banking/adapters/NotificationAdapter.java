@@ -50,19 +50,31 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             holder.unreadDot.setVisibility(notification.isRead() ? View.GONE : View.VISIBLE);
 
             if ("request".equals(notification.getType())) {
-                // Style for clickable request notifications
-                holder.tvActionHint.setVisibility(View.VISIBLE);
-                holder.tvIcon.setText("💰");
-                holder.tvIcon.setBackground(ContextCompat.getDrawable(holder.itemView.getContext(), R.drawable.bg_icon_purple));
+                boolean isPaid = "paid".equals(notification.getStatus());
                 
-                holder.itemView.setOnClickListener(v -> {
-                    if (notification.getSenderEmail() != null) {
-                        Intent intent = new Intent(v.getContext(), SendMoneyActivity.class);
-                        intent.putExtra("request_recipient_email", notification.getSenderEmail());
-                        intent.putExtra("request_amount", notification.getAmount());
-                        v.getContext().startActivity(intent);
-                    }
-                });
+                if (isPaid) {
+                    holder.tvActionHint.setVisibility(View.VISIBLE);
+                    holder.tvActionHint.setText("✓ Paid");
+                    holder.tvActionHint.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.colorSuccess));
+                    holder.tvIcon.setText("✅");
+                    holder.itemView.setOnClickListener(null); // Disable clicking after payment
+                } else {
+                    holder.tvActionHint.setVisibility(View.VISIBLE);
+                    holder.tvActionHint.setText("Tap to Pay");
+                    holder.tvActionHint.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.colorPrimary));
+                    holder.tvIcon.setText("💰");
+                    
+                    holder.itemView.setOnClickListener(v -> {
+                        if (notification.getSenderEmail() != null) {
+                            Intent intent = new Intent(v.getContext(), SendMoneyActivity.class);
+                            intent.putExtra("request_recipient_email", notification.getSenderEmail());
+                            intent.putExtra("request_amount", notification.getAmount());
+                            intent.putExtra("notification_id", notification.getId());
+                            v.getContext().startActivity(intent);
+                        }
+                    });
+                }
+                holder.tvIcon.setBackground(ContextCompat.getDrawable(holder.itemView.getContext(), R.drawable.bg_icon_purple));
             } else {
                 // Style for standard notifications
                 holder.tvActionHint.setVisibility(View.GONE);

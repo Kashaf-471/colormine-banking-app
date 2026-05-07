@@ -121,26 +121,28 @@
             </RelativeLayout>
         </LinearLayout>
 
-        <!-- Form -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Cardholder Name"
-            android:textColor="@color/colorTextSecondary"
-            android:textSize="14sp"
-            android:layout_marginBottom="8dp"/>
-        <EditText
-            android:id="@+id/et_cardholder_name"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_cardholder_name"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@drawable/bg_edittext"
-            android:drawableStart="@drawable/ic_user"
-            android:drawablePadding="12dp"
-            android:hint="Tanya Myroniuk"
-            android:inputType="textPersonName"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:layout_marginBottom="20dp"/>
+            android:layout_height="wrap_content"
+            app:hintEnabled="false"
+            app:errorEnabled="true"
+            android:layout_marginBottom="8dp">
+            <EditText
+                android:id="@+id/et_cardholder_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_edittext"
+                android:drawableStart="@drawable/ic_user"
+                android:drawablePadding="12dp"
+                android:hint="Tanya Myroniuk"
+                android:inputType="textPersonName"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:gravity="center_vertical"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -161,15 +163,25 @@
                     android:textColor="@color/colorTextSecondary"
                     android:textSize="14sp"
                     android:layout_marginBottom="8dp"/>
-                <EditText
-                    android:id="@+id/et_expiry_date"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_expiry_date"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="@drawable/bg_edittext"
-                    android:hint="MM/YY"
-                    android:inputType="date"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"/>
+                    android:layout_height="wrap_content"
+                    app:hintEnabled="false"
+                    app:errorEnabled="true">
+                    <EditText
+                        android:id="@+id/et_expiry_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_edittext"
+                        android:hint="MM/YY"
+                        android:inputType="date"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:paddingTop="12dp"
+                        android:paddingBottom="12dp"
+                        android:gravity="center_vertical"/>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="0dp"
@@ -184,16 +196,28 @@
                     android:textColor="@color/colorTextSecondary"
                     android:textSize="14sp"
                     android:layout_marginBottom="8dp"/>
-                <EditText
-                    android:id="@+id/et_cvv"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_cvv"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="@drawable/bg_edittext"
-                    android:hint="***"
-                    android:inputType="numberPassword"
-                    android:maxLength="3"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"/>
+                    android:layout_height="wrap_content"
+                    app:hintEnabled="false"
+                    app:errorEnabled="true"
+                    app:endIconMode="password_toggle"
+                    app:endIconTint="@color/colorPrimary">
+                    <EditText
+                        android:id="@+id/et_cvv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_edittext"
+                        android:hint="***"
+                        android:inputType="numberPassword"
+                        android:maxLength="3"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:paddingTop="12dp"
+                        android:paddingBottom="12dp"
+                        android:gravity="center_vertical"/>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
         </LinearLayout>
 
@@ -204,18 +228,28 @@
             android:textColor="@color/colorTextSecondary"
             android:textSize="14sp"
             android:layout_marginBottom="8dp"/>
-        <EditText
-            android:id="@+id/et_card_number"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_card_number"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@drawable/bg_edittext"
-            android:drawableStart="@drawable/ic_credit_card"
-            android:drawablePadding="12dp"
-            android:hint="4562 1122 4595 7852"
-            android:inputType="number"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:layout_marginBottom="20dp"/>
+            android:layout_height="wrap_content"
+            app:hintEnabled="false"
+            app:errorEnabled="true"
+            android:layout_marginBottom="8dp">
+            <EditText
+                android:id="@+id/et_card_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_edittext"
+                android:drawableStart="@drawable/ic_credit_card"
+                android:drawablePadding="12dp"
+                android:hint="4562 1122 4595 7852"
+                android:inputType="number"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:gravity="center_vertical"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
             android:layout_width="wrap_content"
@@ -224,19 +258,31 @@
             android:textColor="@color/colorTextSecondary"
             android:textSize="14sp"
             android:layout_marginBottom="8dp"/>
-        <EditText
-            android:id="@+id/et_card_pin"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_card_pin"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@drawable/bg_edittext"
-            android:drawableStart="@drawable/ic_lock"
-            android:drawablePadding="12dp"
-            android:hint="****"
-            android:inputType="numberPassword"
-            android:maxLength="4"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:layout_marginBottom="32dp"/>
+            android:layout_height="wrap_content"
+            app:hintEnabled="false"
+            app:errorEnabled="true"
+            app:endIconMode="password_toggle"
+            app:endIconTint="@color/colorPrimary"
+            android:layout_marginBottom="16dp">
+            <EditText
+                android:id="@+id/et_card_pin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_edittext"
+                android:drawableStart="@drawable/ic_lock"
+                android:drawablePadding="12dp"
+                android:hint="****"
+                android:inputType="numberPassword"
+                android:maxLength="4"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:gravity="center_vertical"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/btn_save_card"

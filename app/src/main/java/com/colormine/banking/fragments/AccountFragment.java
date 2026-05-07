@@ -16,17 +16,21 @@ import androidx.fragment.app.Fragment;
 import com.colormine.banking.CardDetailActivity;
 import com.colormine.banking.HelpActivity;
 import com.colormine.banking.LoginSignupActivity;
+import com.colormine.banking.ManageCardsActivity;
 import com.colormine.banking.NotificationsActivity;
 import com.colormine.banking.PersonalInfoActivity;
 import com.colormine.banking.R;
 import com.colormine.banking.SecurityActivity;
 import com.colormine.banking.SettingsActivity;
+import com.colormine.banking.models.Card;
 import com.colormine.banking.models.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.List;
 
 public class AccountFragment extends Fragment {
 
@@ -51,7 +55,6 @@ public class AccountFragment extends Fragment {
         tvStatYears = view.findViewById(R.id.tv_stat_years);
 
         loadProfileData();
-        loadStats();
 
         View btnNotif = view.findViewById(R.id.btn_notifications);
         if (btnNotif != null) {
@@ -65,7 +68,7 @@ public class AccountFragment extends Fragment {
 
         View optMyCards = view.findViewById(R.id.option_my_cards);
         if (optMyCards != null) {
-            optMyCards.setOnClickListener(v -> startActivity(new Intent(requireContext(), CardDetailActivity.class)));
+            optMyCards.setOnClickListener(v -> startActivity(new Intent(requireContext(), ManageCardsActivity.class)));
         }
 
         View optNotif = view.findViewById(R.id.option_notifications);
@@ -91,6 +94,8 @@ public class AccountFragment extends Fragment {
         Button btnLogout = view.findViewById(R.id.btn_logout);
         if (btnLogout != null) {
             btnLogout.setOnClickListener(v -> {
+                androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(
+                        androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO);
                 requireActivity().getSharedPreferences("UserSession", Context.MODE_PRIVATE).edit().clear().apply();
                 Intent intent = new Intent(requireContext(), LoginSignupActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -104,50 +109,68 @@ public class AccountFragment extends Fragment {
     private void loadProfileData() {
         if (userEmail.isEmpty()) return;
         String sanitizedEmail = userEmail.replace(".", ",");
+        
+        // Listener for User Profile & Cards/Years stats
         mDatabase.child("users").child(sanitizedEmail).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (!isAdded()) return;
                 User user = snapshot.getValue(User.class);
                 if (user != null) {
+                    // Update profile info
                     if (tvUserName != null) tvUserName.setText(user.getName());
                     if (tvUserEmail != null) tvUserEmail.setText(user.getEmail());
+                    
+                    // Update stats: Cards
+                    List<Card> cards = user.getCards();
+                    int cardCount = (cards != null) ? cards.size() : 0;
+                    updateStatWithAnimation(tvStatCards, cardCount);
+
+                    // Update stats: Years
+                    long regDate = user.getRegistrationDate();
+                    int years = 1; 
+                    if (regDate > 0) {
+                        long diffMs = System.currentTimeMillis() - regDate;
+                        years = (int) (diffMs / (1000L * 60 * 60 * 24 * 365L));
+                        if (years < 1) years = 1;
+                    }
+                    updateStatWithAnimation(tvStatYears, years);
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
         });
-    }
 
-    private void loadStats() {
-        if (userEmail.isEmpty()) return;
-
-        // Count transactions
+        // Listener for Transactions stat
         mDatabase.child("transactions").orderByChild("user_email").equalTo(userEmail)
             .addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (!isAdded()) return;
-                    long count = snapshot.getChildrenCount();
-                    animateValue(0, (int) count, tvStatTransactions, "");
+                    int count = (int) snapshot.getChildrenCount();
+                    updateStatWithAnimation(tvStatTransactions, count);
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {}
             });
-            
-        // Hardcoded card count to 1 for now as per logic, or 0 if none
-        animateValue(0, 1, tvStatCards, "");
-        // Member since years - could be calculated from registration date if stored
-        animateValue(0, 1, tvStatYears, "");
     }
 
-    private void animateValue(int start, int end, TextView textView, String suffix) {
+    private void updateStatWithAnimation(TextView textView, int newValue) {
         if (textView == null) return;
-        ValueAnimator animator = ValueAnimator.ofInt(start, end);
-        animator.setDuration(1000);
-        animator.addUpdateListener(animation -> textView.setText(animation.getAnimatedValue().toString() + suffix));
+        
+        String currentText = textView.getText().toString();
+        int currentValue = 0;
+        try {
+            currentValue = Integer.parseInt(currentText);
+        } catch (NumberFormatException ignored) {}
+
+        if (currentValue == newValue) return;
+
+        ValueAnimator animator = ValueAnimator.ofInt(currentValue, newValue);
+        animator.setDuration(800);
+        animator.addUpdateListener(animation -> textView.setText(animation.getAnimatedValue().toString()));
         animator.start();
     }
 }

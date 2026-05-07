@@ -7,20 +7,21 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import com.colormine.banking.database.DatabaseHelper;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
-public class ResetPasswordActivity extends AppCompatActivity {
+public class ResetPasswordActivity extends BaseActivity {
 
     private EditText etNewPassword, etConfirmPassword;
     private String email;
-    private DatabaseHelper dbHelper;
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reset_password);
 
-        dbHelper = new DatabaseHelper(this);
+        mDatabase = FirebaseDatabase.getIstance().getReference();
         email = getIntent().getStringExtra("email");
 
         ImageButton btnBack = findViewById(R.id.btn_back);
@@ -49,15 +50,18 @@ public class ResetPasswordActivity extends AppCompatActivity {
                 return;
             }
 
-            if (dbHelper.updatePassword(email, newPass)) {
-                Toast.makeText(this, "Password updated successfully!", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(this, LoginSignupActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                finish();
-            } else {
-                Toast.makeText(this, "Failed to update password. Please try again.", Toast.LENGTH_SHORT).show();
-            }
+            String sanitizedEmail = email.replace(".", ",");
+            mDatabase.child("users").child(sanitizedEmail).child("password").setValue(newPass)
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(this, "Password updated successfully!", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(this, LoginSignupActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Failed to update password: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
         });
     }
 }

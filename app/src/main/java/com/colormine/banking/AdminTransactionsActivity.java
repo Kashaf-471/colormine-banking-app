@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * Admin screen to view all system-wide transactions fetched from Firebase.
  */
-public class AdminTransactionsActivity extends AppCompatActivity {
+public class AdminTransactionsActivity extends BaseActivity {
 
     private RecyclerView recyclerView;
     private TransactionAdapter adapter;

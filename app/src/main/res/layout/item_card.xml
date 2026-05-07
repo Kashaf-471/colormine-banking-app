@@ -1,140 +1,177 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="220dp"
     android:layout_marginBottom="16dp"
-    android:background="@drawable/bg_card_gradient"
-    android:orientation="vertical"
-    android:padding="24dp">
+    android:background="@drawable/bg_card_premium"
+    android:clipToPadding="false"
+    android:elevation="4dp">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
+    <!-- Glowing Background Effect -->
+    <View
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:background="@drawable/bg_circle_blob"
+        android:backgroundTint="#30EC4899"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="-80dp"
+        android:layout_marginBottom="-80dp" />
+
+    <!-- Top Section -->
+    <ImageView
+        android:id="@+id/iv_chip"
+        android:layout_width="45dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:src="@drawable/ic_chip"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_primary_badge"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp">
+        android:layout_marginTop="24dp"
+        android:background="@drawable/bg_card_pill"
+        android:backgroundTint="#40FFFFFF"
+        android:fontFamily="@font/poppins_semibold"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:text="PRIMARY"
+        android:textColor="@color/colorTextWhite"
+        android:textSize="10sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/iv_chip"
-            android:layout_width="40dp"
-            android:layout_height="32dp"
-            android:src="@drawable/ic_credit_card"
-            app:tint="@color/colorTextWhite" />
+    <ImageView
+        android:id="@+id/iv_contactless"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:alpha="0.7"
+        android:src="@drawable/ic_trending_up"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/colorTextWhite" />
 
-        <TextView
-            android:id="@+id/tv_primary_badge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/bg_card_pill"
-            android:backgroundTint="@color/colorWhiteTransparent20"
-            android:fontFamily="@font/poppins_medium"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp"
-            android:text="PRIMARY"
-            android:textColor="@color/colorTextWhite"
-            android:textSize="10sp"
-            android:visibility="gone"/>
-
-        <ImageView
-            android:id="@+id/iv_contactless"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_alignParentEnd="true"
-            android:src="@drawable/ic_trending_up"
-            app:tint="@color/colorTextWhite" />
-    </RelativeLayout>
-
+    <!-- Card Number -->
     <TextView
         android:id="@+id/tv_card_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
         android:fontFamily="@font/poppins_semibold"
-        android:letterSpacing="0.15"
+        android:letterSpacing="0.1"
         android:text="4562  1122  4595  7852"
         android:textColor="@color/colorTextWhite"
-        android:textSize="22sp" />
+        android:textSize="22sp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_card_holder"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_chip" />
+
+    <!-- Card Holder -->
+    <TextView
+        android:id="@+id/tv_card_holder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="AR Jonson"
+        android:textColor="@color/colorTextWhite"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/expiry_container"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Expiry and CVV Row -->
+    <LinearLayout
+        android:id="@+id/expiry_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginBottom="24dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0.6"
+            android:fontFamily="@font/poppins_regular"
+            android:text="Expiry Date"
+            android:textColor="@color/colorTextWhite"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/tv_expiry_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:text="12/28"
+            android:textColor="@color/colorTextWhite"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/cvv_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="24dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/expiry_container">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0.6"
+            android:fontFamily="@font/poppins_regular"
+            android:text="CVV"
+            android:textColor="@color/colorTextWhite"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/tv_cvv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:text="698"
+            android:textColor="@color/colorTextWhite"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <!-- Bottom Right Section -->
+    <ImageView
+        android:id="@+id/iv_card_type"
+        android:layout_width="60dp"
+        android:layout_height="35dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+        android:src="@drawable/ic_mastercard"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/tv_card_balance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="4dp"
         android:fontFamily="@font/poppins_bold"
         android:text="$1,234.56"
         android:textColor="@color/colorTextWhite"
-        android:textSize="18sp" />
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/iv_card_type"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <TextView
-        android:id="@+id/tv_card_holder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:fontFamily="@font/poppins_regular"
-        android:text="AR Jonson"
-        android:textColor="@color/colorTextWhite"
-        android:textSize="14sp" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_regular"
-                android:text="Expiry Date"
-                android:textColor="#DDD6FE"
-                android:textSize="10sp" />
-
-            <TextView
-                android:id="@+id/tv_expiry_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_medium"
-                android:text="24/2030"
-                android:textColor="@color/colorTextWhite"
-                android:textSize="14sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_regular"
-                android:text="CVV"
-                android:textColor="#DDD6FE"
-                android:textSize="10sp" />
-
-            <TextView
-                android:id="@+id/tv_cvv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_medium"
-                android:text="698"
-                android:textColor="@color/colorTextWhite"
-                android:textSize="14sp" />
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/iv_card_type"
-            android:layout_width="48dp"
-            android:layout_height="32dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:src="@drawable/ic_credit_card" />
-    </RelativeLayout>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

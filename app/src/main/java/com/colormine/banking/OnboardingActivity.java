@@ -53,6 +53,12 @@ public class OnboardingActivity extends BaseActivity {
     }
 
     private void navigateToLogin() {
+        // Mark onboarding as finished
+        getSharedPreferences("Onboarding", MODE_PRIVATE)
+            .edit()
+            .putBoolean("isFirstRun", false)
+            .apply();
+
         startActivity(new Intent(this, LoginSignupActivity.class));
         finish();
     }

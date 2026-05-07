@@ -42,10 +42,17 @@
         <androidx.cardview.widget.CardView android:layout_width="match_parent" android:layout_height="wrap_content" app:cardCornerRadius="24dp" app:cardElevation="0dp" app:cardBackgroundColor="@color/colorSurface" android:layout_marginBottom="16dp">
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="24dp">
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="@font/poppins_regular" android:text="@string/label_request_amount" android:textColor="@color/colorTextSecondary" android:textSize="13sp" android:layout_marginBottom="8dp"/>
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal" android:layout_marginBottom="16dp">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="@font/poppins_bold" android:text="@string/dollar_symbol" android:textColor="@color/colorTextPrimary" android:textSize="36sp" android:layout_marginEnd="4dp"/>
-                    <EditText android:id="@+id/et_amount" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@android:color/transparent" android:fontFamily="@font/poppins_bold" android:hint="@string/hint_amount" android:inputType="numberDecimal" android:textColor="@color/colorTextPrimary" android:textColorHint="@color/colorTextHint" android:textSize="36sp"/>
-                </LinearLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_amount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hintEnabled="false"
+                    app:errorEnabled="true">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="@font/poppins_bold" android:text="@string/dollar_symbol" android:textColor="@color/colorTextPrimary" android:textSize="36sp" android:layout_marginEnd="4dp"/>
+                        <EditText android:id="@+id/et_amount" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@android:color/transparent" android:fontFamily="@font/poppins_bold" android:hint="@string/hint_amount" android:inputType="numberDecimal" android:textColor="@color/colorTextPrimary" android:textColorHint="@color/colorTextHint" android:textSize="36sp"/>
+                    </LinearLayout>
+                </com.google.android.material.textfield.TextInputLayout>
                 <!-- Quick amounts -->
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
                     <Button android:id="@+id/btn_50" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:layout_marginEnd="8dp" android:background="@drawable/bg_icon_purple" android:fontFamily="@font/poppins_medium" android:text="50" android:textColor="@color/colorTextPrimary" android:textSize="12sp" android:stateListAnimator="@null"/>

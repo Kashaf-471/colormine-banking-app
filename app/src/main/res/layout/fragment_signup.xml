@@ -24,20 +24,31 @@
                 android:textSize="12sp"
                 android:layout_marginBottom="6dp"/>
 
-            <EditText
-                android:id="@+id/et_signup_name"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_signup_name"
                 android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:background="@drawable/bg_input"
-                android:fontFamily="@font/poppins_regular"
-                android:hint="@string/hint_name"
-                android:inputType="textPersonName"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:textColor="@color/colorTextPrimary"
-                android:textColorHint="@color/colorTextHint"
-                android:textSize="14sp"
-                android:layout_marginBottom="12dp"/>
+                android:layout_height="wrap_content"
+                app:hintEnabled="false"
+                app:errorEnabled="true"
+                android:layout_marginBottom="4dp">
+
+                <EditText
+                    android:id="@+id/et_signup_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_input"
+                    android:fontFamily="@font/poppins_regular"
+                    android:hint="@string/hint_name"
+                    android:inputType="textPersonName"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingTop="14dp"
+                    android:paddingBottom="14dp"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/colorTextPrimary"
+                    android:textColorHint="@color/colorTextHint"
+                    android:textSize="14sp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -48,20 +59,31 @@
                 android:textSize="12sp"
                 android:layout_marginBottom="6dp"/>
 
-            <EditText
-                android:id="@+id/et_signup_email"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_signup_email"
                 android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:background="@drawable/bg_input"
-                android:fontFamily="@font/poppins_regular"
-                android:hint="@string/hint_email"
-                android:inputType="textEmailAddress"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:textColor="@color/colorTextPrimary"
-                android:textColorHint="@color/colorTextHint"
-                android:textSize="14sp"
-                android:layout_marginBottom="12dp"/>
+                android:layout_height="wrap_content"
+                app:hintEnabled="false"
+                app:errorEnabled="true"
+                android:layout_marginBottom="4dp">
+
+                <EditText
+                    android:id="@+id/et_signup_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_input"
+                    android:fontFamily="@font/poppins_regular"
+                    android:hint="@string/hint_email"
+                    android:inputType="textEmailAddress"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingTop="14dp"
+                    android:paddingBottom="14dp"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/colorTextPrimary"
+                    android:textColorHint="@color/colorTextHint"
+                    android:textSize="14sp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -72,20 +94,33 @@
                 android:textSize="12sp"
                 android:layout_marginBottom="6dp"/>
 
-            <EditText
-                android:id="@+id/et_signup_password"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_signup_password"
                 android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:background="@drawable/bg_input"
-                android:fontFamily="@font/poppins_regular"
-                android:hint="@string/hint_create_password"
-                android:inputType="textPassword"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:textColor="@color/colorTextPrimary"
-                android:textColorHint="@color/colorTextHint"
-                android:textSize="14sp"
-                android:layout_marginBottom="12dp"/>
+                android:layout_height="wrap_content"
+                app:hintEnabled="false"
+                app:errorEnabled="true"
+                app:endIconMode="password_toggle"
+                app:endIconTint="@color/colorPrimary"
+                android:layout_marginBottom="4dp">
+
+                <EditText
+                    android:id="@+id/et_signup_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_input"
+                    android:fontFamily="@font/poppins_regular"
+                    android:hint="@string/hint_create_password"
+                    android:inputType="textPassword"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingTop="14dp"
+                    android:paddingBottom="14dp"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/colorTextPrimary"
+                    android:textColorHint="@color/colorTextHint"
+                    android:textSize="14sp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <CheckBox
                 android:id="@+id/cb_terms"

@@ -73,15 +73,8 @@ public class SecurityActivity extends BaseActivity {
         tvSecuritySubtitle = findViewById(R.id.tv_security_subtitle);
         securityProgress = findViewById(R.id.security_progress);
 
-        // Option rows
-        findViewById(R.id.option_change_password).setOnClickListener(v -> {
-            // Action handled by click, switch is just visual
-            Toast.makeText(this, "Redirecting to Change Password...", Toast.LENGTH_SHORT).show();
-        });
-        findViewById(R.id.option_sessions).setOnClickListener(v -> {
-            // Action handled by click, switch is just visual
-            Toast.makeText(this, "Viewing Active Sessions...", Toast.LENGTH_SHORT).show();
-        });
+        // Option rows removed per user request
+
 
         // Toggle listeners
         switchBiometric.setOnCheckedChangeListener((buttonView, isChecked) -> {

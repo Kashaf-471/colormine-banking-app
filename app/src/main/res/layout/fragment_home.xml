@@ -86,102 +86,136 @@
         </RelativeLayout>
 
         <!-- ===== BANK CARD ===== -->
-        <RelativeLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/home_card"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="220dp"
             android:layout_marginBottom="24dp"
-            android:background="@drawable/bg_card_gradient"
+            android:background="@drawable/bg_card_premium"
             android:clickable="true"
             android:focusable="true"
-            android:padding="24dp">
+            android:elevation="4dp">
 
-            <TextView
-                android:id="@+id/card_balance_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_regular"
-                android:text="@string/total_balance"
-                android:textColor="#DDD6FE"
-                android:textSize="12sp" />
+            <!-- Glowing Background Effect -->
+            <View
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:background="@drawable/bg_circle_blob"
+                android:backgroundTint="#30EC4899"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="-80dp"
+                android:layout_marginBottom="-80dp" />
+
+            <ImageView
+                android:id="@+id/card_chip"
+                android:layout_width="45dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:src="@drawable/ic_chip"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/card_visa_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="24dp"
                 android:background="@drawable/bg_card_pill"
+                android:backgroundTint="#40FFFFFF"
                 android:fontFamily="@font/poppins_semibold"
                 android:paddingStart="12dp"
                 android:paddingEnd="12dp"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
-                android:text="@string/visa_label"
+                android:text="VISA"
                 android:textColor="@color/colorTextWhite"
-                android:textSize="13sp" />
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/card_balance_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:alpha="0.7"
+                android:fontFamily="@font/poppins_regular"
+                android:text="Current Balance"
+                android:textColor="@color/colorTextWhite"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toTopOf="@+id/card_balance_amount"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/card_balance_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/card_balance_label"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="32dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginBottom="24dp"
                 android:fontFamily="@font/poppins_bold"
-                android:text="@string/balance_amount"
+                android:text="$1,234.56"
                 android:textColor="@color/colorTextWhite"
-                android:textSize="32sp" />
+                android:textSize="28sp"
+                app:layout_constraintBottom_toTopOf="@+id/home_card_number_label"
+                app:layout_constraintStart_toStartOf="parent" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/home_card_number_label"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/card_balance_amount"
-                android:orientation="horizontal">
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins_regular"
-                        android:text="Card Number"
-                        android:textColor="#DDD6FE"
-                        android:textSize="10sp" />
-                    <TextView
-                        android:id="@+id/card_number"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins_medium"
-                        android:letterSpacing="0.1"
-                        android:text="@string/card_number_masked"
-                        android:textColor="@color/colorTextWhite"
-                        android:textSize="14sp" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins_regular"
-                        android:text="@string/valid_thru"
-                        android:textColor="#DDD6FE"
-                        android:textSize="10sp" />
-                    <TextView
-                        android:id="@+id/card_expiry"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins_medium"
-                        android:text="@string/card_expiry"
-                        android:textColor="@color/colorTextWhite"
-                        android:textSize="14sp" />
-                </LinearLayout>
-            </LinearLayout>
-        </RelativeLayout>
+                android:layout_marginStart="24dp"
+                android:alpha="0.6"
+                android:fontFamily="@font/poppins_regular"
+                android:text="Card Number"
+                android:textColor="@color/colorTextWhite"
+                android:textSize="10sp"
+                app:layout_constraintBottom_toTopOf="@+id/card_number"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/card_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginBottom="24dp"
+                android:fontFamily="@font/poppins_medium"
+                android:letterSpacing="0.1"
+                android:text="**** **** **** 1234"
+                android:textColor="@color/colorTextWhite"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/home_card_expiry_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="24dp"
+                android:alpha="0.6"
+                android:fontFamily="@font/poppins_regular"
+                android:text="Valid Thru"
+                android:textColor="@color/colorTextWhite"
+                android:textSize="10sp"
+                app:layout_constraintBottom_toTopOf="@+id/card_expiry"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <TextView
+                android:id="@+id/card_expiry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="24dp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="12/28"
+                android:textColor="@color/colorTextWhite"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!-- ===== QUICK ACTIONS ===== -->
         <LinearLayout

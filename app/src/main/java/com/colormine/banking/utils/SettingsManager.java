@@ -23,12 +23,37 @@ public class SettingsManager {
     }
 
     // Dark Mode
+    private String getDarkModeKey() {
+        SharedPreferences sessionPrefs = context.getSharedPreferences("UserSession", Context.MODE_PRIVATE);
+        String email = sessionPrefs.getString("email", "");
+        
+        if (email.isEmpty()) {
+            com.google.firebase.auth.FirebaseUser user = com.google.firebase.auth.FirebaseAuth.getInstance().getCurrentUser();
+            if (user != null) email = user.getEmail();
+        }
+        
+        if (email == null || email.isEmpty()) return "darkMode"; // Default fallback
+        return "darkMode_" + email.replace(".", ",");
+    }
+
     public boolean isDarkMode() {
-        return prefs.getBoolean("darkMode", false);
+        SharedPreferences sessionPrefs = context.getSharedPreferences("UserSession", Context.MODE_PRIVATE);
+        String email = sessionPrefs.getString("email", "");
+        int isAdmin = sessionPrefs.getInt("isAdmin", 0);
+
+        if (isAdmin == 1) return false; // Admin always light mode
+
+        if (email.isEmpty()) {
+            com.google.firebase.auth.FirebaseUser user = com.google.firebase.auth.FirebaseAuth.getInstance().getCurrentUser();
+            if (user != null) email = user.getEmail();
+        }
+
+        if (email == null || email.isEmpty()) return false; // Default to light if not logged in
+        return prefs.getBoolean(getDarkModeKey(), false);
     }
 
     public void setDarkMode(boolean enabled) {
-        prefs.edit().putBoolean("darkMode", enabled).apply();
+        prefs.edit().putBoolean(getDarkModeKey(), enabled).apply();
         AppCompatDelegate.setDefaultNightMode(
             enabled ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO
         );

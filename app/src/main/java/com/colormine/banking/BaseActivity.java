@@ -9,9 +9,15 @@ import android.os.Handler;
 import android.os.Looper;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.colormine.banking.utils.SettingsManager;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import android.os.VibrationEffect;
 import android.os.Vibrator;
@@ -30,6 +36,8 @@ public class BaseActivity extends AppCompatActivity {
     private Handler logoutHandler;
     private Runnable logoutRunnable;
     private long timeoutMillis;
+    private com.google.firebase.database.ValueEventListener statusListener;
+    private com.google.firebase.database.DatabaseReference statusRef;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -82,6 +90,8 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     private void logout() {
+        androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(
+                androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO);
         getSharedPreferences("UserSession", MODE_PRIVATE)
                 .edit()
                 .clear()
@@ -122,9 +132,11 @@ public class BaseActivity extends AppCompatActivity {
 
         if (settingsManager.isSoundsEnabled()) {
             try {
-                // Use a crisp system sound
-                ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_SYSTEM, 60);
-                tg.startTone(ToneGenerator.TONE_PROP_BEEP, 60);
+                // Use a crisp system sound on the Music stream which is less likely to be muted than System stream
+                ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_MUSIC, 80);
+                tg.startTone(ToneGenerator.TONE_PROP_BEEP, 100);
+                // Release after a short delay to ensure it plays but doesn't leak
+                new Handler(Looper.getMainLooper()).postDelayed(tg::release, 500);
             } catch (Exception ignored) {}
         }
     }
@@ -158,8 +170,9 @@ public class BaseActivity extends AppCompatActivity {
                     ringtone.play();
                 } else {
                     // Fallback to ToneGenerator if no ringtone
-                    ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
+                    ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_MUSIC, 100);
                     tg.startTone(ToneGenerator.TONE_PROP_ACK);
+                    new Handler(Looper.getMainLooper()).postDelayed(tg::release, 500);
                 }
             } catch (Exception ignored) {}
         }
@@ -175,7 +188,76 @@ public class BaseActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         resetDisconnectTimer();
+        startStatusMonitor();
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        stopStatusMonitor();
+    }
+
+    private void startStatusMonitor() {
+        if (!isUserLoggedIn()) return;
+
+        SharedPreferences pref = getSharedPreferences("UserSession", MODE_PRIVATE);
+        String email = pref.getString("email", "");
+        if (email.isEmpty()) return;
+
+        String sanitizedEmail = email.replace(".", ",");
+        statusRef = FirebaseDatabase.getInstance().getReference()
+                .child("users").child(sanitizedEmail).child("status");
+
+        if (statusListener == null) {
+            statusListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    String status = snapshot.getValue(String.class);
+                    if ("BLOCKED".equalsIgnoreCase(status)) {
+                        handleAccountBlocked();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {}
+            };
+        }
+        statusRef.addValueEventListener(statusListener);
+    }
+
+    private void stopStatusMonitor() {
+        if (statusRef != null && statusListener != null) {
+            statusRef.removeEventListener(statusListener);
+        }
+    }
+
+    private void handleAccountBlocked() {
+        if (isFinishing()) return;
+
+        // Clear session and redirect
+        getSharedPreferences("UserSession", MODE_PRIVATE).edit().clear().apply();
+        
+        // Use a flag to prevent multiple dialogs if multiple activities are in stack
+        if (!isAccountBlockedDialogShowing) {
+            isAccountBlockedDialogShowing = true;
+            new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle("Account Blocked")
+                .setMessage("Your account has been blocked by an administrator. You will be redirected to the login screen.")
+                .setCancelable(false)
+                .setPositiveButton("OK", (dialog, which) -> {
+                    androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(
+                            androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO);
+                    isAccountBlockedDialogShowing = false;
+                    Intent intent = new Intent(this, LoginSignupActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                })
+                .show();
+        }
+    }
+
+    private static boolean isAccountBlockedDialogShowing = false;
 
     @Override
     protected void onStop() {

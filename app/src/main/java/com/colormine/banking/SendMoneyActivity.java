@@ -36,8 +36,9 @@ import java.util.Map;
 public class SendMoneyActivity extends BaseActivity {
 
     private ImageButton btnBack;
+    private com.google.android.material.textfield.TextInputLayout tilAmount;
+    private EditText etSearch, etAmount;
     private RecyclerView rvContacts;
-    private EditText etAmount;
     private Button btnContinue;
     private LinearLayout selectedContactInfo, btnSelectCard;
     private TextView tvSelectedAvatar, tvSelectedName, tvSelectedUsername;
@@ -67,6 +68,7 @@ public class SendMoneyActivity extends BaseActivity {
     private void initViews() {
         btnBack = findViewById(R.id.btn_back);
         rvContacts = findViewById(R.id.rv_contacts);
+        tilAmount = findViewById(R.id.til_amount);
         etAmount = findViewById(R.id.et_amount);
         btnContinue = findViewById(R.id.btn_continue);
         selectedContactInfo = findViewById(R.id.selected_contact_info);
@@ -216,6 +218,8 @@ public class SendMoneyActivity extends BaseActivity {
         );
 
         btnContinue.setOnClickListener(v -> {
+            playClickFeedback();
+
             if (selectedContact == null) {
                 Toast.makeText(this, "Select a recipient", Toast.LENGTH_SHORT).show();
                 return;
@@ -226,17 +230,31 @@ public class SendMoneyActivity extends BaseActivity {
                 return;
             }
 
-            String amountStr = etAmount.getText().toString();
+            String amountStr = etAmount.getText().toString().trim();
+            tilAmount.setError(null);
+
             if (amountStr.isEmpty()) {
-                etAmount.setError("Required");
+                tilAmount.setError("Amount is required");
                 return;
             }
 
             try {
                 pendingAmount = Double.parseDouble(amountStr);
+                if (pendingAmount <= 0) {
+                    tilAmount.setError("Amount must be greater than zero");
+                    return;
+                }
+                if (pendingAmount > 1000000) {
+                    tilAmount.setError("Amount exceeds maximum transfer limit ($1,000,000)");
+                    return;
+                }
+                if (pendingAmount > selectedCard.getBalance()) {
+                    tilAmount.setError("Insufficient balance in selected card");
+                    return;
+                }
                 checkAccountStatusAndProceed();
             } catch (NumberFormatException e) {
-                etAmount.setError("Invalid amount");
+                tilAmount.setError("Invalid amount format");
             }
         });
     }
@@ -449,7 +467,13 @@ public class SendMoneyActivity extends BaseActivity {
                     public void onCancelled(@NonNull DatabaseError error) {}
                 });
 
-                // 3. Success
+                // 3. Mark the original notification as paid if it exists
+                String notificationId = getIntent().getStringExtra("notification_id");
+                if (notificationId != null) {
+                    mDatabase.child("notifications").child(sanitizedSender).child(notificationId).child("status").setValue("paid");
+                }
+
+                // 4. Success
                 Intent intent = new Intent(SendMoneyActivity.this, TransferSuccessActivity.class);
                 intent.putExtra("amount", amount);
                 intent.putExtra("recipient", selectedContact.getName());

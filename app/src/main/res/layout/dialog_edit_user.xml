@@ -17,20 +17,26 @@
     <EditText
         android:id="@+id/et_edit_name"
         android:layout_width="match_parent"
-        android:layout_height="52dp"
+        android:layout_height="wrap_content"
         android:hint="Full Name"
         android:background="@drawable/bg_input"
         android:paddingHorizontal="16dp"
+        android:paddingTop="14dp"
+        android:paddingBottom="14dp"
+        android:gravity="center_vertical"
         android:layout_marginBottom="12dp"
         android:inputType="textPersonName"/>
 
     <EditText
         android:id="@+id/et_edit_balance"
         android:layout_width="match_parent"
-        android:layout_height="52dp"
+        android:layout_height="wrap_content"
         android:hint="Account Balance"
         android:background="@drawable/bg_input"
         android:paddingHorizontal="16dp"
+        android:paddingTop="14dp"
+        android:paddingBottom="14dp"
+        android:gravity="center_vertical"
         android:layout_marginBottom="12dp"
         android:inputType="numberDecimal"/>
 

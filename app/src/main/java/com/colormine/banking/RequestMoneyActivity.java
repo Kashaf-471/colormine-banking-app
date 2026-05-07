@@ -33,6 +33,7 @@ public class RequestMoneyActivity extends BaseActivity {
 
     private ImageButton btnBack;
     private RecyclerView rvContacts;
+    private com.google.android.material.textfield.TextInputLayout tilAmount;
     private EditText etAmount;
     private Button btnContinue;
     private LinearLayout selectedContactInfo;
@@ -72,6 +73,7 @@ public class RequestMoneyActivity extends BaseActivity {
     private void initViews() {
         btnBack = findViewById(R.id.btn_back);
         rvContacts = findViewById(R.id.rv_contacts);
+        tilAmount = findViewById(R.id.til_amount);
         etAmount = findViewById(R.id.et_amount);
         btnContinue = findViewById(R.id.btn_continue);
         selectedContactInfo = findViewById(R.id.selected_contact_info);
@@ -126,22 +128,34 @@ public class RequestMoneyActivity extends BaseActivity {
         findViewById(R.id.btn_500).setOnClickListener(v -> etAmount.setText("500"));
         
         btnContinue.setOnClickListener(v -> {
+            playClickFeedback();
+
             if (selectedContact == null) {
                 Toast.makeText(this, "Select a recipient", Toast.LENGTH_SHORT).show();
                 return;
             }
             
-            String amountStr = etAmount.getText().toString();
+            String amountStr = etAmount.getText().toString().trim();
+            tilAmount.setError(null);
+
             if (amountStr.isEmpty()) {
-                etAmount.setError("Required");
+                tilAmount.setError("Amount is required");
                 return;
             }
             
             try {
                 double amount = Double.parseDouble(amountStr);
+                if (amount <= 0) {
+                    tilAmount.setError("Amount must be greater than zero");
+                    return;
+                }
+                if (amount > 1000000) {
+                    tilAmount.setError("Amount exceeds maximum limit ($1,000,000)");
+                    return;
+                }
                 sendMoneyRequest(amount);
             } catch (NumberFormatException e) {
-                etAmount.setError("Invalid amount");
+                tilAmount.setError("Invalid amount format");
             }
         });
     }
@@ -216,6 +230,8 @@ public class RequestMoneyActivity extends BaseActivity {
         notif.put("type", "request");
         notif.put("senderEmail", currentUserEmail);
         notif.put("amount", amount);
+        notif.put("status", "pending");
+        notif.put("id", id);
 
         if (id != null) {
             mDatabase.child("notifications").child(sanitizedRecipient).child(id).setValue(notif)

@@ -9,10 +9,11 @@ public class Notification {
     private String type;
     private String senderEmail;
     private double amount;
+    private String status; // "pending" or "paid"
 
     public Notification() {}
 
-    public Notification(String id, String title, String message, long timestamp, boolean read, String type, String senderEmail, double amount) {
+    public Notification(String id, String title, String message, long timestamp, boolean read, String type, String senderEmail, double amount, String status) {
         this.id = id;
         this.title = title;
         this.message = message;
@@ -21,6 +22,7 @@ public class Notification {
         this.type = type;
         this.senderEmail = senderEmail;
         this.amount = amount;
+        this.status = status;
     }
 
     public String getId() { return id; }
@@ -31,6 +33,7 @@ public class Notification {
     public String getType() { return type; }
     public String getSenderEmail() { return senderEmail; }
     public double getAmount() { return amount; }
+    public String getStatus() { return status; }
 
     public void setId(String id) { this.id = id; }
     public void setTitle(String title) { this.title = title; }
@@ -40,4 +43,5 @@ public class Notification {
     public void setType(String type) { this.type = type; }
     public void setSenderEmail(String senderEmail) { this.senderEmail = senderEmail; }
     public void setAmount(double amount) { this.amount = amount; }
+    public void setStatus(String status) { this.status = status; }
 }

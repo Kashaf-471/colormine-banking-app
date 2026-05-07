@@ -18,7 +18,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class ForgotPasswordActivity extends AppCompatActivity {
+public class ForgotPasswordActivity extends BaseActivity {
 
     private EditText etEmail;
     private Button btnSendCode;
@@ -83,6 +83,9 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
     private void sendOtp(String email) {
         btnSendCode.setText("Sending...");
+        
+        // Also send official Firebase reset email to update login credentials
+        com.google.firebase.auth.FirebaseAuth.getInstance().sendPasswordResetEmail(email);
 
         OtpService.generateAndSend(this, email, new OtpService.OtpCallback() {
             @Override

@@ -51,6 +51,7 @@ import static androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_WEAK;
 
 public class LoginFragment extends Fragment {
 
+    private com.google.android.material.textfield.TextInputLayout tilEmail, tilPassword;
     private EditText etEmail, etPassword;
     private Button btnLogin;
     private ProgressBar progressBar;
@@ -59,7 +60,7 @@ public class LoginFragment extends Fragment {
     private DatabaseReference mDatabase;
     private SharedPreferences securityPrefs;
     private ActivityResultLauncher<Intent> otpLauncher;
-    private User pendingUser;
+    private com.colormine.banking.models.User pendingUser;
     private String pendingEmail;
 
     @Nullable
@@ -71,6 +72,8 @@ public class LoginFragment extends Fragment {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         securityPrefs = requireActivity().getSharedPreferences("SecuritySettings", Context.MODE_PRIVATE);
 
+        tilEmail = view.findViewById(R.id.til_login_email);
+        tilPassword = view.findViewById(R.id.til_login_password);
         etEmail = view.findViewById(R.id.et_login_email);
         etPassword = view.findViewById(R.id.et_login_password);
         btnLogin = view.findViewById(R.id.btn_login);
@@ -79,7 +82,12 @@ public class LoginFragment extends Fragment {
         TextView linkForgot = view.findViewById(R.id.link_forgot_password);
 
         btnLogin.setOnClickListener(v -> attemptLogin());
-        linkForgot.setOnClickListener(v -> startActivity(new Intent(getActivity(), ForgotPasswordActivity.class)));
+        linkForgot.setOnClickListener(v -> {
+            if (getActivity() instanceof com.colormine.banking.BaseActivity) {
+                ((com.colormine.banking.BaseActivity) getActivity()).playClickFeedback();
+            }
+            startActivity(new Intent(getActivity(), ForgotPasswordActivity.class));
+        });
 
         otpLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -112,39 +120,80 @@ public class LoginFragment extends Fragment {
     }
 
     private void attemptLogin() {
+        if (getActivity() instanceof com.colormine.banking.BaseActivity) {
+            ((com.colormine.banking.BaseActivity) getActivity()).playClickFeedback();
+        }
+
         String email = etEmail.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
 
+        tilEmail.setError(null);
+        tilPassword.setError(null);
+
         if (email.isEmpty()) {
-            etEmail.setError("Please enter your email");
+            tilEmail.setError("Email is required");
             etEmail.requestFocus();
             return;
         }
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            etEmail.setError("Please enter a valid email address");
+            tilEmail.setError("Enter a valid email address");
             etEmail.requestFocus();
             return;
         }
         if (password.isEmpty()) {
-            etPassword.setError("Please enter your password");
+            tilPassword.setError("Password is required");
+            etPassword.requestFocus();
+            return;
+        }
+        if (password.length() < 6) {
+            tilPassword.setError("Password must be at least 6 characters");
             etPassword.requestFocus();
             return;
         }
 
         setLoading(true);
-        mAuth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(requireActivity(), task -> {
-                if (task.isSuccessful()) {
-                    FirebaseUser user = mAuth.getCurrentUser();
-                    if (user != null) {
-                        securityPrefs.edit().putString("last_email", user.getEmail()).apply();
-                        checkUserRoleAndStatus(user.getEmail());
+        String sanitizedEmail = email.replace(".", ",");
+        
+        // 1. Fetch user from Database to check current password
+        mDatabase.child("users").child(sanitizedEmail).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User userProfile = snapshot.getValue(User.class);
+                if (userProfile != null) {
+                    // 2. Verify Database Password
+                    if (password.equals(userProfile.getPassword())) {
+                        // DB Password matches! 
+                        // Now attempt Firebase Auth sign-in in background
+                        mAuth.signInWithEmailAndPassword(email, password)
+                            .addOnCompleteListener(requireActivity(), task -> {
+                                // We proceed regardless of Auth success if DB password matched,
+                                // but we prefer Auth success for better security/features.
+                                if (task.isSuccessful()) {
+                                    securityPrefs.edit().putString("last_email", email).apply();
+                                }
+                                // Proceed with role check
+                                checkUserRoleAndStatus(email);
+                            });
+                    } else {
+                        // Password doesn't match DB
+                        setLoading(false);
+                        tilPassword.setError("Invalid password.");
+                        etPassword.requestFocus();
                     }
                 } else {
+                    // User not found in DB
                     setLoading(false);
-                    handleAuthError(task.getException());
+                    tilEmail.setError("No account found with this email.");
+                    etEmail.requestFocus();
                 }
-            });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                setLoading(false);
+                Toast.makeText(getContext(), "Database error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void startBiometricAuth() {
@@ -251,8 +300,19 @@ public class LoginFragment extends Fragment {
         SharedPreferences pref = requireActivity().getSharedPreferences("UserSession", Context.MODE_PRIVATE);
         pref.edit()
             .putString("email", email)
+            .putInt("isAdmin", user.getIsAdmin())
             .putLong("loginTime", System.currentTimeMillis())
             .apply();
+        
+        // Apply theme immediately before navigating
+        if (user.getIsAdmin() == 1) {
+            androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO);
+        } else {
+            boolean isDark = com.colormine.banking.utils.SettingsManager.getInstance(requireContext()).isDarkMode();
+            androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(
+                isDark ? androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES : androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
+            );
+        }
         
         if (user.getIsAdmin() == 1) {
             startActivity(new Intent(getActivity(), AdminActivity.class));

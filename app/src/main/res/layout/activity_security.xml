@@ -151,13 +151,13 @@
                 <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/colorDivider" android:layout_marginBottom="16dp"/>
 
                 <!-- Change Password -->
-                <RelativeLayout android:id="@+id/option_change_password" android:layout_width="match_parent" android:layout_height="56dp" android:layout_marginBottom="4dp" android:clickable="true" android:focusable="true">
+                <RelativeLayout android:id="@+id/option_change_password" android:layout_width="match_parent" android:layout_height="56dp" android:layout_marginBottom="4dp" android:clickable="true" android:focusable="true" android:visibility="gone">
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:fontFamily="@font/poppins_medium" android:text="@string/change_password" android:textColor="@color/colorTextPrimary" android:textSize="14sp"/>
                     <Switch android:id="@+id/switch_password_secured" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:layout_centerVertical="true" android:checked="true" android:track="@drawable/selector_switch_track" android:clickable="false" android:focusable="false"/>
                 </RelativeLayout>
-
+ 
                 <!-- Active Sessions -->
-                <RelativeLayout android:id="@+id/option_sessions" android:layout_width="match_parent" android:layout_height="56dp" android:clickable="true" android:focusable="true">
+                <RelativeLayout android:id="@+id/option_sessions" android:layout_width="match_parent" android:layout_height="56dp" android:clickable="true" android:focusable="true" android:visibility="gone">
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:fontFamily="@font/poppins_medium" android:text="@string/active_sessions" android:textColor="@color/colorTextPrimary" android:textSize="14sp"/>
                     <Switch android:id="@+id/switch_sessions_active" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:layout_centerVertical="true" android:checked="true" android:track="@drawable/selector_switch_track" android:clickable="false" android:focusable="false"/>
                 </RelativeLayout>

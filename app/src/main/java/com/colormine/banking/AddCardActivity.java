@@ -25,6 +25,7 @@ import java.util.UUID;
 
 public class AddCardActivity extends AppCompatActivity {
 
+    private com.google.android.material.textfield.TextInputLayout tilName, tilNumber, tilExpiry, tilCvv, tilPin;
     private EditText etName, etNumber, etExpiry, etCvv, etPin;
     private TextView tvPreviewName, tvPreviewNumber, tvPreviewExpiry;
     private Button btnSave;
@@ -44,6 +45,12 @@ public class AddCardActivity extends AppCompatActivity {
             finish();
             return;
         }
+
+        tilName = findViewById(R.id.til_cardholder_name);
+        tilNumber = findViewById(R.id.til_card_number);
+        tilExpiry = findViewById(R.id.til_expiry_date);
+        tilCvv = findViewById(R.id.til_cvv);
+        tilPin = findViewById(R.id.til_card_pin);
 
         etName = findViewById(R.id.et_cardholder_name);
         etNumber = findViewById(R.id.et_card_number);
@@ -135,28 +142,66 @@ public class AddCardActivity extends AppCompatActivity {
         String cvv = etCvv.getText().toString().trim();
         String pin = etPin.getText().toString().trim();
 
-        if (name.isEmpty() || numberStr.isEmpty() || expiry.isEmpty() || cvv.isEmpty() || pin.isEmpty()) {
-            Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+        tilName.setError(null);
+        tilNumber.setError(null);
+        tilExpiry.setError(null);
+        tilCvv.setError(null);
+        tilPin.setError(null);
+
+        if (name.isEmpty()) {
+            tilName.setError("Cardholder name is required");
             return;
         }
-        
+        if (name.length() < 3) {
+            tilName.setError("Name must be at least 3 characters");
+            return;
+        }
+
+        if (numberStr.isEmpty()) {
+            tilNumber.setError("Card number is required");
+            return;
+        }
         if (numberStr.length() != 16) {
-            etNumber.setError("Card number must be 16 digits");
+            tilNumber.setError("Card number must be 16 digits");
+            return;
+        }
+        if (!numberStr.matches("\\d+")) {
+            tilNumber.setError("Card number must contain only digits");
             return;
         }
 
+        if (expiry.isEmpty()) {
+            tilExpiry.setError("Expiry date is required");
+            return;
+        }
         if (!isValidExpiry(expiry)) {
-            etExpiry.setError("Invalid expiry date (MM/YY)");
+            tilExpiry.setError("Invalid expiry date (MM/YY)");
             return;
         }
 
+        if (cvv.isEmpty()) {
+            tilCvv.setError("CVV is required");
+            return;
+        }
         if (cvv.length() < 3) {
-            etCvv.setError("Invalid CVV");
+            tilCvv.setError("CVV must be 3 digits");
+            return;
+        }
+        if (!cvv.matches("\\d+")) {
+            tilCvv.setError("CVV must contain only digits");
             return;
         }
 
+        if (pin.isEmpty()) {
+            tilPin.setError("PIN is required");
+            return;
+        }
         if (pin.length() != 4) {
-            etPin.setError("PIN must be 4 digits");
+            tilPin.setError("PIN must be 4 digits");
+            return;
+        }
+        if (!pin.matches("\\d+")) {
+            tilPin.setError("PIN must contain only digits");
             return;
         }
 

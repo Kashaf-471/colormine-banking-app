@@ -37,7 +37,7 @@ import java.util.Map;
 /**
  * Admin Dashboard Activity for managing users and viewing transactions via Firebase.
  */
-public class AdminActivity extends AppCompatActivity implements UserAdapter.OnUserActionListener {
+public class AdminActivity extends BaseActivity implements UserAdapter.OnUserActionListener {
 
     private ListView listView;
     private UserAdapter adapter;
@@ -102,6 +102,8 @@ public class AdminActivity extends AppCompatActivity implements UserAdapter.OnUs
                     .setTitle("Sign Out")
                     .setMessage("Are you sure you want to sign out from admin console?")
                     .setPositiveButton("Sign Out", (dialog, which) -> {
+                        androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(
+                                androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO);
                         getSharedPreferences("UserSession", MODE_PRIVATE).edit().clear().apply();
                         startActivity(new Intent(AdminActivity.this, LoginSignupActivity.class));
                         finish();

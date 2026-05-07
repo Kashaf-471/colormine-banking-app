@@ -29,6 +29,7 @@ import java.util.Map;
 public class LoanRequestActivity extends BaseActivity {
 
     private ImageButton btnBack;
+    private com.google.android.material.textfield.TextInputLayout tilAmount;
     private EditText etAmount;
     private Spinner spinnerCard;
     private Button btnRequest;
@@ -53,6 +54,7 @@ public class LoanRequestActivity extends BaseActivity {
 
     private void initViews() {
         btnBack = findViewById(R.id.btn_back);
+        tilAmount = findViewById(R.id.til_loan_amount);
         etAmount = findViewById(R.id.et_loan_amount);
         spinnerCard = findViewById(R.id.spinner_loan_card);
         btnRequest = findViewById(R.id.btn_request_loan);
@@ -95,22 +97,30 @@ public class LoanRequestActivity extends BaseActivity {
         btnBack.setOnClickListener(v -> finish());
         
         btnRequest.setOnClickListener(v -> {
-            String amountStr = etAmount.getText().toString();
+            playClickFeedback();
+
+            String amountStr = etAmount.getText().toString().trim();
+            tilAmount.setError(null);
+
             if (amountStr.isEmpty()) {
-                etAmount.setError("Required");
+                tilAmount.setError("Amount is required");
                 return;
             }
             
             try {
                 double amount = Double.parseDouble(amountStr);
                 if (amount <= 0) {
-                    etAmount.setError("Enter a positive amount");
+                    tilAmount.setError("Amount must be greater than zero");
+                    return;
+                }
+                if (amount > 10000000) { // Higher limit for loans? Let's say 10M
+                    tilAmount.setError("Amount exceeds maximum loan limit ($10,000,000)");
                     return;
                 }
                 
                 checkAccountStatusAndProceed(amount);
             } catch (NumberFormatException e) {
-                etAmount.setError("Invalid amount");
+                tilAmount.setError("Invalid amount format");
             }
         });
     }

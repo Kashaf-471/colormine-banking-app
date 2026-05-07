@@ -162,27 +162,34 @@ public class CardTransferActivity extends BaseActivity {
             return;
         }
 
-        // Check if account is frozen (local setting)
-        if (com.colormine.banking.utils.SettingsManager.getInstance(this).isAccountFrozen()) {
-            new AlertDialog.Builder(this)
-                    .setTitle("Account Frozen")
-                    .setMessage("Your account is currently frozen. Please unfreeze it from Security settings to make transfers.")
-                    .setPositiveButton("OK", null)
-                    .show();
-            return;
-        }
+        // Check Account Status (Real-time Firebase check)
+        btnTransfer.setEnabled(false);
+        btnTransfer.setText("Checking security...");
 
-        // Check if account is blocked by admin (Firebase status)
         String sanitizedEmailCheck = userEmail.replace(".", ",");
         mDatabase.child("users").child(sanitizedEmailCheck).child("status")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         String status = snapshot.getValue(String.class);
-                        if ("BLOCKED".equalsIgnoreCase(status)) {
+                        boolean isBlocked = "BLOCKED".equalsIgnoreCase(status);
+                        boolean isFrozen = "FROZEN".equalsIgnoreCase(status) 
+                                || com.colormine.banking.utils.SettingsManager.getInstance(CardTransferActivity.this).isAccountFrozen();
+
+                        if (isBlocked) {
+                            btnTransfer.setEnabled(true);
+                            btnTransfer.setText("Transfer Now");
                             new AlertDialog.Builder(CardTransferActivity.this)
                                     .setTitle("Account Blocked")
                                     .setMessage("Your account has been blocked by an administrator. Please contact support for assistance.")
+                                    .setPositiveButton("OK", null)
+                                    .show();
+                        } else if (isFrozen) {
+                            btnTransfer.setEnabled(true);
+                            btnTransfer.setText("Transfer Now");
+                            new AlertDialog.Builder(CardTransferActivity.this)
+                                    .setTitle("Account Frozen")
+                                    .setMessage("Your account is currently frozen. Please unfreeze it from Security settings to make transfers.")
                                     .setPositiveButton("OK", null)
                                     .show();
                         } else {
@@ -192,7 +199,8 @@ public class CardTransferActivity extends BaseActivity {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-                        performTransfer(amount);
+                        btnTransfer.setEnabled(true);
+                        btnTransfer.setText("Transfer Now");
                     }
                 });
     }

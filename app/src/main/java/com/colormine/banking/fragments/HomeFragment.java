@@ -134,6 +134,18 @@ public class HomeFragment extends Fragment {
                         primaryBalance = String.format("$%,.2f", primaryCard.getBalance());
                         if (tvCardNumber != null) tvCardNumber.setText(primaryCard.getCardNumber());
                         if (tvCardExpiry != null) tvCardExpiry.setText(primaryCard.getExpiryDate());
+                        
+                        TextView tvCardType = getView().findViewById(R.id.card_visa_label);
+                        if (tvCardType != null && primaryCard.getCardNumber() != null) {
+                            String num = primaryCard.getCardNumber().replace(" ", "");
+                            if (num.startsWith("4")) {
+                                tvCardType.setText("VISA");
+                            } else if (num.startsWith("5")) {
+                                tvCardType.setText("MASTERCARD");
+                            } else {
+                                tvCardType.setText("CREDIT");
+                            }
+                        }
                     }
                     
                     if (tvBalance != null) {
